@@ -1,35 +1,36 @@
 #!/usr/bin/perl
 
-open OFILE, ">", "populate_game_table2.sql" or die;
+use DBI;
+my $dsn = "DBI:mysql:mysql:localhost";
+my $username = "root";
+my $password = '45trOUt90';
+
+# connect to MySQL database
+my %attr = ( PrintError=>0,  # turn off error reporting via warn()
+             RaiseError=>1);   # turn on error reporting via die()
+
+my $dbh  = DBI->connect($dsn,$username,$password, \%attr);
+open OFILE, ">", "populate_player_table2.sql" or die;
 print OFILE "use ofp;\n";
-for ($wk=1;$wk<=17;$wk++)
+for ($wk=8;$wk<=8;$wk++)
 {
    $gamedate=0;
    $game=0;
    $pts=0;
-   $file = "../data/raw/html/season2_week".$wk.".html";
+   $file = "../data/team".$wk.".html";
    open FILE, '<', $file or die;
    #print "$wk $file\n";
    while (<FILE>)
    {
-      if ($gamedate)
+      # <title>Auburn Tigers 2016-17 Statistics - Team and Player Stats - Men's College Basketball - ESPN</title>
+      if (/<title>Auburn ([\w]*) 2016.*<\/title>/)
       {
-         # <th colspan="5" style="text-align:right;">Thursday, September 04</th>
-         if (/<th.*\">([\w]*), ([\w]*) ([\w]*)</)
-         {
-            $day=$1; $month=$2; $year=$3;
-         }
-         $gamedate=0;
+         $mascot=$1;
       }
-      if (/gamedate/)
+      # <div class="sub-title">10-5, 12th in Southeastern Conference
+      if (/<div class=\"sub-title\">([0-9]*)-([0-9]*), [0-9]*[a-z]* in (.*)<\/div></)
       {
-         $gamedate=1;
-      }
-      # <tr class="pro">
-      if (/<tr class=\"pro\"/)
-      {
-         $game=1;
-         $v=0;
+         $wins=$1; $losses=$2; $conference=$3;
       }
       #visitor
       #<td style="white-space:nowrap;;  text-align:nowrap;" id="cRoad24473" class="">
@@ -174,6 +175,7 @@ for ($wk=1;$wk<=17;$wk++)
          }
       }
    }
+   print "$wins $losses $conference $mascot\n";
    #print "Points: $pts\n";
 }
 #foreach $team (keys %seasonw)
