@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+#https://www.cyberciti.biz/faq/how-to-access-mysql-database-using-perl/
 use DBI;
 my $dsn = "DBI:mysql:mysql:localhost";
 my $username = "root";
@@ -32,22 +33,27 @@ for ($wk=8;$wk<=8;$wk++)
       {
          $wins=$1; $losses=$2; $conference=$3;
       }
-      #visitor
-      #<td style="white-space:nowrap;;  text-align:nowrap;" id="cRoad24473" class="">
-      #	<input type="radio" disabled>Washington (4-12) +2.5
-      #</td>
-      #home
-      #<td style="white-space:nowrap;" id="cRoad24473" class="winbackground">
-      #	<input type="radio" checked disabled>HOUSTON (9-7) -2.5
-      #</td>
-      if ($game)
+      #visitor=
+      if (/tr class=\"evenrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z ]*)<\/a/)
       {
-         if (/cRoad([0-9]*)\" class=\"(.*)\"/)
+         my @arr = $_ =~ /tr class=\"evenrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z ]*)<\/a/g;
+         for ($i = 0; $i < scalar( @arr ); $i++ )
          {
-            $gameid=$1;
-            $picked=length($2)>0?1:0;
-            #print "game $gameid $picked\n";
+            print "xxx $arr[$i] zzz\n";
          }
+         #$playername=$1;
+         #print "even $playername\n";
+      }
+      #<tr class="oddrow player-41-4066250"><td><a href="http://www.espn.com/mens-college-basketball/player/_/id/4066250/mustapha-heron">Mustapha Heron</a></td><td align="right">15</td><td align="right">27.5</td><td align="right"class="sortcell">16.2</td><td align="right">6.3</td><td align="right">1.2</td><td align="right">0.9</td><td align="right">0.3</td><td align="right">2.9</td><td align="right">.442</td><td align="right">.786</td><td align="right">.407</td></tr>
+      if (/tr class=\"oddrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z ]*)<\/a/)
+      {
+         my @arr = $_ =~ /tr class=\"oddrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z ]*)<\/a/g;
+         for ($i = 0; $i < scalar( @arr ); $i++ )
+         {
+            print "xxx $arr[$i] zzz\n";
+         }
+         #$playername=$1;
+         #print "odd $playername\n";
          if (/<input type=\"radio\" (.*disabled)>([\w \.]*) \([0-9\-]+\).*SPREAD'>([+-\.0-9]*)/)
          {
             $team=$2;
