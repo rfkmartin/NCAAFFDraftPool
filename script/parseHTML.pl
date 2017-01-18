@@ -19,7 +19,6 @@ while (@result = $query->fetchrow_array())
    $school=$result[1];
    $file = "../data/team".$teamid.".html";
    open FILE, '<', $file or die;
-   print "$teamid $school $file\n";
    $record=0;
    while (<FILE>)
    {
@@ -49,7 +48,6 @@ while (@result = $query->fetchrow_array())
          for ($i = 0; $i < scalar( @data ); $i+=4 )
          {
             $sql = "insert into player(name,team_id,gp,mpg,ppg) values (?,?,?,?,?)";
-            print "$sql xxx $data[$i] yyy $teamid zzz $data[$i+1] mmm $data[$i+2] nnn $data[$i+3]\n";
             
             $insert=$dbh->prepare($sql);
             $rv=$insert->execute($data[$i],$teamid,$data[$i+1],$data[$i+2],$data[$i+3]);
@@ -62,16 +60,13 @@ while (@result = $query->fetchrow_array())
          for ($i = 0; $i < scalar( @data ); $i+=4 )
          {
             $sql = "insert into player(name,team_id,gp,mpg,ppg) values (?,?,?,?,?)";
-            print "$sql aaa $data[$i] yyy $teamid zzz $data[$i+1] mmm $data[$i+2] nnn $data[$i+3]\n";
 
             $insert=$dbh->prepare($sql);
             $rv=$insert->execute($data[$i],$teamid,$data[$i+1],$data[$i+2],$data[$i+3]);
          }
       }
    }
-   print "$wins $losses $conference $mascot\n";
    $sql = "update team set wins=?,losses=?,mascot=?,conference=? where team_id=?";
-   print "$sql xxx\n";
 
    $insert=$dbh->prepare($sql);
    $rv=$insert->execute($wins,$losses,$mascot,$conference,$teamid);
