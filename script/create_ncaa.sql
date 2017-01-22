@@ -2,6 +2,8 @@ drop database if exists ncaa;
 create database ncaa;
 use ncaa;
 
+-- date;python ESPNScrape.py;cat create_ncaa.sql > temp.sql ;cat create_bracket.sql >> temp.sql ;mysql -u root -pLuv2Drnk < temp.sql;./parseHTML.pl ;date
+
 create table user (
    user_id int not null auto_increment,
    name varchar(64) not null,
@@ -41,6 +43,8 @@ create table bracket (
    bracket_pos int not null,
    next_pos int not null,
    game_id int,
+   region varchar(32),
+   round varchar(32),
    team_id int,
    primary key (bracket_pos)
 );
@@ -50,7 +54,7 @@ create table player (
    name varchar(64) not null,
    team_id int not null,
    gp float,
-   min float,
+--   min float,
 --   fgm float,
 --   fga float,
 --   ftm float,
@@ -65,7 +69,7 @@ create table player (
 --   tover float,
 --   stl float,
 --   blk float,
---   mpg float,
+   mpg float,
    ppg float,
 --   rpg float,
 --   apg float,

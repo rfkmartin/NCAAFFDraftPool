@@ -32,10 +32,10 @@ def wget(url):
 
   # print all the first cell of all the rows
   for row in cur.fetchall():
-    file="team" + str(row[0]) + ".html"
+    file="../data/team" + str(row[0]) + ".html"
     url="http://www.espn.com/mens-college-basketball/team/stats/_/id/" + str(row[0]) + "/"
-    print(url)
-    print(file)
+    #print(url)
+    #print(file)
     br.retrieve(url,file)
 
 def main():
