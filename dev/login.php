@@ -1,7 +1,7 @@
 <?php
-   $db_host = '192.168.10.52'; // don't forget to change
+   $db_host = '127.0.0.1'; // don't forget to change
    $db_user = 'root';
-   $db_pwd = 'ub6ib9';
+   $db_pwd = '45trOUt90';
    $database = 'ncaa';
    $link = mysqli_connect($db_host,$db_user,$db_pwd);
    if (!$link)
