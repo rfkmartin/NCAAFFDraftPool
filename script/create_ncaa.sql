@@ -54,33 +54,16 @@ create table player (
    name varchar(64) not null,
    team_id int not null,
    gp float,
---   min float,
---   fgm float,
---   fga float,
---   ftm float,
---   fta float,
---   tpm float,
---   tpa float,
---   pts float,
---   offr float,
---   defr float,
---   reb float,
---   ast float,
---   tover float,
---   stl float,
---   blk float,
    mpg float,
    ppg float,
---   rpg float,
---   apg float,
---   spg float,
---   bpg float,
---   tpg float,
---   fgpct float,
---   ftpct float,
---   treypct float,
    primary key (player_id),
    foreign key (team_id) references team(team_id)
+);
+
+create table keyValue (
+   k varchar(64),
+   v varchar(64),
+   primary key (k)
 );
 
 create table playerUser (
@@ -96,6 +79,8 @@ create table teamUser (
    foreign key (team_id) references team(team_id),
    foreign key (user_id) references user(user_id)
 );
+
+INSERT INTO keyValue(k,v) VALUES ("playerUpdateDTM",CURTIME());
 
 INSERT INTO team(team_id,school) VALUES (2000,"Abilene Christian ");
 INSERT INTO team(team_id,school) VALUES (2005,"Air Force");

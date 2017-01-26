@@ -67,7 +67,9 @@ while (@result = $query->fetchrow_array())
       }
    }
    $sql = "update team set wins=?,losses=?,mascot=?,conference=? where team_id=?";
-
    $insert=$dbh->prepare($sql);
    $rv=$insert->execute($wins,$losses,$mascot,$conference,$teamid);
 }
+$sql = "update keyValue set v=? where k='playerUpdateDTM'";
+$insert=$dbh->prepare($sql);
+$rv=$insert->execute(scalar(localtime(time)));

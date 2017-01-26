@@ -92,17 +92,11 @@ function print_banner()
 }
 function print_rules()
 {
-   echo '<table COLS=1 WIDTH="75%" >
-   <tr bgcolor="#F36C3E">
-   <td><font size=4>
-   <center>Participants are given a draft position. Regular draft positions
-   will be used for the team draft and reverse draft positions will used for
-   the player draft. A round robin draft is used meaning that if the order
-   is 1-8 in Round One, the order will be 8-1 in Round Two. This alternates
-   for all eight rounds.</center><p>
-   </td></tr>
+   echo '<table cols=1 width="75%"><tr bgcolor="#F36C3E"><td align="center"><font size=4>';
+   echo 'Participants are given a draft position. Regular draft positions will be used for the team draft and reverse draft positions will used for the player draft. A round robin draft is used meaning that if the order is 1-8 in Round One, the order will be 8-1 in Round Two. This alternates for all eight rounds.';
+   echo '</td></tr>';
 
-   <tr>
+   echo '<tr>
    <td>
    <center><table COLS=1 WIDTH="75%" >
    <tr BGCOLOR="#F36C3E">
@@ -305,16 +299,26 @@ function print_rules()
 }
 function print_top_n_teams($n,$link)
 {
-   $sql = "select school,wins,losses,conference from team order by wins/(wins+losses) desc limit ".$n;
+   $sql = "select v from keyValue where k='playerUpdateDTM'";
    $data = mysqli_query($link,$sql);
-   echo '<table border="1"><tr><td>Team</td><td>Record</td><td>Conference</td></tr>';
-   while (list($team,$wins,$losses,$conference)=mysqli_fetch_row($data)) {
-      echo '<tr><td>'.$team.'</td><td>'.$wins.'-'.$losses.'</td><td>'.$conference.'</td></tr>';
+   while (list($updated)=mysqli_fetch_row($data)) {
+      echo '<b>Top 20 Teams</b><small>(last updated: '.$updated.')</small><br>';
+   }
+   $sql = "select school,wins,losses,conference,name,max(ppg) from player p inner join (select max(ppg) as maxppg,team_id from player group by team_id) p1 on p.team_id=p1.team_id and p.ppg=p1.maxppg join team t on t.team_id=p.team_id group by p.team_id order by wins/(wins+losses) desc limit ".$n;
+   $data = mysqli_query($link,$sql);
+   echo '<table border="1"><tr><td>Team</td><td>Record</td><td>Conference</td><td>Leading Scorer</td><td>Pts/Gm</td></tr>';
+   while (list($team,$wins,$losses,$conference,$name,$ppg)=mysqli_fetch_row($data)) {
+      echo '<tr><td>'.$team.'</td><td>'.$wins.'-'.$losses.'</td><td>'.$conference.'</td><td>'.$name.'</td><td>'.$ppg.'</td></tr>';
    }
    echo '</table>';
 }
 function print_top_n_players($n,$link)
 {
+   $sql = "select v from keyValue where k='playerUpdateDTM'";
+   $data = mysqli_query($link,$sql);
+   while (list($updated)=mysqli_fetch_row($data)) {
+      echo '<b>Top 20 Scorers</b><small>(last updated: '.$updated.')</small><br>';
+   }
    $sql = "select name,ppg,school,conference from player p join team t on p.team_id=t.team_id order by ppg desc limit ".$n;
    $data = mysqli_query($link,$sql);
    echo '<table border="1"><tr><td>Name</td><td>Team</td><td>Pts/Gm</td><td>Conference</td></tr>';
