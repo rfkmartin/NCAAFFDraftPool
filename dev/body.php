@@ -92,210 +92,41 @@ function print_banner()
 }
 function print_rules()
 {
-   echo '<table cols=1 width="75%"><tr bgcolor="#F36C3E"><td align="center"><font size=4>';
-   echo 'Participants are given a draft position. Regular draft positions will be used for the team draft and reverse draft positions will used for the player draft. A round robin draft is used meaning that if the order is 1-8 in Round One, the order will be 8-1 in Round Two. This alternates for all eight rounds.';
-   echo '</td></tr>';
+   echo '<table class="rulestable"><tr><td class="rulesheader">Basics</td></tr>';
+   echo '<tr><td>Players and teams are selected based on a snake draft. Draft order is reversed between the two. Each player starts with 300 pts and that value is affected by the following rules.';
+   echo '</td></tr></table>';
 
-   echo '<tr>
-   <td>
-   <center><table COLS=1 WIDTH="75%" >
-   <tr BGCOLOR="#F36C3E">
-   <td><font size=+2><b>Team Draft</b></font></td>
-   </tr>
+   echo '<table class="rulestable"><tr><td class="rulesheader">Team Draft</td></tr>';
+   echo '<tr><td>The cost of a team is inversely proportional to their seed; the higher the seed, the lower the cost. During the draft, you will go into negative points so don\'t be alarmed. For each win, a team earns 43 pts. The price breakdown is as follows:';
+   echo '<table class="subrulestable" border="1"><tr><td>Seed</td><td>Cost</td><td>Seed</td><td>Cost</td></tr>';
+   echo '<tr><td>1</td><td>80</td><td>9</td><td>40</td></tr>';
+   echo '<tr><td>2</td><td>75</td><td>10</td><td>35</td></tr>';
+   echo '<tr><td>3</td><td>70</td><td>11</td><td>30</td></tr>';
+   echo '<tr><td>4</td><td>65</td><td>12</td><td>25</td></tr>';
+   echo '<tr><td>5</td><td>60</td><td>13</td><td>20</td></tr>';
+   echo '<tr><td>6</td><td>55</td><td>14</td><td>15</td></tr>';
+   echo '<tr><td>7</td><td>50</td><td>15</td><td>10</td></tr>';
+   echo '<tr><td>8</td><td>45</td><td>16</td><td>5</td></tr></table></tr></td></table>';
+    
+   echo '<table class="rulestable"><tr><td class="rulesheader">Player Draft</td></tr>';
+   echo '<tr><td>Points awarded for the following categories:';
 
-   <tr>
-   <td>
-   <center>The cost of a team is inversely proportional to their seed; the
-   higher the seed, the lower the cost. For each win, a team earns $4.30.
-   The price breakdown is as follows:</center>
-   <hr width=75%>
-   <center><table COLS=4 WIDTH="40%" >
-   <tr>
-   <td>Seed</td>
+   echo '<table class="subrulestable" border="1"><tr><td>Highest drafters combined total points for all games</td></tr>';
+   echo '<tr><td>Highest individuals total points for all games</td></tr>';
+   echo '<tr><td>Individual high single game points</td></tr>';
+   echo '<tr><td>Best total of each players high game</td></tr></table>';
 
-   <td>Cost</td>
+   echo 'The payout for each category is as follows: 1st place 64pts, 2nd place 48, 3rd 32, 4th 16</td></tr></table>';
 
-   <td>Seed</td>
+   echo '<table class="rulestable"><tr><td class="rulesheader">Bonus Categories</td></tr>';
 
-   <td>Cost</td>
-   </tr>
+   echo '<tr><td>Fixed Cost of $10.00 per person. Total of $80 in the pot.';
 
-   <tr>
-   <td>1</td>
-
-   <td>$8.00</td>
-
-   <td>9</td>
-
-   <td>$4.00</td>
-   </tr>
-
-   <tr>
-   <td>2</td>
-
-   <td>$7.50</td>
-
-   <td>10</td>
-
-   <td>$3.50</td>
-   </tr>
-
-   <tr>
-   <td>3</td>
-
-   <td>$7.00</td>
-
-   <td>11</td>
-
-   <td>$3.00</td>
-   </tr>
-
-   <tr>
-   <td>4</td>
-
-   <td>$6.50</td>
-
-   <td>12</td>
-
-   <td>$2.50</td>
-   </tr>
-
-   <tr>
-   <td>5</td>
-
-   <td>$6.00</td>
-
-   <td>13</td>
-
-   <td>$2.00</td>
-   </tr>
-
-   <tr>
-   <td>6</td>
-
-   <td>$5.50</td>
-
-   <td>14</td>
-
-   <td>$1.50</td>
-   </tr>
-
-   <tr>
-   <td>7</td>
-
-   <td>$5.00</td>
-
-   <td>15</td>
-
-   <td>$1.00</td>
-   </tr>
-
-   <tr>
-   <td>8</td>
-
-   <td>$4.50</td>
-
-   <td>16</td>
-
-   <td>$0.50</td>
-   </tr>
-   </table></center>
-   </td>
-   </tr>
-   </table></center>
-   </td>
-   </tr>
-
-   <tr>
-   <td></td>
-   </tr>
-
-   <tr>
-   <td>
-   <center><table COLS=1 WIDTH="75%" >
-   <tr BGCOLOR="#F36C3E">
-   <td><font size=+2><b>Player Draft</b></font></td>
-   </tr>
-
-   <tr>
-   <td>
-   <center>The cost of the player draft is $1 per round.
-   <br>Money is awarded for the following categories:</center>
-
-   <p><br>
-   <center><table BORDER COLS=1 WIDTH="85%" >
-   <tr ALIGN=CENTER>
-   <td>Highest drafters combined total points for all games</td>
-   </tr>
-
-   <tr ALIGN=CENTER>
-   <td>Highest individuals total points for all games</td>
-   </tr>
-
-   <tr ALIGN=CENTER>
-   <td>Individual high single game points</td>
-   </tr>
-
-   <tr ALIGN=CENTER>
-   <td>Best total of each players high game.</td>
-   </tr>
-   </table></center>
-
-   <center>
-   <p>The payout is as follows: 1st place $6.40, 2nd place $4.80, 3rd $3.20,
-   4th $1.60</center></td>
-   </tr>
-   </table></center>
-   </td>
-   </tr>
-
-   <tr>
-   <td>
-   <center><table COLS=1 WIDTH="75%" >
-   <tr BGCOLOR="#F36C3E">
-   <td><font size=+2><b>Bonus Categories</b></font></td>
-   </tr>
-
-   <tr>
-   <td>
-   <center>Fixed Cost of $10.00 per person. Total of $80 in the pot.</center><p>
-
-   <center><table BORDER COLS=1 WIDTH="85%" >
-   <tr>
-   <td>
-   <center>Drafter of worst team to advance in each of the 1st two rounds
-   <br>($5 per round)</center>
-   </td>
-   </tr>
-
-   <tr>
-   <td>
-   <center>The Drafter with the most teams at the end of each Round
-   <br>($5 per round)</center>
-   </td>
-   </tr>
-
-   <tr>
-   <td>
-   <center>Drafter of player who receives MVP(or if player was not drafted
-         then the owner of the team for which the MVP played)
-         <br>$10.00</center>
-         </td>
-         </tr>
-
-         <tr>
-         <td>
-         <center>Brackets- each player will fill out the entire 63 game bracket.
-         <br>1st place $15.00, 2nd Place $7.50, 3rd Place $4.50 and 4th place $3.00</center>
-         </td>
-         </tr>
-         </table></center>
-         </td>
-         </tr>
-         </table></center>
-         </td>
-         </tr>
-         </table>';
+   echo '<table class="subrulestable" border="1"><tr><td>Drafter of worst team to advance in each of the 1st two rounds(5pts/round)</td></tr>';
+   echo '<tr><td>The Drafter with the most teams at the end of each round(5pts/round)</td></tr>';
+   echo '<tr><td>Drafter of player who receives MVP(or if player was not drafted then the owner of the team for which the MVP played)(10pts)</td></tr>';
+   echo '<tr><td>Brackets- each player will fill out the entire 63 game bracket.<br>1st place 150, 2nd Place 75, 3rd Place 45, 4th place 30</td></tr></table>';
+   echo '</td></tr></table>';
 }
 function print_top_n_teams($n,$link)
 {

@@ -2,7 +2,9 @@ body{font-family: Verdana, Arial, Helvetica, sans-serif;background-color:#B4A87E
 .table_header{font-size:48px}
 .main_table{height:100%;background-color:#B4A87E}
 .menu1{background-color:#9FB9F6}
-
+table.rulestable{width:50%;text-align:center}
+td.rulesheader{background-color:#F36C3E; font-size:x-large;font-weight:bold}
+table.subrulestable{margin:1em auto; border:1px solid black;border-collapse:collapse}
 
 /* html,body{margin:0;padding:0;height:100%;border:none;} */
 .input{color:#5f91c4;height:12px;width:80px;font-size:11px;}
