@@ -94,46 +94,21 @@ function process_forms($link)
 		unset($_SESSION['page']);
 		unset($_SESSION['foods']);
 	}
-	if (isset($_POST['login']))
+	if (isset($_POST['register']))
 	{
-		$myusername = mysqli_real_escape_string($link,$_POST['username']);
-		$mypassword = mysqli_real_escape_string($link,$_POST['password']);
-		$sql = "select user_id,u.family_id,name,is_admin,passcode from user u join family f on u.family_id=f.family_id where username='".$myusername."'";
-		logger($link,$sql);
-		$result = mysqli_query($link,$sql);
-		list($user,$family_id,$family_name,$is_admin,$hashed) = mysqli_fetch_row($result);
-
-		if(password_verify($mypassword,$hashed)) {
-			$_SESSION['username']=$_POST['username'];
-			$_SESSION['user']=$user;
-			$_SESSION['family_id']=$family_id;
-			$_SESSION['family_name']=$family_name;
-			$_SESSION['is_admin']=$is_admin;
-			$_SESSION['page']="";
-			$_SESSION['error']="";
-			$_SESSION['message']="";
-				$sql = "select e.event_id from event e join date d on d.date_id=e.date_id where day!=-1 and str_to_date(concat(concat(month,'/',day),'/',year),'%m/%d/%Y')>curdate() order by year, month limit 1";
-			logger($link,$sql);
-			$result = mysqli_query($link,$sql);
-			if (!empty($result))
-			{
-				list($event_id) = mysqli_fetch_row($result);
-				$_SESSION['event_id']=$event_id;
-			}
-			else
-			{
-				$_SESSION['event_id']=-1;
-			}
-			$sql = "select count(*) from food";
-			logger($link,$sql);
-			$result = mysqli_query($link,$sql);
-         list($foods) = mysqli_fetch_row($result);
-			$_SESSION['foods']=$foods;
-		}
-		else
-		{
-			$error = "Your Login Name or Password is invalid";
-		}
+	   $_SESSION['page']='register';
+	}
+	if (isset($_POST['rules']))
+	{
+	   $_SESSION['page']='rules';
+	}
+	if (isset($_POST['teams']))
+	{
+	   $_SESSION['page']='teams';
+	}
+	if (isset($_POST['players']))
+	{
+	   $_SESSION['page']='players';
 	}
 	if (isset($_POST['addpersonevent']))
     {

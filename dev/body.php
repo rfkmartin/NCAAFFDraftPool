@@ -4,24 +4,49 @@ function print_body($link)
 	// move to constants or as session var
 	$SHOW_MONTHS=24;
 	echo '<body>';
-	echo '<table border="0" align="left" cellpadding="0" cellspacing="0" id="main_table" class="main_table">';
-	echo '  <tr>';
-	echo '  <td align="left" valign="top" colspan="2">';
+	echo '<table border="0" align="center" width="1280px" cellpadding="0" cellspacing="0" id="main_table" class="main_table">';
+	echo '<tr>';
+	echo '<td align="left" valign="top">';
 	print_banner();
- 	echo '    </td></tr>';
- 	echo '    <tr><td width="18%" valign="top" align="left">';
-   echo 'login<br>register';
-//  	if (empty($_SESSION['page'])||$_SESSION['page']=="")
-//  	{
-//       echo print_events($link,'next');
-//  		echo '<br>';
-//  	}
-//  	elseif ($_SESSION['page']=="families")
-//  	{
-//       echo family_table($link);
-//  		echo '<br>';
-//  	}
-//  	elseif ($_SESSION['page']=="next")
+	echo '<form action = "" method = "post">';
+	echo '<tr><td class="submenu">';
+   echo '<button name="register">Register</button>';
+   echo ' | <button name="rules">Rules</button>';
+   echo ' | <button name="teams">Top Teams</button>';
+   echo ' | <button name="players">Top Players</button>';
+   echo '</td></tr>';
+   echo '</form>&nbsp;';
+    echo '<tr><td class="nonmenu"></td></tr>';
+   echo '<tr><td class="nonmenu"></td>';
+   print_r($_SESSION);
+   print_r($_POST);
+   echo '</tr>';
+   echo '<tr><td align="center" bgcolor="#B4A87E">';
+   if (empty($_SESSION['page'])||$_SESSION['page']=="")
+   {
+      echo '';
+   }
+   elseif ($_SESSION['page']=="register")
+  	{
+      echo '<h2>Hold your horses</h2>';
+  		echo '<br>';
+  	}
+  	elseif ($_SESSION['page']=="rules")
+  	{
+  	   print_rules();
+  	   echo '<br>';
+  	}
+  	elseif ($_SESSION['page']=="teams")
+  	{
+  	   print_top_n_teams(64,$link);
+  	   echo '<br>';
+  	}
+  	elseif ($_SESSION['page']=="players")
+  	{
+  	   print_top_n_players(20,$link);
+  	   echo '<br>';
+  	}
+  	 //  	elseif ($_SESSION['page']=="next")
 //  	{
 //       echo print_events($link,'next');
 //       echo '<br>';
@@ -74,20 +99,13 @@ function print_body($link)
 //  	{
 //       echo update_account($link);
 //  	}
- 	echo '    </td>';
- 	echo '    <td align="center" bgcolor="#F6B332">';
-   print_rules();
- 	print_top_n_teams(20,$link);
- 	print_top_n_players(20,$link);
  	echo '</td></tr></table>';
  	echo '</body>';
 }
 function print_banner()
 {
 	echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
-	echo '<tr><td width="25%"><img src="../images/Logo2017.png" alt="2017 NCAA Final Four Draft Pool"></td>';
-   echo '<td valign="middle" align="center">Draft Pool</td>';
-	echo '</tr>';
+	echo '<tr><td width="25%" align="center"><img src="../images/Logo2017.png" alt="2017 NCAA Final Four Draft Pool"></td>';
 	echo '</table>';
 }
 function print_rules()
@@ -120,14 +138,18 @@ function print_rules()
 
    echo '<table class="rulestable"><tr><td class="rulesheader">Bonus Categories</td></tr>';
 
-   echo '<tr><td>Fixed Cost of $10.00 per person. Total of $80 in the pot.';
-
-   echo '<table class="subrulestable" border="1"><tr><td>Drafter of worst team to advance in each of the 1st two rounds(5pts/round)</td></tr>';
+   echo '<tr><td><table class="subrulestable" border="1"><tr><td>Drafter of worst team to advance in each of the 1st two rounds(5pts/round)</td></tr>';
    echo '<tr><td>The Drafter with the most teams at the end of each round(5pts/round)</td></tr>';
    echo '<tr><td>Drafter of player who receives MVP(or if player was not drafted then the owner of the team for which the MVP played)(10pts)</td></tr>';
    echo '<tr><td>Brackets- each player will fill out the entire 63 game bracket.<br>1st place 150, 2nd Place 75, 3rd Place 45, 4th place 30</td></tr></table>';
    echo '</td></tr></table>';
-}
+
+   echo '<table class="rulestable"><tr><td class="rulesheader">Play-In Games</td></tr>';
+   
+   echo '<tr><td><ul>At least 4 teams from the play-in rounds will be drafted. Wins from any of those teams will only count from the Round of 64 onward</ul>';
+   echo '<ul>If a player is drafted from any of these teams, only their best game among the play-in game and first round will count.</ul>';
+   echo '</td></tr></table>';
+   }
 function print_top_n_teams($n,$link)
 {
    $sql = "select v from keyValue where k='playerUpdateDTM'";
