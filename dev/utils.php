@@ -110,6 +110,10 @@ function process_forms($link)
 	{
 	   $_SESSION['page']='players';
 	}
+	if (isset($_POST['teamplayers']))
+	{
+	   $_SESSION['page']='teamplayers';
+	}
 	if (isset($_POST['res2001']))
 	{
 	   $_SESSION['page']='res2001';
