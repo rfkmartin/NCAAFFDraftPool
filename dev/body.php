@@ -2,9 +2,8 @@
 function print_body($link)
 {
 	// move to constants or as session var
-	$SHOW_MONTHS=24;
 	echo '<body>';
-	echo '<table border="0" align="center" width="1280px" cellpadding="0" cellspacing="0" id="main_table" class="main_table">';
+	echo '<table border="0" align="center" width="80%" cellpadding="0" cellspacing="0" id="main_table" class="main_table">';
 	echo '<tr>';
 	echo '<td align="left" valign="top">';
 	print_banner();
@@ -14,13 +13,15 @@ function print_body($link)
    echo ' | <button name="rules">Rules</button>';
    echo ' | <button name="teams">Top Teams</button>';
    echo ' | <button name="players">Top Players</button>';
+   echo ' | <button name="res2000">Results from 2000</button>';
+   echo ' | <button name="res2001">Results from 2001</button>';
    echo '</td></tr>';
-   echo '</form>&nbsp;';
-    echo '<tr><td class="nonmenu"></td></tr>';
-   echo '<tr><td class="nonmenu"></td>';
-   print_r($_SESSION);
-   print_r($_POST);
-   echo '</tr>';
+   echo '</form>';
+   echo '<tr><td class="nonmenu">&nbsp;</td></tr>';
+   echo '<tr><td class="nonmenu">&nbsp;';
+   //print_r($_SESSION);
+   //print_r($_POST);
+   echo '</td></tr>';
    echo '<tr><td align="center" bgcolor="#B4A87E">';
    if (empty($_SESSION['page'])||$_SESSION['page']=="")
    {
@@ -43,9 +44,20 @@ function print_body($link)
   	}
   	elseif ($_SESSION['page']=="players")
   	{
-  	   print_top_n_players(20,$link);
+  	   print_top_n_players(64,$link);
   	   echo '<br>';
   	}
+  	elseif ($_SESSION['page']=="res2000")
+  	{
+  	   print2000();
+  	   echo '<br>';
+  	}
+  	elseif ($_SESSION['page']=="res2001")
+  	{
+  	   print2001();
+  	   echo '<br>';
+  	}
+  	
   	 //  	elseif ($_SESSION['page']=="next")
 //  	{
 //       echo print_events($link,'next');
@@ -155,7 +167,7 @@ function print_top_n_teams($n,$link)
    $sql = "select v from keyValue where k='playerUpdateDTM'";
    $data = mysqli_query($link,$sql);
    while (list($updated)=mysqli_fetch_row($data)) {
-      echo '<b>Top 20 Teams</b><small>(last updated: '.$updated.')</small><br>';
+      echo '<b>Top '.$n.' Teams</b><small>(last updated: '.$updated.')</small><br>';
    }
    $sql = "select school,wins,losses,conference,name,max(ppg) from player p inner join (select max(ppg) as maxppg,team_id from player group by team_id) p1 on p.team_id=p1.team_id and p.ppg=p1.maxppg join team t on t.team_id=p.team_id group by p.team_id order by wins/(wins+losses) desc limit ".$n;
    $data = mysqli_query($link,$sql);
@@ -170,7 +182,7 @@ function print_top_n_players($n,$link)
    $sql = "select v from keyValue where k='playerUpdateDTM'";
    $data = mysqli_query($link,$sql);
    while (list($updated)=mysqli_fetch_row($data)) {
-      echo '<b>Top 20 Scorers</b><small>(last updated: '.$updated.')</small><br>';
+      echo '<b>Top '.$n.' Scorers</b><small>(last updated: '.$updated.')</small><br>';
    }
    $sql = "select name,ppg,school,conference from player p join team t on p.team_id=t.team_id order by ppg desc limit ".$n;
    $data = mysqli_query($link,$sql);

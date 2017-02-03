@@ -110,6 +110,14 @@ function process_forms($link)
 	{
 	   $_SESSION['page']='players';
 	}
+	if (isset($_POST['res2001']))
+	{
+	   $_SESSION['page']='res2001';
+	}
+	if (isset($_POST['res2000']))
+	{
+	   $_SESSION['page']='res2000';
+	}
 	if (isset($_POST['addpersonevent']))
     {
        $personArray = [];
