@@ -7,30 +7,18 @@ function print_body($link)
 	echo '<tr>';
 	echo '<td align="left" valign="top">';
 	print_banner();
-	echo '<form action = "" method = "post">';
-	echo '<tr><td class="submenu">';
-   echo '<button name="register">Register</button>';
-   echo ' | <button name="rules">Rules</button>';
-   echo ' | <button name="teams">Top Teams</button>';
-   echo ' | <button name="players">Top Players</button>';
-   echo ' | <button name="teamplayers">Top Teams\' Players</button>';
-    echo ' | <button name="res2000">Results from 2000</button>';
-   echo ' | <button name="res2001">Results from 2001</button>';
-   echo '</td></tr>';
-   echo '</form>';
-   echo '<tr><td class="nonmenu">&nbsp;</td></tr>';
-   echo '<tr><td class="nonmenu">&nbsp;';
+	print print_sub_menu();
    //print_r($_SESSION);
    //print_r($_POST);
    echo '</td></tr>';
-   echo '<tr height="750px"><td align="center" bgcolor="#B4A87E">';
+   echo '<tr><td align="center" bgcolor="#B4A87E">';
    if (empty($_SESSION['page'])||$_SESSION['page']=="")
    {
       echo '';
    }
    elseif ($_SESSION['page']=="register")
   	{
-      echo '<h2>Hold your horses</h2>';
+   		register_account($link);
   		echo '<br>';
   	}
   	elseif ($_SESSION['page']=="rules")

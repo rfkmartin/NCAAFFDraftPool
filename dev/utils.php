@@ -21,23 +21,50 @@ function set_timezone()
 function print_sub_menu()
 {
    echo '<form action = "" method = "post">';
-   if (!empty($_SESSION['user']))
+   echo '<tr><td class="submenu">';
+   echo '<button '.isBtnSelected('register').'name="register">Register</button>';
+   echo ' | <button '.isBtnSelected('rules').'name="rules">Rules</button>';
+   echo ' | <button '.isBtnSelected('teams').'name="teams">Top Teams</button>';
+   echo ' | <button '.isBtnSelected('players').'name="players">Top Players</button>';
+   echo ' | <button '.isBtnSelected('teamplayers').'name="teamplayers">Top Teams\' Players</button>';
+   echo ' | <button '.isBtnSelected('res2000').'name="res2000">Results from 2000</button>';
+   echo ' | <button '.isBtnSelected('res2001').'name="res2001">Results from 2001</button>';
+   echo '</td></tr>';
+   echo '</form>';
+   echo '<tr><td class="nonmenu">&nbsp;</td></tr>';
+   echo '<tr><td class="nonmenu">&nbsp;';
+}
+function isBtnSelected($page)
+{
+   if ($page==$_SESSION['page'])
    {
-      echo '<button name="myfamily">Manage My Family</button>';
-      echo ' | <button name="families">Family Roster</button>';
-      echo ' | <button name="rsvp">RSVP</button>';
-      echo ' | <button name="next">Next Event</button>';
-      echo ' | <button name="upcoming">Upcoming Events</button>';
-      echo ' | <button name="myevent">Manage Your Event</button>';
-      echo ' | <button name="selectevent">Pick Upcoming Schedule</button>';
-      if ($_SESSION['is_admin']==1)
-      {
-         echo '<br>';
-         echo '<button name="admin">Admin menu 1</button>';
-         echo ' | <button name="admin">Admin menu 2</button>';
-      }
+      return 'class="selected" ';
    }
-   echo '</form>&nbsp;';
+   elseif ($page==$_SESSION['page'])
+   {
+      return 'class="selected" ';
+   }
+   elseif ($page==$_SESSION['page'])
+   {
+      return 'class="selected" ';
+   }
+   elseif ($page==$_SESSION['page'])
+   {
+      return 'class="selected" ';
+   }
+   elseif ($page==$_SESSION['page'])
+   {
+      return 'class="selected" ';
+   }
+   elseif ($page==$_SESSION['page'])
+   {
+      return 'class="selected" ';
+   }
+   elseif ($page==$_SESSION['page'])
+   {
+      return 'class="selected" ';
+   }
+   return '';
 }
 function print_logon()
 {
@@ -60,27 +87,24 @@ function print_logon_form()
 	//echo 'Welcome, <span class="person">Nobody</span><br>';
 	echo '<input type="submit" name="login" value="Log In"><form>';
 }
-function update_account($link)
+function register_account($link)
 {
-   echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
-	echo '<h2>Update Username</h2>';
+   //echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
+	echo '<h2>Register</h2>';
 	echo '<form action = "" method = "post">';
 	echo '<table border="0"><tr>';
-	echo '<td width="175px"><b>New Username</b></td>';
-	echo '<td width="175px"><input type="text" name="username" size="45" value="'.$_SESSION['username'].'"></td>';
+	echo '<td width="175px"><b>Username</b></td>';
+	echo '<td width="175px"><input type="text" name="username" size="45"></td></tr>';
+	echo '<tr><td width="175px"><b>Password</b></td>';
+	echo '<td width="175px"><input type="text" name="passwd1" size="45"></td></tr>';
+	echo '<tr><td width="175px"><b>Retype Password</b></td>';
+	echo '<td width="175px"><input type="text" name="passwd2" size="45"></td></tr>';
+	echo '<tr><td width="175px"><b>Team Name</b></td>';
+	echo '<td width="175px"><input type="text" name="teamname" size="45"></td></tr>';
+	echo '<tr><td width="175px"><b>Email</b></td>';
+	echo '<td width="175px"><input type="text" name="email" size="45"></td>';
 	echo '</tr></table>';
-	echo '<input type="submit" name="updateusername" value="Update">';
-	echo '<h2>Update Password</h2>';
-	echo '<form action = "" method = "post">';
-	echo '<table border="0"><tr>';
-	echo '<td width="200px"><b>Old Password</b></td>';
-	echo '<td width="200px"><input type="text" name="orig_pwd" size="45"></td></tr>';
-	echo '<tr><td width="200px"><b>New Password</b></td>';
-	echo '<td width="200px"><input type="text" name="new_pwd" size="45"></td></tr>';
-	echo '<tr><td width="200px"><b>New Password Again</b></td>';
-	echo '<td width="200px"><input type="text" name="new_pwd1" size="45"></td></tr>';
-	echo '</tr></table>';
-	echo '<input type="submit" name="updatepassword" value="Update">';
+	echo '<input type="submit" name="username" value="Register">';
 }
 function process_forms($link)
 {
