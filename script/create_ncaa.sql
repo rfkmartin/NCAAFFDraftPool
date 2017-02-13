@@ -81,6 +81,7 @@ create table teamUser (
 );
 
 INSERT INTO keyValue(k,v) VALUES ("playerUpdateDTM",CURTIME());
+INSERT INTO keyValue(k,v) VALUES ("status",'PREDRAFT');
 
 INSERT INTO team(team_id,school) VALUES (2000,"Abilene Christian ");
 INSERT INTO team(team_id,school) VALUES (2005,"Air Force");
