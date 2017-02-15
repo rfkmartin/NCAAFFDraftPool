@@ -3,7 +3,7 @@ function print_body($link)
 {
    // move to constants or as session var
    echo '<body>';
-   echo '<table border="0" align="center" width="80%" cellpadding="0" cellspacing="0" id="main_table" class="main_table">';
+   echo '<table border="0" align="center" width="95%" cellpadding="0" cellspacing="0" id="main_table" class="main_table">';
    echo '<tr>';
    echo '<td align="left" valign="top">';
    print_banner ();
