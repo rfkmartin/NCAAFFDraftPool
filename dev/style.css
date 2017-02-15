@@ -9,6 +9,8 @@ td.submenu{background-color:#F6B332;text-align:center}
 td.nonmenu{background-color:#B4A87E}
 table.subrulestable{margin:1em auto; border:1px solid black;border-collapse:collapse}
 button.selected{font-weight:bold}
+table.bracket{border:1px;border-spacing:1px;width:990px}
+td.region{background-color:#000000;text-align:center;font-weight:bold;color:#ffffff}
 
 /* html,body{margin:0;padding:0;height:100%;border:none;} */
 .input{color:#5f91c4;height:12px;width:80px;font-size:11px;}
