@@ -89,16 +89,16 @@ function print_logon_form()
 }
 function register_account($link)
 {
-   // echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
+   echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
    echo '<h2>Register</h2>';
    echo '<form action = "" method = "post">';
    echo '<table border="0"><tr>';
    echo '<td width="175px"><b>Username</b></td>';
    echo '<td width="175px"><input type="text" name="username" size="45"></td></tr>';
    echo '<tr><td width="175px"><b>Password</b></td>';
-   echo '<td width="175px"><input type="text" name="passwd1" size="45"></td></tr>';
+   echo '<td width="175px"><input type="password" name="passwd1" size="45"></td></tr>';
    echo '<tr><td width="175px"><b>Retype Password</b></td>';
-   echo '<td width="175px"><input type="text" name="passwd2" size="45"></td></tr>';
+   echo '<td width="175px"><input type="password" name="passwd2" size="45"></td></tr>';
    echo '<tr><td width="175px"><b>Team Name</b></td>';
    echo '<td width="175px"><input type="text" name="teamname" size="45"></td></tr>';
    echo '<tr><td width="175px"><b>Email</b></td>';
@@ -108,72 +108,43 @@ function register_account($link)
 }
 function process_forms($link)
 {
+   $_SESSION['page']='';
+   $_SESSION['error']='';
+   $_SESSION['message']='';
+   set_page();
+   // set isAdmin
+   // set status
    if (isset ( $_POST ['logout'] ))
    {
       session_destroy ();
-      unset ( $_SESSION ['user'] );
-      unset ( $_SESSION ['family_id'] );
-      unset ( $_SESSION ['family_name'] );
-      unset ( $_SESSION ['is_admin'] );
       unset ( $_SESSION ['page'] );
-      unset ( $_SESSION ['foods'] );
-   }
-   if (isset ( $_POST ['register'] ))
-   {
-      $_SESSION ['page'] = 'register';
-   }
-   if (isset ( $_POST ['rules'] ))
-   {
-      $_SESSION ['page'] = 'rules';
-   }
-   if (isset ( $_POST ['teams'] ))
-   {
-      $_SESSION ['page'] = 'teams';
-   }
-   if (isset ( $_POST ['players'] ))
-   {
-      $_SESSION ['page'] = 'players';
-   }
-   if (isset ( $_POST ['teamplayers'] ))
-   {
-      $_SESSION ['page'] = 'teamplayers';
-   }
-   if (isset ( $_POST ['res2001'] ))
-   {
-      $_SESSION ['page'] = 'res2001';
-   }
-   if (isset ( $_POST ['res2000'] ))
-   {
-      $_SESSION ['page'] = 'res2000';
    }
    if (isset ( $_POST ['registernewuser'] ))
    {
-      $name=$_POST['name'];
-      $sql = 'select person_id from person p join family f on p.family_id=f.family_id where f.family_id=' . $_SESSION ['family_id'];
-      logger ( $link, $sql );
-      $data = mysqli_query ( $link, $sql );
-      while ( list ( $person_id ) = mysqli_fetch_row ( $data ) )
+      $_SESSION ['error'] = '';
+      $_SESSION ['message'] = '';
+      $_SESSION ['page'] = 'register';
+      if ($_POST ['passwd1'] == "" || $_POST ['passwd2'] == "")
       {
-         if ($j < count ( $personArray ) && $personArray [$j] == $person_id)
-         {
-            $sql = "update attending set coming=1 where event_id=" . $_SESSION ['event_id'] . " and person_id=" . $person_id;
-            logger ( $link, $sql );
-            if (! mysqli_query ( $link, $sql ))
-            {
-               logger ( $link, "Error inserting record: " . mysqli_error ( $link ) );
-            }
-            $j ++;
-         }
-         else
-         {
-            $sql = "update attending set coming=0 where event_id=" . $_SESSION ['event_id'] . " and person_id=" . $person_id;
-            logger ( $link, $sql );
-            if (! mysqli_query ( $link, $sql ))
-            {
-               logger ( $link, "Error inserting record: " . mysqli_error ( $link ) );
-            }
-         }
+         $_SESSION ['error'] = 'Password cannot be blank';
+         return;
       }
+      // check for matching new passwords
+      if (mysqli_real_escape_string ( $link, $_POST ['passwd1'] ) != mysqli_real_escape_string ( $link, $_POST ['passwd2'] ))
+      {
+         $_SESSION ['error'] = 'Passwords do not match';
+         return;
+      }
+      // change password
+      $sql = 'insert into user (name,team_name,email,password) value ("'.$_POST ['username'].'","'.$_POST ['teamname'].'","'.$_POST ['email'].'","'.password_hash ( $_POST ['passwd1'], PASSWORD_DEFAULT ).'")';
+      //logger ( $link, $sql );
+      echo '<h5>'.$sql.'<\h5>';
+      if (! mysqli_query ( $link, $sql ))
+      {
+         //logger ( $link, "Error inserting record: " . mysqli_error ( $link ) );
+         $_SESSION ['error'] = 'something happened';
+      }
+      $_SESSION ['message'] = 'User '.$_POST['username'].' successfully created';      
    }
    if (isset ( $_POST ['updateusername'] ))
    {
@@ -235,38 +206,6 @@ function process_forms($link)
       }
       $_SESSION ['message'] = 'Password successfully updated';
    }
-   if (isset ( $_POST ['account'] ))
-   {
-      $_SESSION ['page'] = 'account';
-   }
-   if (isset ( $_POST ['rsvp'] ))
-   {
-      $_SESSION ['page'] = 'RSVP';
-   }
-   if (isset ( $_POST ['myfamily'] ))
-   {
-      $_SESSION ['page'] = 'managefam';
-   }
-   if (isset ( $_POST ['upcoming'] ))
-   {
-      $_SESSION ['page'] = 'upcoming';
-   }
-   if (isset ( $_POST ['next'] ))
-   {
-      $_SESSION ['page'] = 'next';
-   }
-   if (isset ( $_POST ['families'] ))
-   {
-      $_SESSION ['page'] = 'families';
-   }
-   if (isset ( $_POST ['myevent'] ))
-   {
-      $_SESSION ['page'] = 'manageev';
-   }
-   if (isset ( $_POST ['selectevent'] ))
-   {
-      $_SESSION ['page'] = 'selectev';
-   }
    // add none option
    if (isset ( $_POST ['bringingfood'] ))
    {
@@ -287,6 +226,37 @@ function process_forms($link)
             logger ( $link, "Error inserting record: " . mysqli_error ( $link ) );
          }
       }
+   }
+}
+function set_page()
+{
+   if (isset ( $_POST ['register'] ))
+   {
+      $_SESSION ['page'] = 'register';
+   }
+   if (isset ( $_POST ['rules'] ))
+   {
+      $_SESSION ['page'] = 'rules';
+   }
+   if (isset ( $_POST ['teams'] ))
+   {
+      $_SESSION ['page'] = 'teams';
+   }
+   if (isset ( $_POST ['players'] ))
+   {
+      $_SESSION ['page'] = 'players';
+   }
+   if (isset ( $_POST ['teamplayers'] ))
+   {
+      $_SESSION ['page'] = 'teamplayers';
+   }
+   if (isset ( $_POST ['res2001'] ))
+   {
+      $_SESSION ['page'] = 'res2001';
+   }
+   if (isset ( $_POST ['res2000'] ))
+   {
+      $_SESSION ['page'] = 'res2000';
    }
 }
 ?>
