@@ -109,7 +109,7 @@ create table draft (
    player_order int not null,
    team_order int not null,
    primary key (draft_pos)
-};
+);
 
 INSERT INTO keyValue(k,v) VALUES ("playerUpdateDTM",CURTIME());
 INSERT INTO keyValue(k,v) VALUES ("status",'PREDRAFT');

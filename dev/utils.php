@@ -138,7 +138,6 @@ function process_forms($link)
       // change password
       $sql = 'insert into user (name,team_name,email,password) value ("'.$_POST ['username'].'","'.$_POST ['teamname'].'","'.$_POST ['email'].'","'.password_hash ( $_POST ['passwd1'], PASSWORD_DEFAULT ).'")';
       //logger ( $link, $sql );
-      echo '<h5>'.$sql.'<\h5>';
       if (! mysqli_query ( $link, $sql ))
       {
          //logger ( $link, "Error inserting record: " . mysqli_error ( $link ) );
