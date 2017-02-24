@@ -3,7 +3,8 @@ function print_bracket()
 {
    echo '<table class="bracket">';//BORDER=0 WIDTH=990 CELLSPACING=0 CELLPADDING=1>';
    //echo '<tr><td class="region" BGCOLOR=000000 colspan=8 align="center"><FONT SIZE=3 FACE=arial COLOR=ffffff><B>South</B></td><td colspan=5></td><td BGCOLOR=000000 colspan=8 ALIGN=right><FONT SIZE=3 FACE=arial COLOR=ffffff><B>East</B></td></td>
-   echo '<tr><td class="region" colspan="8">South</td><td colspan=6></td><td class="region"colspan="8">East</td></tr>
+   echo '<tr><td class="bracket_head" colspan="2">Round of 64</td><td class="bracket_head" colspan=2>Round of 32</td><td class="bracket_head"colspan="2">Sweet Sixteen</td><td class="bracket_head"colspan="2">Elite Eight</td><td class="bracket_head"colspan="2">Final Four</td><td class="bracket_head"colspan="2">Championship</td><td class="bracket_head"colspan="2">Final Four</td><td class="bracket_head"colspan="2">Elite Eight</td><td class="bracket_head"colspan="2">Sweet Sixteen</td><td class="bracket_head"colspan="2">Round of 32</td><td class="bracket_head"colspan="2">Round of 64</td></tr>
+   <tr><td class="region" colspan="8">South</td><td colspan=6></td><td class="region"colspan="8">East</td></tr>
          
 <tr><td colspan=22></td></tr>
 
@@ -17,7 +18,7 @@ function print_bracket()
 
 <tr><td colspan=22></td></tr>
 
-<tr VALIGN=center>
+<tr valign=center>
 <td class="score">35</td>
 <td class="team_left">Alabama St.(16)</td>
 <td class="score">81</td>
@@ -223,7 +224,7 @@ function print_bracket()
 <td class="score">74</td>
 <td class="team_left">UNC</td>
 <td colspan=4></td>
-<td colspan=6 ALIGN=center>FINAL FOUR</td>
+<td colspan=6 ALIGN=center></td>
 <td colspan=4></td>
 <td class="team_right">Kentucky</td>
 <td class="score">72</td>
@@ -285,7 +286,7 @@ function print_bracket()
 <td class="score">61</td>
 <td class="team_left">Char.</td>
 <td colspan=6></td>
-<td colspan=2 align="center">FINAL</td>
+<td colspan=2 align="center"></td>
 <td colspan=6></td>
 <td class="team_right">St. Joe</td>
 <td class="score">83</td>
@@ -368,7 +369,7 @@ function print_bracket()
 <td class="score">81</td>
 <td class="team_left">Illinois</td>
 <td colspan=2></td>
-<td colspan=2>CHAMP</td>
+<td colspan=2></td>
 <td colspan=2></td>
 <td class="team_right">Stanford</td>
 <td class="score">73</td>
@@ -386,7 +387,7 @@ function print_bracket()
 <td class="score">87</td>
 <td class="team_left">Arizona</td>
 <td colspan=2></td>
-<td colspan=2 bgcolor=#ffcc00 align=center color=#000000>Duke</td>
+<td colspan=2 class="team_left">Duke</td>
 <td colspan=2></td>
 <td class="team_right">Maryland</td>
 <td class="score">87</td>
@@ -503,7 +504,39 @@ function print_bracket()
 <tr><td colspan=22></td></tr>
 
 <tr><td class="region" colspan="8">Midwest</td><td colspan=6></td><td class="region"colspan="8">West</td></tr>
-
+<tr><td colspan=22></td></tr>
+<tr><td colspan=22 class="bracket_head">First Four</td></tr>
+<tr><td colspan=22></td></tr>
+<tr>
+<td colspan=2></td>
+<td class="score">100</td>
+<td class="team_left">Purdue(11)</td>
+<td colspan=2></td>
+<td class="score">100</td>
+<td class="team_left">NDSU(16)</td>
+<td colspan=6></td>
+<td class="team_right">UWGB(11)</td>
+<td class="score">100</td>
+<td colspan=2></td>
+<td class="team_right">Hampton(15)</td>
+<td class="score">58</td>
+<td colspan=2></td>
+</tr>
+<tr>
+<td colspan=2></td>
+<td class="score">100</td>
+<td class="team_left">Iona(11)</td>
+<td colspan=2></td>
+<td class="score">100</td>
+<td class="team_left">SDSU(16)</td>
+<td colspan=6></td>
+<td class="team_right">Mercyhurst(11)</td>
+<td class="score">100</td>
+<td colspan=2></td>
+<td class="team_right">Union(15)</td>
+<td class="score">58</td>
+<td colspan=2></td>
+</tr>
 
 </table>';
 }
