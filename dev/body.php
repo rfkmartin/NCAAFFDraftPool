@@ -45,7 +45,7 @@ function print_body($link)
    }
    elseif ($_SESSION ['page'] == "teamplayers")
    {
-      print_top_m_players_n_teams ( 64, 20, $link );
+      print_top_m_players_n_teams ( 64, 64, $link );
       echo '<br>';
    }
    elseif ($_SESSION ['page'] == "res2000")
