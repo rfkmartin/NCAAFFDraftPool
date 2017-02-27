@@ -22,13 +22,32 @@ function print_sub_menu()
 {
    echo '<form action = "" method = "post">';
    echo '<tr><td class="submenu">';
-   echo '<button ' . isBtnSelected ( 'register' ) . 'name="register">Register</button>';
+   if ($_SESSION['live'])
+   {
+      if (!isset($_SESSION['user']))
+      {
+         echo '<button ' . isBtnSelected ( 'login' ) . 'name="login">Login</button>';
+      }
+      else
+      {
+         echo '<button ' . isBtnSelected ( 'logout' ) . 'name="logout">Logout</button>';
+          
+      }
+   }
+   else
+   {
+      echo '<button ' . isBtnSelected ( 'register' ) . 'name="register">Register</button>';
+   }
    echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
    echo ' | <button ' . isBtnSelected ( 'teams' ) . 'name="teams">Top Teams</button>';
    echo ' | <button ' . isBtnSelected ( 'players' ) . 'name="players">Top Players</button>';
    echo ' | <button ' . isBtnSelected ( 'teamplayers' ) . 'name="teamplayers">Top Teams\' Players</button>';
    echo ' | <button ' . isBtnSelected ( 'res2000' ) . 'name="res2000">Results from 2000</button>';
    echo ' | <button ' . isBtnSelected ( 'res2001' ) . 'name="res2001">Results from 2001</button>';
+   if (isset($_SESSION['is_admin']))
+   {
+      echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
+   }
    echo '</td></tr>';
    echo '</form>';
    echo '<tr><td class="nonmenu">&nbsp;</td></tr>';
@@ -81,11 +100,11 @@ function print_logon()
 }
 function print_logon_form()
 {
+   echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
    echo '<form action = "" method = "post">';
    echo '<table><tr><td align="left">Username:</td><td><input type = "text" name = "username"></td></tr>';
    echo '<tr><td align="left">Password:</td><td><input type = "password" name = "password"></td></tr></table>';
-   // echo 'Welcome, <span class="person">Nobody</span><br>';
-   echo '<input type="submit" name="login" value="Log In"><form>';
+   echo '<input type="submit" name="loginform" value="Log In"><form>';
 }
 function register_account($link)
 {
@@ -111,13 +130,39 @@ function process_forms($link)
    $_SESSION['page']='';
    $_SESSION['error']='';
    $_SESSION['message']='';
+   $_SESSION['live']=true;
    set_page();
    // set isAdmin
    // set status
+	if (isset($_POST['loginform']))
+	{
+		$myusername = mysqli_real_escape_string($link,$_POST['username']);
+		$mypassword = mysqli_real_escape_string($link,$_POST['password']);
+		$sql = "select user_id,name,team_name,is_admin,password from user where name='".$myusername."'";
+		//logger($link,$sql);
+		$result = mysqli_query($link,$sql);
+		list($user,$name,$team_name,$is_admin,$hashed) = mysqli_fetch_row($result);
+
+		if(password_verify($mypassword,$hashed))
+		{
+			$_SESSION['user']=$user;
+			$_SESSION['username']=$name;
+			$_SESSION['teamname']=$team_name;
+			$_SESSION['is_admin']=$is_admin;
+			$_SESSION['page'] = 'rules';
+		}
+		else
+		{
+			$_SESSION['error'] = "Your Login Name or Password is invalid";
+			$_SESSION['page'] = 'login';
+		}
+	}
    if (isset ( $_POST ['logout'] ))
    {
       session_destroy ();
-      unset ( $_SESSION ['page'] );
+      //unset ( $_SESSION ['page'] );
+      unset ( $_SESSION ['admin'] );
+      unset ( $_SESSION ['user'] );
    }
    if (isset ( $_POST ['registernewuser'] ))
    {
@@ -256,6 +301,10 @@ function set_page()
    if (isset ( $_POST ['res2000'] ))
    {
       $_SESSION ['page'] = 'res2000';
+   }
+   if (isset ( $_POST ['login'] ))
+   {
+      $_SESSION ['page'] = 'login';
    }
 }
 ?>

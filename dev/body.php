@@ -14,14 +14,19 @@ function print_body($link)
    echo '<tr><td align="center" bgcolor="#B4A87E">';
    if (empty ( $_SESSION ['page'] ) || $_SESSION ['page'] == "")
    {
-      print_bracket();
+      print_bracket($link);
       echo '';
    }
    elseif ($_SESSION ['page'] == "register")
    {
       register_account ( $link );
       echo '<br>';
-      print_bracket();
+      print_bracket($link);
+   }
+   elseif ($_SESSION ['page'] == "login")
+   {
+      print_logon_form();
+      echo '<br>';
    }
    elseif ($_SESSION ['page'] == "rules")
    {

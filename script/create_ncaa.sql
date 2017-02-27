@@ -3,7 +3,7 @@ create database ncaa;
 use ncaa;
 
 -- date;python ESPNScrape.py;cat create_ncaa.sql > temp.sql ;cat create_bracket.sql >> temp.sql ;mysql -u root -pLuv2Drnk < temp.sql;./parseHTML.pl ;date
-
+-- select school,seed,p.name,ppg from bracket b join team t on b.team_id=t.team_id join player p on p.team_id=b.team_id where round<=2 order by seed,b.team_id,ppg desc;
 create table user (
    user_id int not null auto_increment,
    name varchar(64) not null,
