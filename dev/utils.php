@@ -22,7 +22,7 @@ function print_sub_menu()
 {
    echo '<form action = "" method = "post">';
    echo '<tr><td class="submenu">';
-   if ($_SESSION['live'])
+   if ($_SESSION['status']=='LIVE')
    {
       if (!isset($_SESSION['user']))
       {
@@ -31,19 +31,40 @@ function print_sub_menu()
       else
       {
          echo '<button ' . isBtnSelected ( 'logout' ) . 'name="logout">Logout</button>';
-          
       }
+      echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
+      echo ' | <button ' . isBtnSelected ( 'teams' ) . 'name="teams">Top Teams</button>';
+      echo ' | <button ' . isBtnSelected ( 'players' ) . 'name="players">Top Players</button>';
+      echo ' | <button ' . isBtnSelected ( 'teamplayers' ) . 'name="teamplayers">Top Teams\' Players</button>';
+      echo ' | <button ' . isBtnSelected ( 'res2000' ) . 'name="res2000">Results from 2000</button>';
+      echo ' | <button ' . isBtnSelected ( 'res2001' ) . 'name="res2001">Results from 2001</button>';
    }
-   else
+   elseif ($_SESSION['status']=='PREDRAFT')
    {
       echo '<button ' . isBtnSelected ( 'register' ) . 'name="register">Register</button>';
+      echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
+      echo ' | <button ' . isBtnSelected ( 'teams' ) . 'name="teams">Top Teams</button>';
+      echo ' | <button ' . isBtnSelected ( 'players' ) . 'name="players">Top Players</button>';
+      echo ' | <button ' . isBtnSelected ( 'teamplayers' ) . 'name="teamplayers">Top Teams\' Players</button>';
+      echo ' | <button ' . isBtnSelected ( 'res2000' ) . 'name="res2000">Results from 2000</button>';
+      echo ' | <button ' . isBtnSelected ( 'res2001' ) . 'name="res2001">Results from 2001</button>';
    }
-   echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
-   echo ' | <button ' . isBtnSelected ( 'teams' ) . 'name="teams">Top Teams</button>';
-   echo ' | <button ' . isBtnSelected ( 'players' ) . 'name="players">Top Players</button>';
-   echo ' | <button ' . isBtnSelected ( 'teamplayers' ) . 'name="teamplayers">Top Teams\' Players</button>';
-   echo ' | <button ' . isBtnSelected ( 'res2000' ) . 'name="res2000">Results from 2000</button>';
-   echo ' | <button ' . isBtnSelected ( 'res2001' ) . 'name="res2001">Results from 2001</button>';
+   elseif ($_SESSION['status']=='DRAFT')
+   {
+         if (!isset($_SESSION['user']))
+      {
+         echo '<button ' . isBtnSelected ( 'login' ) . 'name="login">Login</button>';
+      }
+      else
+      {
+         echo '<button ' . isBtnSelected ( 'logout' ) . 'name="logout">Logout</button>';
+      }
+      echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
+      echo ' | <button ' . isBtnSelected ( 'teams' ) . 'name="teams">Team Draft</button>';
+      echo ' | <button ' . isBtnSelected ( 'players' ) . 'name="players">Player Draft</button>';
+      echo ' | <button ' . isBtnSelected ( 'teamplayers' ) . 'name="teamplayers">Current Draft</button>';
+      echo ' | <button ' . isBtnSelected ( 'res2000' ) . 'name="res2000">Results</button>';
+   }
    if (isset($_SESSION['is_admin']))
    {
       echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
@@ -130,8 +151,12 @@ function process_forms($link)
    $_SESSION['page']='';
    $_SESSION['error']='';
    $_SESSION['message']='';
-   $_SESSION['live']=true;
-   set_page();
+   //$_SESSION['live']=true;
+	$sql = "select v from keyValue where k='status'";
+	$result = mysqli_query($link,$sql);
+	list($status) = mysqli_fetch_row($result);
+	$_SESSION['status'] = $status;
+	set_page();
    // set isAdmin
    // set status
 	if (isset($_POST['loginform']))
