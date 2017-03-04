@@ -15,9 +15,9 @@ function print_bracket($link)
       }
       else
       {
-         //$seed[$i++]='('.$s.')';
          $score[$i]="";
-         $seed[$i++] = "";
+         $seed[$i++]='('.$s.')';
+         //$seed[$i++] = "";
       }
    }
    $i=0;
@@ -95,241 +95,346 @@ function print_bracket($link)
     
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=6></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=6></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=10></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=10></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=6></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=6></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=6></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=6></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=6></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=4></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td colspan=2 class="team_left">'.$school[$i].$seed[$i++].'</td><td colspan=2></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td colspan=2 class="team_left">'.$school[$i].$seed[$i].'</td><td colspan=2></td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
    echo '<td colspan=4></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=5></td>';
    echo '<td colspan=4 rowspan=12></td>';
    echo '<td colspan=5></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=9></td><td colspan=9></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=10></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=9></td><td colspan=9></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=10></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
    echo '<td colspan=2></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=9></td><td colspan=9></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=9></td><td colspan=9></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
-   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
+   echo '<td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=14></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td>';
+   $i++;
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=9></td><td colspan=9></td></tr>';
 
-   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i++].'</td>';
+   echo '<tr><td class="score">'.$score[$i].'</td><td class="team_left">'.$school[$i].$seed[$i].'</td>';
+   $i++;
    echo '<td colspan=18></td>';
-   echo '<td class="team_right">'.$school[$i].$seed[$i++].'</td><td class="score">'.$score[$i].'</td></tr>';
-
+   echo '<td class="team_right">'.$school[$i].$seed[$i].'</td><td class="score">'.$score[$i].'</td></tr>';
+   $i++;
+    
    echo '<tr><td colspan=22></td></tr>
 
 <tr><td class="region" colspan="8">Midwest</td><td colspan=6></td><td class="region"colspan="8">West</td></tr>
@@ -344,11 +449,11 @@ function print_bracket($link)
 <td class="score">'.$score[$i].'</td>
 <td class="team_left">'.$school[$i].$seed[$i++].'</td>
 <td colspan=6></td>
-<td class="team_right">'.$school[$i].$seed[$i++].'</td>
-<td class="score">'.$score[$i].'</td>
+<td class="team_right">'.$school[$i].$seed[$i].'</td>
+<td class="score">'.$score[$i++].'</td>
 <td colspan=2></td>
-<td class="team_right">'.$school[$i].$seed[$i++].'</td>
-<td class="score">'.$score[$i].'</td>
+<td class="team_right">'.$school[$i].$seed[$i].'</td>
+<td class="score">'.$score[$i++].'</td>
 <td colspan=2></td>
 </tr>
 <tr>
@@ -359,11 +464,11 @@ function print_bracket($link)
 <td class="score">'.$score[$i].'</td>
 <td class="team_left">'.$school[$i].$seed[$i++].'</td>
 <td colspan=6></td>
-<td class="team_right">'.$school[$i].$seed[$i++].'</td>
-<td class="score">'.$score[$i].'</td>
+<td class="team_right">'.$school[$i].$seed[$i].'</td>
+<td class="score">'.$score[$i++].'</td>
 <td colspan=2></td>
-<td class="team_right">'.$school[$i].$seed[$i++].'</td>
-<td class="score">'.$score[$i].'</td>
+<td class="team_right">'.$school[$i].$seed[$i].'</td>
+<td class="score">'.$score[$i++].'</td>
 <td colspan=2></td>
 </tr>
 

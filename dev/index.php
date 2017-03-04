@@ -5,6 +5,8 @@ require_once ("login.php");
 include ("utils.php");
 include ("past.php");
 include ("bracket.php");
+include ("draft.php");
+include("admin.php");
 set_timezone ();
 process_forms ( $link );
 include ("body.php");

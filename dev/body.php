@@ -8,9 +8,6 @@ function print_body($link)
    echo '<td align="left" valign="top">';
    print_banner ();
    print print_sub_menu ();
-   // print_r($_SESSION);
-   // print_r($_POST);
-   echo '</td></tr>';
    echo '<tr><td align="center" bgcolor="#B4A87E">';
    if (empty ( $_SESSION ['page'] ) || $_SESSION ['page'] == "")
    {
@@ -58,7 +55,53 @@ function print_body($link)
       print2001 ();
       echo '<br>';
    }
-   
+   elseif ($_SESSION ['page'] == "teamdraft")
+   {
+      if ($_SESSION['currentroundteam']==$_SESSION['user'])
+      {
+         print_team_draft_form($link);
+      }
+      else
+      {
+         $_SESSION['message'] = 'Wait.'.$_SESSION['user'];
+         print_blank();
+      }
+      echo '<br>';
+   }
+   elseif ($_SESSION ['page'] == "playerdraft")
+   {
+         if ($_SESSION['currentroundplayer']==$_SESSION['user'])
+      {
+         print_blank();
+      }
+      else
+      {
+         $_SESSION['message'] = 'Wait.'.$_SESSION['user'];
+         print_blank();
+      }
+      echo '<br>';
+   }
+   elseif ($_SESSION ['page'] == "draft")
+   {
+      print_draft_order($link);
+      echo '<br>';
+   }
+   elseif ($_SESSION ['page'] == "setstatus")
+   {
+      set_status($_SESSION['status'],$link);
+      echo '<br>';
+   }
+   elseif ($_SESSION ['page'] == "rosters")
+   {
+      print_blank();
+      echo '<br>';
+   }
+   elseif ($_SESSION ['page'] == "admin")
+   {
+      print_blank();
+      echo '<br>';
+   }
+    
    // elseif ($_SESSION['page']=="next")
    // {
    // echo print_events($link,'next');

@@ -92,6 +92,7 @@ create table teamGame (
    team_id int not null,
    bracket_pos int not null,
    points int not null default 0,
+   primary key (team_id,bracket_pos),
    foreign key (team_id) references team(team_id),
    foreign key (bracket_pos) references bracket(bracket_pos)
 );
@@ -100,6 +101,7 @@ create table playerGame (
    player_id int not null,
    bracket_pos int not null,
    points int not null default 0,
+   primary key (player_id,bracket_pos),
    foreign key (player_id) references player(player_id),
    foreign key (bracket_pos) references bracket(bracket_pos)
 );
@@ -111,8 +113,25 @@ create table draft (
    primary key (draft_pos)
 );
 
+create table userTeam (
+   user_id int not null,
+   team_id int not null,
+   draft int,
+   primary key (user_id,team_id)
+);
+
+create table userPlayer (
+   user_id int not null,
+   player_id int not null,
+   draft int,
+   primary key (user_id,player_id)
+);
+
 INSERT INTO keyValue(k,v) VALUES ("playerUpdateDTM",CURTIME());
 INSERT INTO keyValue(k,v) VALUES ("status",'PREDRAFT');
+INSERT INTO keyValue(k,v) VALUES ("currentPlayerRound",'8');
+INSERT INTO keyValue(k,v) VALUES ("currentTeamRound",'10');
+
 
 INSERT INTO round (round_id,round) VALUES (1,'First Four');
 INSERT INTO round (round_id,round) VALUES (2,'Round of 64');

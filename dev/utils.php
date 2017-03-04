@@ -38,6 +38,21 @@ function print_sub_menu()
       echo ' | <button ' . isBtnSelected ( 'teamplayers' ) . 'name="teamplayers">Top Teams\' Players</button>';
       echo ' | <button ' . isBtnSelected ( 'res2000' ) . 'name="res2000">Results from 2000</button>';
       echo ' | <button ' . isBtnSelected ( 'res2001' ) . 'name="res2001">Results from 2001</button>';
+      if ($_SESSION['admin'])
+      {
+         echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
+      }
+      if ($_SESSION['page'] == 'admin')
+      {
+         echo '<tr><td class="submenu">';
+         echo '<button ' . isBtnSelected ( 'adminsetlive' ) . 'name="adminsetlive">Set LIVE</button>';
+         echo ' | <button ' . isBtnSelected ( 'adminsetdraft' ) . 'name="adminsetdraft">Set DRAFT</button>';
+         echo ' | <button ' . isBtnSelected ( 'adminsetpre' ) . 'name="adminsetpre">Set PREDRAFT</button>';
+      }
+      else
+      {
+         echo '<tr><td class="nonmenu">&nbsp;';
+      }
    }
    elseif ($_SESSION['status']=='PREDRAFT')
    {
@@ -48,10 +63,25 @@ function print_sub_menu()
       echo ' | <button ' . isBtnSelected ( 'teamplayers' ) . 'name="teamplayers">Top Teams\' Players</button>';
       echo ' | <button ' . isBtnSelected ( 'res2000' ) . 'name="res2000">Results from 2000</button>';
       echo ' | <button ' . isBtnSelected ( 'res2001' ) . 'name="res2001">Results from 2001</button>';
+      if ($_SESSION['admin'])
+      {
+         echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
+      }
+      if ($_SESSION['page'] == 'admin')
+      {
+         echo '<tr><td class="submenu">';
+         echo '<button ' . isBtnSelected ( 'adminsetlive' ) . 'name="adminsetlive">Set LIVE</button>';
+         echo ' | <button ' . isBtnSelected ( 'adminsetdraft' ) . 'name="adminsetdraft">Set DRAFT</button>';
+         echo ' | <button ' . isBtnSelected ( 'adminsetpre' ) . 'name="adminsetpre">Set PREDRAFT</button>';
+      }
+      else
+      {
+         echo '<tr><td class="nonmenu">&nbsp;';
+      }
    }
    elseif ($_SESSION['status']=='DRAFT')
    {
-         if (!isset($_SESSION['user']))
+      if (!isset($_SESSION['user']))
       {
          echo '<button ' . isBtnSelected ( 'login' ) . 'name="login">Login</button>';
       }
@@ -60,19 +90,46 @@ function print_sub_menu()
          echo '<button ' . isBtnSelected ( 'logout' ) . 'name="logout">Logout</button>';
       }
       echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
-      echo ' | <button ' . isBtnSelected ( 'teams' ) . 'name="teams">Team Draft</button>';
-      echo ' | <button ' . isBtnSelected ( 'players' ) . 'name="players">Player Draft</button>';
-      echo ' | <button ' . isBtnSelected ( 'teamplayers' ) . 'name="teamplayers">Current Draft</button>';
-      echo ' | <button ' . isBtnSelected ( 'res2000' ) . 'name="res2000">Results</button>';
+      echo ' | <button ' . isBtnSelected ( 'teamdraft' ) . 'name="teamdraft">Team Draft</button>';
+      echo ' | <button ' . isBtnSelected ( 'playerdraft' ) . 'name="playerdraft">Player Draft</button>';
+      echo ' | <button ' . isBtnSelected ( 'draft' ) . 'name="draft">Draft Order</button>';
+      echo ' | <button ' . isBtnSelected ( 'rosters' ) . 'name="rosters">Rosters</button>';
+      if ($_SESSION['admin'])
+      {
+         echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
+      }
+      echo '</td></tr>';
+      if ($_SESSION['page'] == 'playerdraft')
+      {
+         echo '<tr><td class="submenu">';
+         echo '<button ' . isBtnSelected ( 'playertopscore_sub' ) . 'name="playertopscore_sub">Top Overall Scorers</button>';
+         echo ' | <button ' . isBtnSelected ( 'playertopseed_sub' ) . 'name="playertopseed_sub">Top Scorers by Seed</button>';
+         echo ' | <button ' . isBtnSelected ( 'playernamesearch_sub' ) . 'name="playernamesearch_sub">Search by Name</button>';
+      }
+      elseif ($_SESSION['page'] == 'admin')
+      {
+         echo '<tr><td class="submenu">';
+         echo '<button ' . isBtnSelected ( 'adminsetlive' ) . 'name="adminsetlive">Set LIVE</button>';
+         echo ' | <button ' . isBtnSelected ( 'adminsetdraft' ) . 'name="adminsetdraft">Set DRAFT</button>';
+         echo ' | <button ' . isBtnSelected ( 'adminsetpre' ) . 'name="adminsetpre">Set PREDRAFT</button>';
+      }
+      else
+      {
+         echo '<tr><td class="nonmenu">&nbsp;';
+      }
+      echo '</td></tr>';
+      if ($_SESSION['page'] == 'playerdraft' && $_SESSION['subpage']=='playernamesearch_sub')
+      {
+         echo '<tr><td class="submenu">';
+         echo 'text box here';
+      }
+      else
+      {
+         echo '<tr><td class="nonmenu">&nbsp;';
+      }
+      echo '</td></tr>';
+      echo '</form>';
    }
-   if (isset($_SESSION['is_admin']))
-   {
-      echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
-   }
-   echo '</td></tr>';
-   echo '</form>';
-   echo '<tr><td class="nonmenu">&nbsp;</td></tr>';
-   echo '<tr><td class="nonmenu">&nbsp;';
 }
 function isBtnSelected($page)
 {
@@ -80,27 +137,7 @@ function isBtnSelected($page)
    {
       return 'class="selected" ';
    }
-   elseif ($page == $_SESSION ['page'])
-   {
-      return 'class="selected" ';
-   }
-   elseif ($page == $_SESSION ['page'])
-   {
-      return 'class="selected" ';
-   }
-   elseif ($page == $_SESSION ['page'])
-   {
-      return 'class="selected" ';
-   }
-   elseif ($page == $_SESSION ['page'])
-   {
-      return 'class="selected" ';
-   }
-   elseif ($page == $_SESSION ['page'])
-   {
-      return 'class="selected" ';
-   }
-   elseif ($page == $_SESSION ['page'])
+   elseif ($page == $_SESSION ['subpage'])
    {
       return 'class="selected" ';
    }
@@ -149,16 +186,34 @@ function register_account($link)
 function process_forms($link)
 {
    $_SESSION['page']='';
+   $_SESSION['subpage']='';
    $_SESSION['error']='';
    $_SESSION['message']='';
-   //$_SESSION['live']=true;
+   
+   //get key-value pairs
 	$sql = "select v from keyValue where k='status'";
 	$result = mysqli_query($link,$sql);
 	list($status) = mysqli_fetch_row($result);
 	$_SESSION['status'] = $status;
+	$sql = "select v from keyValue where k='currentPlayerRound'";
+	$result = mysqli_query($link,$sql);
+	list($status) = mysqli_fetch_row($result);
+	$_SESSION['currentPlayerRound'] = $status;
+	$sql = "select v from keyValue where k='currentTeamRound'";
+	$result = mysqli_query($link,$sql);
+	list($status) = mysqli_fetch_row($result);
+	$_SESSION['currentTeamRound'] = $status;
+	$sql = "select team_order from draft where draft_pos=".$_SESSION['currentTeamRound'];
+	$result = mysqli_query($link,$sql);
+	list($status) = mysqli_fetch_row($result);
+	$_SESSION['currentroundteam'] = $status;
+	$sql = "select player_order from draft where draft_pos=".$_SESSION['currentPlayerRound'];
+	$result = mysqli_query($link,$sql);
+	list($status) = mysqli_fetch_row($result);
+	$_SESSION['currentroundplayer'] = $status;
+
 	set_page();
-   // set isAdmin
-   // set status
+
 	if (isset($_POST['loginform']))
 	{
 		$myusername = mysqli_real_escape_string($link,$_POST['username']);
@@ -173,7 +228,7 @@ function process_forms($link)
 			$_SESSION['user']=$user;
 			$_SESSION['username']=$name;
 			$_SESSION['teamname']=$team_name;
-			$_SESSION['is_admin']=$is_admin;
+			$_SESSION['admin']=$is_admin;
 			$_SESSION['page'] = 'rules';
 		}
 		else
@@ -184,9 +239,7 @@ function process_forms($link)
 	}
    if (isset ( $_POST ['logout'] ))
    {
-      session_destroy ();
-      //unset ( $_SESSION ['page'] );
-      unset ( $_SESSION ['admin'] );
+      $_SESSION ['admin'] = 0;
       unset ( $_SESSION ['user'] );
    }
    if (isset ( $_POST ['registernewuser'] ))
@@ -215,29 +268,14 @@ function process_forms($link)
       }
       $_SESSION ['message'] = 'User '.$_POST['username'].' successfully created';      
    }
-   if (isset ( $_POST ['updateusername'] ))
+   if (isset ( $_POST ['draft_team'] ))
    {
       $_SESSION ['error'] = '';
-      $_SESSION ['message'] = '';
-      // check for duplicate username
-      $sql = 'select * from user u where u.username="' . $_POST ['username'] . '"';
-      logger ( $link, $sql );
-      $data = mysqli_query ( $link, $sql );
-      if (mysqli_num_rows ( $data ) > 0)
-      {
-         $_SESSION ['error'] = 'Username already taken';
-         return;
-      }
-      // change username
-      $sql = 'update user set username="' . $_POST ['username'] . '" where user_id=' . $_SESSION ['user'];
-      logger ( $link, $sql );
-      $data = mysqli_query ( $link, $sql );
-      if (! mysqli_query ( $link, $sql ))
-      {
-         logger ( $link, "Error updating record: " . mysqli_error ( $link ) );
-      }
-      $_SESSION ['message'] = 'Username successfully changed';
-      $_SESSION ['username'] = $_POST ['username'];
+      $_SESSION ['message'] = 'You selected ' . $_POST['team_id'];
+      $_SESSION['page'] = 'rules';
+      // insert into userTeam
+      // increment draft counter
+      // email pool
    }
    if (isset ( $_POST ['updatepassword'] ))
    {
@@ -299,6 +337,10 @@ function process_forms($link)
 }
 function set_page()
 {
+   if (isset ( $_POST ['admin'] ))
+   {
+      $_SESSION ['page'] = 'admin';
+   }
    if (isset ( $_POST ['register'] ))
    {
       $_SESSION ['page'] = 'register';
@@ -331,5 +373,73 @@ function set_page()
    {
       $_SESSION ['page'] = 'login';
    }
+   if (isset ( $_POST ['rosters'] ))
+   {
+      $_SESSION ['page'] = 'rosters';
+   }
+   if (isset ( $_POST ['teamdraft'] ) )
+   {
+      if (isset($_SESSION['user']))
+      {
+         $_SESSION ['page'] = 'teamdraft';
+      }
+      else
+      {
+         $_SESSION['message'] = "Please login";
+         $_SESSION ['page'] = 'rules';
+      }
+   }
+   if (isset ( $_POST ['playerdraft'] ))
+   {
+      if (isset($_SESSION['user']))
+      {
+         $_SESSION ['page'] = 'playerdraft';
+      }
+      else
+      {
+         $_SESSION['message'] = "Please login";
+         $_SESSION ['page'] = 'rules';
+      }
+   }
+   if (isset($_POST['playertopscore_sub']))
+   {
+      $_SESSION ['page'] = 'playerdraft';
+      $_SESSION['subpage'] = 'playertopscore_sub';
+   }
+   if (isset($_POST['playertopseed_sub']))
+   {
+      $_SESSION ['page'] = 'playerdraft';
+      $_SESSION['subpage'] = 'playertopseed_sub';
+   }
+   if (isset($_POST['playernamesearch_sub']))
+   {
+      $_SESSION ['page'] = 'playerdraft';
+      $_SESSION['subpage'] = 'playernamesearch_sub';
+   }
+   if (isset ( $_POST ['draft'] ))
+   {
+      $_SESSION ['page'] = 'draft';
+   }
+   if (isset ( $_POST ['adminsetlive'] ))
+   {
+      $_SESSION['status'] = 'LIVE';
+      $_SESSION ['page'] = 'setstatus';
+   }
+   if (isset ( $_POST ['adminsetdraft'] ))
+   {
+      $_SESSION['status'] = 'DRAFT';
+      $_SESSION ['page'] = 'setstatus';
+   }
+   if (isset ( $_POST ['adminsetpre'] ))
+   {
+      $_SESSION['status'] = 'PREDRAFT';
+      $_SESSION ['page'] = 'setstatus';
+   }
+}
+function print_blank()
+{
+   echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
+   echo '<br><br><br><br><br><br><br><br><br><br><br><br><br>'; 
+   echo '<br><br><br><br><br><br><br><br><br><br><br><br><br>'; 
 }
 ?>

@@ -15,6 +15,8 @@ td.region{background-color:#000000;text-align:center;font-weight:bold;color:#fff
 td.score{text-align:center;background-color:#cc0000;font-size:xx-small;color:#ffffff;width:10px}
 td.team_left{text-align:left;background-color:#cccc99;font-size:xx-small;width:90px}
 td.team_right{text-align:right;background-color:#cccc99;font-size:xx-small;width:90px}
+td.pastround{text-decoration:line-through}
+td.currentround{font-weight:bold}
 
 /* html,body{margin:0;padding:0;height:100%;border:none;} */
 .input{color:#5f91c4;height:12px;width:80px;font-size:11px;}
