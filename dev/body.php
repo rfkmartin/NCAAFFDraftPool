@@ -70,9 +70,24 @@ function print_body($link)
    }
    elseif ($_SESSION ['page'] == "playerdraft")
    {
-         if ($_SESSION['currentroundplayer']==$_SESSION['user'])
+      if ($_SESSION['currentroundplayer']==$_SESSION['user'])
       {
-         print_blank();
+         if ($_SESSION['subpage']=='playertopscore_sub')
+         {
+            print_player_draft_form($link);
+         }
+         elseif ($_SESSION['subsubpage']=='t12'||$_SESSION['subsubpage']=='t34'||$_SESSION['subsubpage']=='t56'||$_SESSION['subsubpage']=='t78')
+         {
+            print_player_draftseed_form($_SESSION['subsubpage'],$link);
+         }
+         elseif ($_SESSION['subsubpage']=='player_name_search')
+         {
+            print_player_draftname_form($_POST['player_search'], $link);
+         }
+         else
+         {
+            print_blank();
+         }
       }
       else
       {
@@ -97,6 +112,11 @@ function print_body($link)
       echo '<br>';
    }
    elseif ($_SESSION ['page'] == "admin")
+   {
+      print_blank();
+      echo '<br>';
+   }
+   elseif ($_SESSION ['page'] == "blank")
    {
       print_blank();
       echo '<br>';

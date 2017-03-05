@@ -85,7 +85,7 @@ function print_draft_order($link)
 }
 function print_team_draft_form($link)
 {
-   $sql = "select school,seed,t.team_id from bracket b join team t on b.team_id=t.team_id where round<=2 order by seed,t.region desc";
+   $sql = "select school,seed,t.team_id from bracket b join team t on b.team_id=t.team_id where round<=2 and t.team_id not in (select team_id from userTeam) order by seed,t.region desc";
    $data = mysqli_query ( $link, $sql );
    echo '<form action = "" method = "post">';
    echo '<table border="1"><tr><td>Select</td><td>Seed</td><td>School</td></tr>';
@@ -97,5 +97,48 @@ function print_team_draft_form($link)
    echo '<td align="center" colspan=3><input type="submit" name="draft_team" value="Select"></td></tr>';
    echo '</table>';
     
+}
+function print_player_draft_form($link)
+{
+   $sql = "select p.player_id,school,seed,p.name,ppg from bracket b join team t on b.team_id=t.team_id join player p on p.team_id=b.team_id where round<=2 and p.player_id not in (select player_id from userPlayer) order by ppg desc limit 45";
+   $data = mysqli_query ( $link, $sql );
+   echo '<form action = "" method = "post">';
+   echo '<table border="1"><tr><td>Select</td><td>Player</td><td>Pts/Gm</td><td>School</td></tr>';
+   $i = 1;
+   while ( list ( $player_id,$school,$seed,$name,$ppg ) = mysqli_fetch_row ( $data ) )
+   {
+      echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td></tr>';
+   }
+   echo '<td align="center" colspan=4><input type="submit" name="draft_player" value="Select"></td></tr>';
+   echo '</table>';
+}
+function print_player_draftseed_form($sub,$link)
+{
+   $idx=substr($sub,1,1);
+   $sql = "select p.player_id,school,seed,p.name,ppg from bracket b join team t on b.team_id=t.team_id join player p on p.team_id=b.team_id where round<=2 and seed between ".$idx++." and ".$idx." and p.player_id not in (select player_id from userPlayer) order by seed,t.team_id,ppg desc";
+   $data = mysqli_query ( $link, $sql );
+   echo '<form action = "" method = "post">';
+   echo '<table border="1"><tr><td>Select</td><td>Player</td><td>Pts/Gm</td><td>School</td><td>Seed</td></tr>';
+   $i = 1;
+   while ( list ( $player_id,$school,$seed,$name,$ppg ) = mysqli_fetch_row ( $data ) )
+   {
+      echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td><td>' . $seed . '</td></tr>';
+   }
+   echo '<td align="center" colspan=5><input type="submit" name="draft_player" value="Select"></td></tr>';
+   echo '</table>';
+}
+function print_player_draftname_form($string,$link)
+{
+   $sql = "select p.player_id,school,seed,p.name,ppg from bracket b join team t on b.team_id=t.team_id join player p on p.team_id=b.team_id where round<=2 and p.name like '%".$string."%' and p.player_id not in (select player_id from userPlayer) order by seed,t.team_id,ppg desc";
+   $data = mysqli_query ( $link, $sql );
+   echo '<form action = "" method = "post">';
+   echo '<table border="1"><tr><td>Select</td><td>Player</td><td>Pts/Gm</td><td>School</td><td>Seed</td></tr>';
+   $i = 1;
+   while ( list ( $player_id,$school,$seed,$name,$ppg ) = mysqli_fetch_row ( $data ) )
+   {
+      echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td><td>' . $seed . '</td></tr>';
+   }
+   echo '<td align="center" colspan=5><input type="submit" name="draft_player" value="Select"></td></tr>';
+   echo '</table>';
 }
 ?>
