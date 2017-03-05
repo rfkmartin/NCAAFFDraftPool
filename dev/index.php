@@ -6,6 +6,7 @@ include ("utils.php");
 include ("past.php");
 include ("bracket.php");
 include ("draft.php");
+include("roster.php");
 include("admin.php");
 set_timezone ();
 process_forms ( $link );

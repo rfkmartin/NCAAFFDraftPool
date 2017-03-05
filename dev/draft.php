@@ -104,7 +104,6 @@ function print_player_draft_form($link)
    $data = mysqli_query ( $link, $sql );
    echo '<form action = "" method = "post">';
    echo '<table border="1"><tr><td>Select</td><td>Player</td><td>Pts/Gm</td><td>School</td></tr>';
-   $i = 1;
    while ( list ( $player_id,$school,$seed,$name,$ppg ) = mysqli_fetch_row ( $data ) )
    {
       echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td></tr>';
@@ -119,7 +118,6 @@ function print_player_draftseed_form($sub,$link)
    $data = mysqli_query ( $link, $sql );
    echo '<form action = "" method = "post">';
    echo '<table border="1"><tr><td>Select</td><td>Player</td><td>Pts/Gm</td><td>School</td><td>Seed</td></tr>';
-   $i = 1;
    while ( list ( $player_id,$school,$seed,$name,$ppg ) = mysqli_fetch_row ( $data ) )
    {
       echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td><td>' . $seed . '</td></tr>';
@@ -133,7 +131,6 @@ function print_player_draftname_form($string,$link)
    $data = mysqli_query ( $link, $sql );
    echo '<form action = "" method = "post">';
    echo '<table border="1"><tr><td>Select</td><td>Player</td><td>Pts/Gm</td><td>School</td><td>Seed</td></tr>';
-   $i = 1;
    while ( list ( $player_id,$school,$seed,$name,$ppg ) = mysqli_fetch_row ( $data ) )
    {
       echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td><td>' . $seed . '</td></tr>';

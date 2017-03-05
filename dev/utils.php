@@ -380,12 +380,14 @@ function process_forms($link)
       $sql = 'update keyValue set v="' . $_POST ['tround']. '" where k="currentTeamRound"';
       $data = mysqli_query ( $link, $sql );
       $_SESSION['page'] = 'draft';
+      $_SESSION['currentTeamRound'] = $_POST ['tround'];      
    }
    if (isset ( $_POST ['set_player_round'] ))
    {
       $sql = 'update keyValue set v="' . $_POST ['pround']. '" where k="currentPlayerRound"';
       $data = mysqli_query ( $link, $sql );
       $_SESSION['page'] = 'draft';
+      $_SESSION['currentPlayerRound'] = $_POST ['pround'];
    }
 }
 function set_page()

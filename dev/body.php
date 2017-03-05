@@ -108,7 +108,7 @@ function print_body($link)
    }
    elseif ($_SESSION ['page'] == "rosters")
    {
-      print_blank();
+      print_roster($link);
       echo '<br>';
    }
    elseif ($_SESSION ['page'] == "admin")
