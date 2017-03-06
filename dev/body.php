@@ -63,7 +63,14 @@ function print_body($link)
       }
       else
       {
-         $_SESSION['message'] = 'Wait.'.$_SESSION['user'];
+         if ($_SESSION['currentteamplayer']==99)
+         {
+            $_SESSION['message'] = 'The team draft is over.';
+         }
+         else
+         {
+            $_SESSION['message'] = 'Wait.';
+         }
          print_blank();
       }
       echo '<br>';
@@ -91,7 +98,14 @@ function print_body($link)
       }
       else
       {
-         $_SESSION['message'] = 'Wait.'.$_SESSION['user'];
+         if ($_SESSION['currentroundplayer']==99)
+         {
+            $_SESSION['message'] = 'The player draft is over.';
+         }
+         else
+         {
+            $_SESSION['message'] = 'Wait.';
+         }
          print_blank();
       }
       echo '<br>';
@@ -114,6 +128,7 @@ function print_body($link)
    elseif ($_SESSION ['page'] == "admin")
    {
       print_blank();
+      //test_mail();
       echo '<br>';
    }
    elseif ($_SESSION ['page'] == "blank")
@@ -121,60 +136,6 @@ function print_body($link)
       print_blank();
       echo '<br>';
    }
-    
-   // elseif ($_SESSION['page']=="next")
-   // {
-   // echo print_events($link,'next');
-   // echo '<br>';
-   // }
-   // elseif ($_SESSION['page']=="RSVP")
-   // {
-   // echo print_events($link,'next');
-   // echo '<table><tr align="center"><td valign="top">';
-   // echo add_attendance($link);
-   // echo '</td><td width="30%"></td><td valign="top">';
-   // echo bringing($link);
-   // echo '</td></tr></table>';
-   // }
-   // elseif ($_SESSION['page']=="managefam")
-   // {
-   // echo '<table><tr align="center"><td>';
-   // echo family_addnew($link);
-   // echo '</td></tr><tr><td>';
-   // echo member_addnew($link);
-   // echo '</td></tr></table>';
-   // }
-   // elseif ($_SESSION['page']=="manageev")
-   // {
-   // $sql = "select * from (select e.event_id,f.family_id,f.name,d.month,d.day,d.year,str_to_date(concat(concat(month,'/',greatest(day,1)),'/',year),'%m/%d/%Y') dt from date d join event e on d.date_id=e.date_id join family f on f.family_id=e.family_id where e.cancel=0) as a where a.dt>curdate() and a.family_id=".$_SESSION['family_id'].' limit 1';
-   // logger($link,$sql);
-   // $data = mysqli_query($link,$sql);
-   // if (mysqli_num_rows($data)<1)
-   // {
-   // echo '<h3>You have no upcoming events</h3>';
-   // }
-   // else
-   // {
-   // echo print_events($link,'nextfam');
-   // echo '<table><tr align="center"><td>';
-   // echo set_event($link);
-   // echo '</td></tr><tr><td align="center">';
-   // echo add_food_to_event($link);
-   // echo '</td></tr></table>';
-   // }
-   // }
-   // elseif ($_SESSION['page']=="upcoming")
-   // {
-   // echo print_events($link,'upcoming');
-   // }
-   // elseif ($_SESSION['page']=="selectev")
-   // {
-   // echo select_event($link);
-   // }
-   // elseif ($_SESSION['page']=="account")
-   // {
-   // echo update_account($link);
-   // }
    echo '</td></tr></table>';
    echo '</body>';
 }

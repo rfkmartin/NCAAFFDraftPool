@@ -41,6 +41,11 @@ function generate_draft($link)
          $drft[8+$i+$j][0]=$draft[7-$j];
       }
    }
+   $sql = 'insert into draft (draft_pos,player_order,team_order) values ('.$idx.',99,99)';
+   if (! mysqli_query ( $link, $sql ))
+   {
+      echo 'something happened';
+   }
 }
 function print_draft_order($link)
 {

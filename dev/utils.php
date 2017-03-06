@@ -314,11 +314,12 @@ function process_forms($link)
          $_SESSION ['error'] = 'something happened';
       }
       // email pool
+      $subj = 'Draft Pool - Team Update';
+      $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_school($_POST ['team_id'], $link);
+      send_group_mail($subj, $msg, $link);
    }
    if (isset ( $_POST ['draft_player'] ))
    {
-      $_SESSION ['error'] = '';
-      $_SESSION ['message'] = 'You selected ' . $_POST['player_id'];
       $_SESSION['page'] = 'rosters';
       // insert into userTeam
       $sql = "insert into userPlayer (user_id,player_id,draft) value (".$_SESSION ['user'].",".$_POST ['player_id'].",".$_SESSION ['currentPlayerRound'].")";
@@ -334,6 +335,9 @@ function process_forms($link)
          $_SESSION ['error'] = 'something happened';
       }
       // email pool
+      $subj = 'Draft Pool - Player Update';
+      $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_player_name($_POST ['player_id'], $link).' of '.get_player_school($_POST ['player_id'], $link);
+      send_group_mail($subj, $msg, $link);
    }
    if (isset ( $_POST ['updatepassword'] ))
    {
@@ -536,5 +540,26 @@ function print_blank()
    echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
    echo '<br><br><br><br><br><br><br><br><br><br><br><br><br>'; 
    echo '<br><br><br><br><br><br><br><br><br><br><br><br><br>'; 
+}
+function get_player_name($id,$link)
+{
+   $sql = "select name from player where player_id=".$id;
+   $data = mysqli_query ( $link, $sql );
+   list ($name ) = mysqli_fetch_row ( $data );
+   return $name;
+}
+function get_player_school($id,$link)
+{
+   $sql = "select school from player p join team t on p.team_id=t.team_id where player_id=".$id;
+   $data = mysqli_query ( $link, $sql );
+   list ($school ) = mysqli_fetch_row ( $data );
+   return $school;
+}
+function get_school($id,$link)
+{
+   $sql = "select school from team where team_id=".$id;
+   $data = mysqli_query ( $link, $sql );
+   list ($school ) = mysqli_fetch_row ( $data );
+   return $school;
 }
 ?>
