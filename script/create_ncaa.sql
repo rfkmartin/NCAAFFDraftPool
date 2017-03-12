@@ -129,8 +129,8 @@ create table userPlayer (
 
 INSERT INTO keyValue(k,v) VALUES ("playerUpdateDTM",CURTIME());
 INSERT INTO keyValue(k,v) VALUES ("status",'PREDRAFT');
-INSERT INTO keyValue(k,v) VALUES ("currentPlayerRound",'8');
-INSERT INTO keyValue(k,v) VALUES ("currentTeamRound",'10');
+INSERT INTO keyValue(k,v) VALUES ("currentPlayerRound",'0');
+INSERT INTO keyValue(k,v) VALUES ("currentTeamRound",'0');
 
 
 INSERT INTO round (round_id,round) VALUES (1,'First Four');

@@ -1,11 +1,11 @@
 <?php
 function print_bracket($link)
 {
-   $sql = "select shortname,seed from bracket b left join team t on t.team_id=b.team_id order by bracket_pos";
+   $sql = "select shortname,seed,points from bracket b left join teamgame tg on b.bracket_pos=tg.bracket_pos left join team t on t.team_id=b.team_id order by b.bracket_pos";
    //logger($link,$sql);
    $result = mysqli_query($link,$sql);
    $i=0;
-   while (list($name,$s)=mysqli_fetch_row($result))
+   while (list($name,$s,$p)=mysqli_fetch_row($result))
    {
       $school[$i]=$name;
       if ($s=="")
@@ -15,7 +15,7 @@ function print_bracket($link)
       }
       else
       {
-         $score[$i]="";
+         $score[$i]=$p;
          $seed[$i++]='('.$s.')';
          //$seed[$i++] = "";
       }

@@ -9,12 +9,12 @@ function print_roster($link)
       echo '<tr><td>' . $name . '</td><td>' . $round . '</td><td>' . $school . '</td></tr>';
    }
    echo '</table><br><br>';
-   $sql = "select u.name,ceil((t.draft+1)/8) as round,p.name from user u left join userPlayer t on u.user_id=t.user_id left join player p on p.player_id=t.player_id order by u.user_id,t.draft";
+   $sql = "select u.name,ceil((t.draft+1)/8) as round,p.name,p.player_id from user u left join userPlayer t on u.user_id=t.user_id left join player p on p.player_id=t.player_id order by u.user_id,t.draft";
    $data = mysqli_query ( $link, $sql );
    echo '<table border="1"><tr><td>Name</td><td>Round</td><td>Player</td></tr>';
-   while ( list ( $name,$round,$player) = mysqli_fetch_row ( $data ) )
+   while ( list ( $name,$round,$player,$player_id) = mysqli_fetch_row ( $data ) )
    {
-      echo '<tr><td>' . $name . '</td><td>' . $round . '</td><td>' . $player . '</td></tr>';
+      echo '<tr><td>' . $name . '</td><td>' . $round . '</td><td>' . $player . '('.get_player_school($player_id, $link).')</td></tr>';
    }
    echo '</table>';    
 }

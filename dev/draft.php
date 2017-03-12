@@ -143,4 +143,18 @@ function print_player_draftname_form($string,$link)
    echo '<td align="center" colspan=5><input type="submit" name="draft_player" value="Select"></td></tr>';
    echo '</table>';
 }
+function get_next_player_draft($round,$link)
+{
+   $sql = "select team_name from draft d join user u on d.player_order=u.user_id where d.draft_pos=".$round;
+   $data = mysqli_query ( $link, $sql );
+   list ($team) = mysqli_fetch_row ( $data ) ;
+   return $team;
+}
+function get_next_team_draft($round,$link)
+{
+   $sql = "select team_name from draft d join user u on d.team_order=u.user_id where d.draft_pos=".$round;
+   $data = mysqli_query ( $link, $sql );
+   list ($team) = mysqli_fetch_row ( $data );
+   return $team;
+}
 ?>

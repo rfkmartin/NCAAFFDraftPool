@@ -63,7 +63,7 @@ function print_body($link)
       }
       else
       {
-         if ($_SESSION['currentteamplayer']==99)
+         if ($_SESSION['currentroundplayer']==99)
          {
             $_SESSION['message'] = 'The team draft is over.';
          }
@@ -142,7 +142,7 @@ function print_body($link)
 function print_banner()
 {
    echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
-   echo '<tr><td width="25%" align="center"><img src="../images/Logo2017.png" alt="2017 NCAA Final Four Draft Pool"></td>';
+   echo '<tr><td width="25%" align="center"><img src="images/Logo2017.png" alt="2017 NCAA Final Four Draft Pool"></td>';
    echo '</table>';
 }
 function print_rules()

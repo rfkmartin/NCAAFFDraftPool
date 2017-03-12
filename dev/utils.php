@@ -315,7 +315,7 @@ function process_forms($link)
       }
       // email pool
       $subj = 'Draft Pool - Team Update';
-      $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_school($_POST ['team_id'], $link);
+      $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_school($_POST ['team_id'], $link).'. '.get_next_team_draft($newround,$link).' is on the clock.';
       send_group_mail($subj, $msg, $link);
    }
    if (isset ( $_POST ['draft_player'] ))
@@ -336,7 +336,7 @@ function process_forms($link)
       }
       // email pool
       $subj = 'Draft Pool - Player Update';
-      $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_player_name($_POST ['player_id'], $link).' of '.get_player_school($_POST ['player_id'], $link);
+      $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_player_name($_POST ['player_id'], $link).' of '.get_player_school($_POST ['player_id'], $link).'. '.get_next_player_draft($newround,$link).' is on the clock.';
       send_group_mail($subj, $msg, $link);
    }
    if (isset ( $_POST ['updatepassword'] ))
