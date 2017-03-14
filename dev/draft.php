@@ -93,7 +93,7 @@ function print_team_draft_form($link)
    $sql = "select school,seed,t.team_id from bracket b join team t on b.team_id=t.team_id where round<=2 and t.team_id not in (select team_id from userTeam) order by seed,t.region desc";
    $data = mysqli_query ( $link, $sql );
    echo '<form action = "" method = "post">';
-   echo '<table border="1"><tr><td>Select</td><td>Seed</td><td>School</td></tr>';
+   echo '<table border="1"><tr><td>Select</td><td>School</td><td>Seed</td></tr>';
    $i = 1;
    while ( list ( $school,$seed,$team_id ) = mysqli_fetch_row ( $data ) )
    {

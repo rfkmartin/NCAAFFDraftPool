@@ -297,47 +297,71 @@ function process_forms($link)
    }
    if (isset ( $_POST ['draft_team'] ))
    {
-      $_SESSION ['error'] = '';
-      $_SESSION ['message'] = 'You selected ' . $_POST['team_id'];
-      $_SESSION['page'] = 'rosters';
-      // insert into userTeam
-      $sql = "insert into userTeam (user_id,team_id,draft) value (".$_SESSION ['user'].",".$_POST ['team_id'].",".$_SESSION ['currentTeamRound'].")";
-      if (! mysqli_query ( $link, $sql ))
+      $sql = "select v from keyValue where k='currentTeamRound'";
+      $result = mysqli_query($link,$sql);
+      list($status) = mysqli_fetch_row($result);
+      if ($_SESSION['currentTeamRound'] == $status)
       {
-         $_SESSION ['error'] = 'something happened';
+         $_SESSION ['error'] = '';
+         $_SESSION ['message'] = 'You selected ' . $_POST['team_id'];
+         $_SESSION['page'] = 'rosters';
+         // insert into userTeam
+         $sql = "insert into userTeam (user_id,team_id,draft) value (".$_SESSION ['user'].",".$_POST ['team_id'].",".$_SESSION ['currentTeamRound'].")";
+         if (! mysqli_query ( $link, $sql ))
+         {
+            $_SESSION ['error'] = 'something happened';
+         }
+         // increment draft counter
+         $newround=$_SESSION['currentTeamRound']+1;
+         $sql = "update keyValue set v='".$newround."' where k='currentTeamRound'";
+         if (! mysqli_query ( $link, $sql ))
+         {
+            $_SESSION ['error'] = 'something happened';
+         }
+         // email pool
+         $subj = 'Draft Pool - Team Update';
+         $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_school($_POST ['team_id'], $link).'. '.get_next_team_draft($newround,$link).' is on the clock.';
+         send_group_mail($subj, $msg, $link);
       }
-      // increment draft counter
-      $newround=$_SESSION['currentTeamRound']+1;
-      $sql = "update keyValue set v='".$newround."' where k='currentTeamRound'";
-      if (! mysqli_query ( $link, $sql ))
+      else
       {
-         $_SESSION ['error'] = 'something happened';
+         $_SESSION ['error'] = 'Wait.';
+         $_SESSION ['message'] = '';
+         $_SESSION['page'] = 'rosters';
       }
-      // email pool
-      $subj = 'Draft Pool - Team Update';
-      $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_school($_POST ['team_id'], $link).'. '.get_next_team_draft($newround,$link).' is on the clock.';
-      send_group_mail($subj, $msg, $link);
    }
    if (isset ( $_POST ['draft_player'] ))
    {
-      $_SESSION['page'] = 'rosters';
-      // insert into userTeam
-      $sql = "insert into userPlayer (user_id,player_id,draft) value (".$_SESSION ['user'].",".$_POST ['player_id'].",".$_SESSION ['currentPlayerRound'].")";
-      if (! mysqli_query ( $link, $sql ))
+      $sql = "select v from keyValue where k='currentPlayerRound'";
+      $result = mysqli_query($link,$sql);
+      list($status) = mysqli_fetch_row($result);
+      if ($_SESSION['currentPlayerRound'] == $status)
       {
-         $_SESSION ['error'] = 'something happened';
+         $_SESSION['page'] = 'rosters';
+         // insert into userTeam
+         $sql = "insert into userPlayer (user_id,player_id,draft) value (".$_SESSION ['user'].",".$_POST ['player_id'].",".$_SESSION ['currentPlayerRound'].")";
+         if (! mysqli_query ( $link, $sql ))
+         {
+            $_SESSION ['error'] = 'something happened';
+         }
+         // increment draft counter
+         $newround=$_SESSION['currentPlayerRound']+1;
+         $sql = "update keyValue set v='".$newround."' where k='currentPlayerRound'";
+         if (! mysqli_query ( $link, $sql ))
+         {
+            $_SESSION ['error'] = 'something happened';
+         }
+         // email pool
+         $subj = 'Draft Pool - Player Update';
+         $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_player_name($_POST ['player_id'], $link).' of '.get_player_school($_POST ['player_id'], $link).'. '.get_next_player_draft($newround,$link).' is on the clock.';
+         send_group_mail($subj, $msg, $link);
       }
-      // increment draft counter
-      $newround=$_SESSION['currentPlayerRound']+1;
-      $sql = "update keyValue set v='".$newround."' where k='currentPlayerRound'";
-      if (! mysqli_query ( $link, $sql ))
+      else
       {
-         $_SESSION ['error'] = 'something happened';
+         $_SESSION ['error'] = 'Wait.';
+         $_SESSION ['message'] = '';
+         $_SESSION['page'] = 'rosters';
       }
-      // email pool
-      $subj = 'Draft Pool - Player Update';
-      $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_player_name($_POST ['player_id'], $link).' of '.get_player_school($_POST ['player_id'], $link).'. '.get_next_player_draft($newround,$link).' is on the clock.';
-      send_group_mail($subj, $msg, $link);
    }
    if (isset ( $_POST ['updatepassword'] ))
    {
@@ -550,9 +574,13 @@ function get_player_name($id,$link)
 }
 function get_player_school($id,$link)
 {
-   $sql = "select school from player p join team t on p.team_id=t.team_id where player_id=".$id;
-   $data = mysqli_query ( $link, $sql );
-   list ($school ) = mysqli_fetch_row ( $data );
+   $school='';
+   if ($id!='')
+   {
+      $sql = "select school from player p join team t on p.team_id=t.team_id where player_id=".$id;
+      $data = mysqli_query ( $link, $sql );
+      list ($school ) = mysqli_fetch_row ( $data );
+   }
    return $school;
 }
 function get_school($id,$link)

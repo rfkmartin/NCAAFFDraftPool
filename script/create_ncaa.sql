@@ -74,20 +74,6 @@ create table keyValue (
    primary key (k)
 );
 
-create table playerUser (
-   player_id int not null,
-   user_id int not null,
-   foreign key (player_id) references player(player_id),
-   foreign key (user_id) references user(user_id)
-);
-
-create table teamUser (
-   team_id int not null,
-   user_id int not null,
-   foreign key (team_id) references team(team_id),
-   foreign key (user_id) references user(user_id)
-);
-
 create table teamGame (
    team_id int not null,
    bracket_pos int not null,
@@ -194,7 +180,7 @@ INSERT INTO team (team_id,school,shortname) VALUES (2754,"Youngstown State","You
 INSERT INTO team (team_id,school,shortname) VALUES (103,"Boston College","Boston College");
 INSERT INTO team (team_id,school,shortname) VALUES (2916,"Incarnate Word","Incarnate Word");
 INSERT INTO team (team_id,school,shortname) VALUES (2348,"Louisiana Tech","Louisiana Tech");
-INSERT INTO team (team_id,school,shortname) VALUES (153,"North Carolina","NC");
+INSERT INTO team (team_id,school,shortname) VALUES (153,"North Carolina","UNC");
 INSERT INTO team (team_id,school,shortname) VALUES (2603,"Saint Joseph's","Saint Joseph's");
 INSERT INTO team (team_id,school,shortname) VALUES (2579,"South Carolina","SC");
 INSERT INTO team (team_id,school,shortname) VALUES (179,"St Bonaventure","St Bonaventure");
