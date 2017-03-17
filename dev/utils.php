@@ -407,9 +407,56 @@ function process_forms($link)
       }
       $_SESSION ['message'] = 'Password successfully updated';
    }
-   if (isset($_POST['player_name_search']))
+   if (isset($_POST['submit_game']))
    {
-      //print_player_draftname_form($_POST['player_search'], $link);
+      $team_id=$_POST['team_id'];
+      $tpts=$_POST['tpts'];
+      $bpos=$_POST['b_pos'];
+      $npos=$_POST['n_pos'];
+      $player_id=[];
+      if (isset($_POST['bp_pos']))
+      {
+         $bppos=$_POST['bp_pos'];
+         $player_id=$_POST['player_id'];
+         $ppts=$_POST['ppts'];
+      }
+      //$_SESSION['error'] = print_r($bpos).' xx '.print_r($npos);
+      //print_blank();
+      $team1=$team_id[0];
+      $team1b=$bpos[0];
+      $team1pts=$tpts[0];
+      $team2=$team_id[1];
+      $team2b=$bpos[1];
+      $team2pts=$tpts[1];
+      $next=$npos[0];
+      $tmw1=',0';$tmw2=',0';
+      if ($team1pts>$team2pts)
+      {
+         $sql = 'update bracket set team_id='.$team1.' where bracket_pos='.$next;
+         //echo $sql;
+         $data = mysqli_query ( $link, $sql );
+         $tmw1=',1';
+      }
+      else
+      {
+         $sql = 'update bracket set team_id='.$team2.' where bracket_pos='.$next;
+         //echo $sql;
+         $data = mysqli_query ( $link, $sql );
+         $tmw2=',1';
+      }
+      $sql = 'insert into teamgame (team_id,bracket_pos,points,winner) values ('.$team1.','.$team1b.','.$team1pts.$tmw1.')';
+      //echo $sql;
+      $data = mysqli_query ( $link, $sql );
+      $sql = 'insert into teamgame (team_id,bracket_pos,points,winner) values ('.$team2.','.$team2b.','.$team2pts.$tmw2.')';
+      //echo $sql;
+      $data = mysqli_query ( $link, $sql );
+      for ($i=0; $i<count($player_id); $i++)
+      {
+         $sql = 'insert into playergame (player_id,bracket_pos,points) values ('.$player_id[$i].','.$bppos[$i].','.$ppts[$i].')';
+         //echo $sql;
+         $data = mysqli_query ( $link, $sql );
+      }      
+      $_SESSION['page'] = 'bracket';
    }
    if (isset ( $_POST ['set_team_round'] ))
    {

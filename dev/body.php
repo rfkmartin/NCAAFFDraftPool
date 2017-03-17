@@ -60,6 +60,10 @@ function print_body($link)
       print2001 ();
       echo '<br>';
    }
+   elseif ($_SESSION ['page'] == "submit")
+   {
+      echo '<br>';
+   }
    elseif ($_SESSION ['page'] == "teamdraft")
    {
       if ($_SESSION['currentroundteam']==$_SESSION['user'])
