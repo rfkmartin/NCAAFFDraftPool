@@ -33,11 +33,8 @@ function print_sub_menu()
          echo '<button ' . isBtnSelected ( 'logout' ) . 'name="logout">Logout</button>';
       }
       echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
-      echo ' | <button ' . isBtnSelected ( 'teams' ) . 'name="teams">Top Teams</button>';
-      echo ' | <button ' . isBtnSelected ( 'players' ) . 'name="players">Top Players</button>';
-      echo ' | <button ' . isBtnSelected ( 'teamplayers' ) . 'name="teamplayers">Top Teams\' Players</button>';
-      echo ' | <button ' . isBtnSelected ( 'res2000' ) . 'name="res2000">Results from 2000</button>';
-      echo ' | <button ' . isBtnSelected ( 'res2001' ) . 'name="res2001">Results from 2001</button>';
+      echo ' | <button ' . isBtnSelected ( 'bracket' ) . 'name="bracket">Bracket</button>';
+      echo ' | <button ' . isBtnSelected ( 'rosters' ) . 'name="rosters">Rosters</button>';
       if ($_SESSION['admin'])
       {
          echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
@@ -48,6 +45,17 @@ function print_sub_menu()
          echo '<button ' . isBtnSelected ( 'adminsetlive' ) . 'name="adminsetlive">Set LIVE</button>';
          echo ' | <button ' . isBtnSelected ( 'adminsetdraft' ) . 'name="adminsetdraft">Set DRAFT</button>';
          echo ' | <button ' . isBtnSelected ( 'adminsetpre' ) . 'name="adminsetpre">Set PREDRAFT</button>';
+         echo ' | <button ' . isBtnSelected ( 'adminentergame' ) . 'name="adminentergame">Enter Game</button>';
+      }
+      else
+      {
+         echo '<tr><td class="nonmenu">&nbsp;';
+      }
+      echo '</td></tr>';
+      if ($_SESSION['page'] == 'admin' && $_SESSION['subpage']=='adminentergame')
+      {
+         echo '<tr><td class="submenu">';
+         echo '<input type="text" name="game_id"><input type="submit" name="enter_game" value="Submit">';
       }
       else
       {
@@ -138,7 +146,7 @@ function print_sub_menu()
          echo '<tr><td class="submenu">';
          echo '<input type="text" name="pround"><input type="submit" name="set_player_round" value="Submit">';
       }
-         elseif ($_SESSION['page'] == 'admin' && $_SESSION['subpage']=='adminsettrnd')
+      elseif ($_SESSION['page'] == 'admin' && $_SESSION['subpage']=='adminsettrnd')
       {
          echo '<tr><td class="submenu">';
          echo '<input type="text" name="tround"><input type="submit" name="set_team_round" value="Submit">';
@@ -417,12 +425,22 @@ function process_forms($link)
       $_SESSION['page'] = 'draft';
       $_SESSION['currentPlayerRound'] = $_POST ['pround'];
    }
+   if (isset ( $_POST ['enter_game'] ))
+   {
+      $_SESSION['page'] = 'admin';
+      $_SESSION['subsubpage'] = 'enter_game';
+   }
 }
 function set_page()
 {
    if (isset ( $_POST ['admin'] ))
    {
       $_SESSION ['page'] = 'admin';
+   }
+   if (isset ( $_POST ['bracket'] ))
+   {
+      $_SESSION ['page'] = 'bracket';
+      //header("Location: /NCAAFFDraftPool/dev");
    }
    if (isset ( $_POST ['register'] ))
    {
@@ -431,6 +449,7 @@ function set_page()
    if (isset ( $_POST ['rules'] ))
    {
       $_SESSION ['page'] = 'rules';
+      //header("Location: /NCAAFFDraftPool/dev");
    }
    if (isset ( $_POST ['teams'] ))
    {
@@ -459,6 +478,7 @@ function set_page()
    if (isset ( $_POST ['rosters'] ))
    {
       $_SESSION ['page'] = 'rosters';
+      //header("Location: /NCAAFFDraftPool/dev");
    }
    if (isset ( $_POST ['teamdraft'] ) )
    {
@@ -538,6 +558,11 @@ function set_page()
    {
       $_SESSION ['page'] = 'admin';
       $_SESSION['subpage'] = 'adminsetprnd';
+   }
+   if (isset($_POST['adminentergame']))
+   {
+      $_SESSION ['page'] = 'admin';
+      $_SESSION['subpage'] = 'adminentergame';
    }
    if (isset ( $_POST ['draft'] ))
    {

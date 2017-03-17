@@ -32,14 +32,14 @@ function print_roster($link)
    {
       if ($odd==0)
       {
-         echo '<tr><td><table border="1">';
+         echo '<tr><td><table width="100%" border="1">';
       }
       else
       {
-         echo '<td><table border="1">';
+         echo '<td><table width="100%" border="1">';
       }
-      echo '<tr><td colspan="3">'.$teamname.'</td></tr>';
-      echo '<tr><td>Round</td><td>School</td><td>Player</td></tr>';
+      echo '<tr><td class="roster" colspan="3">'.$teamname.'</td></tr>';
+      echo '<tr><td class="rosterhd">Round</td><td class="rosterhd">School</td><td class="rosterhd">Player</td></tr>';
       for ($a=0;$a<8;$a++)
       {
          $i=8*$a;

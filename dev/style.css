@@ -17,6 +17,8 @@ td.team_left{text-align:left;background-color:#cccc99;font-size:xx-small;width:9
 td.team_right{text-align:right;background-color:#cccc99;font-size:xx-small;width:90px}
 td.pastround{text-decoration:line-through}
 td.currentround{font-weight:bold}
+td.roster{font-weight:bold;background-color:#F6B332;text-align:center}
+td.rosterhd{font-weight:bold;background-color:#F36C3E;text-align:left}
 
 /* html,body{margin:0;padding:0;height:100%;border:none;} */
 .input{color:#5f91c4;height:12px;width:80px;font-size:11px;}

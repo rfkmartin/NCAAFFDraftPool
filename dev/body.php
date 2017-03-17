@@ -25,6 +25,11 @@ function print_body($link)
       print_logon_form();
       echo '<br>';
    }
+   elseif ($_SESSION ['page'] == "bracket")
+   {
+      print_bracket($link);
+      echo '<br>';
+   }
    elseif ($_SESSION ['page'] == "rules")
    {
       print_rules ();
@@ -127,7 +132,14 @@ function print_body($link)
    }
    elseif ($_SESSION ['page'] == "admin")
    {
-      print_blank();
+      if ($_SESSION['subsubpage']=='enter_game')
+      {
+         enter_game($_POST['game_id'], $link);
+      }
+      else
+      {
+         print_blank();
+      }
       //test_mail();
       echo '<br>';
    }
