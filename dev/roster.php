@@ -25,18 +25,18 @@ function print_roster1($link)
 function print_roster($link)
 {
    echo '<table border="0"><tr><td></td><td></td></tr>';
-   $sql = "select user_id,team_name from user where user_id<8";
+   $sql = "select user_id,team_name from user where user_id<8 order by team_name";
    $data = mysqli_query ( $link, $sql );
    $odd=0;
    while (list($user_id,$teamname)=mysqli_fetch_row ( $data ))
    {
       if ($odd==0)
       {
-         echo '<tr><td><table width="100%" border="1">';
+         echo '<tr><td valign="top"><table width="100%" border="1">';
       }
       else
       {
-         echo '<td><table width="100%" border="1">';
+         echo '<td valign="top"><table width="100%" border="1">';
       }
       echo '<tr><td class="roster" colspan="3">'.$teamname.'</td></tr>';
       echo '<tr><td class="rosterhd">Round</td><td class="rosterhd">School</td><td class="rosterhd">Player</td></tr>';

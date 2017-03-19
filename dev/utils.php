@@ -34,6 +34,7 @@ function print_sub_menu()
       }
       echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
       echo ' | <button ' . isBtnSelected ( 'bracket' ) . 'name="bracket">Bracket</button>';
+      echo ' | <button ' . isBtnSelected ( 'results' ) . 'name="results">Results</button>';
       echo ' | <button ' . isBtnSelected ( 'rosters' ) . 'name="rosters">Rosters</button>';
       if ($_SESSION['admin'])
       {
@@ -46,6 +47,13 @@ function print_sub_menu()
          echo ' | <button ' . isBtnSelected ( 'adminsetdraft' ) . 'name="adminsetdraft">Set DRAFT</button>';
          echo ' | <button ' . isBtnSelected ( 'adminsetpre' ) . 'name="adminsetpre">Set PREDRAFT</button>';
          echo ' | <button ' . isBtnSelected ( 'adminentergame' ) . 'name="adminentergame">Enter Game</button>';
+      }
+      else if ($_SESSION['page'] == 'results')
+      {
+         echo '<tr><td class="submenu">';
+         echo '<button ' . isBtnSelected ( 'leader' ) . 'name="leader">Leaderboard</button>';
+         echo ' | <button ' . isBtnSelected ( 'playerresults' ) . 'name="playerresults">Player Results</button>';
+         echo ' | <button ' . isBtnSelected ( 'teamresults' ) . 'name="teamresults">Team Results</button>';
       }
       else
       {
@@ -496,6 +504,23 @@ function set_page()
    if (isset ( $_POST ['rules'] ))
    {
       $_SESSION ['page'] = 'rules';
+      //header("Location: /NCAAFFDraftPool/dev");
+   }
+   if (isset ( $_POST ['results'] ))
+   {
+      $_SESSION ['page'] = 'results';
+      //header("Location: /NCAAFFDraftPool/dev");
+   }
+   if (isset ( $_POST ['playerresults'] ))
+   {
+      $_SESSION ['page'] = 'results';
+      $_SESSION ['subpage'] = 'playerresults';
+      //header("Location: /NCAAFFDraftPool/dev");
+   }
+   if (isset ( $_POST ['teamresults'] ))
+   {
+      $_SESSION ['page'] = 'results';
+      $_SESSION ['subpage'] = 'teamresults';
       //header("Location: /NCAAFFDraftPool/dev");
    }
    if (isset ( $_POST ['teams'] ))

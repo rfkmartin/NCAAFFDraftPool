@@ -30,6 +30,22 @@ function print_body($link)
       print_bracket($link);
       echo '<br>';
    }
+   elseif ($_SESSION ['page'] == "results")
+   {
+      if ($_SESSION['subpage']== "playerresults")
+      {
+         print_player_results($link);
+      }
+      else if ($_SESSION['subpage']== "teamresults")
+      {
+         print_team_results($link);
+      }
+      else
+      {
+         print_bracket($link);
+         echo '<br>';
+      }
+   }
    elseif ($_SESSION ['page'] == "rules")
    {
       print_rules ();
@@ -194,7 +210,7 @@ function print_rules()
    echo '<tr><td><table class="subrulestable" border="1"><tr><td>Drafter of worst team to advance in each of the 1st two rounds(5pts/round)</td></tr>';
    echo '<tr><td>The Drafter with the most teams at the end of each round(5pts/round)</td></tr>';
    echo '<tr><td>Drafter of player who receives MVP(or if player was not drafted then the owner of the team for which the MVP played)(10pts)</td></tr>';
-   echo '<tr><td>Brackets- each player will fill out the entire 63 game bracket.<br>1st place 150, 2nd Place 75, 3rd Place 45, 4th place 30</td></tr></table>';
+   echo '<tr><td><strike>Brackets- each player will fill out the entire 63 game bracket.<br>1st place 150, 2nd Place 75, 3rd Place 45, 4th place 30</strike></td></tr></table>';
    echo '</td></tr></table>';
    
    echo '<table class="rulestable"><tr><td class="rulesheader">Play-In Games</td></tr>';

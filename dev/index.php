@@ -9,6 +9,7 @@ include ("draft.php");
 include("roster.php");
 include("mail.php");
 include("admin.php");
+include("results.php");
 set_timezone ();
 process_forms ( $link );
 include ("body.php");
