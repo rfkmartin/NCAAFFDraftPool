@@ -506,6 +506,12 @@ function set_page()
       $_SESSION ['page'] = 'rules';
       //header("Location: /NCAAFFDraftPool/dev");
    }
+   if (isset ( $_POST ['leader'] ))
+   {
+      $_SESSION ['page'] = 'results';
+      $_SESSION ['subpage'] = 'leader';
+      //header("Location: /NCAAFFDraftPool/dev");
+   }
    if (isset ( $_POST ['results'] ))
    {
       $_SESSION ['page'] = 'results';

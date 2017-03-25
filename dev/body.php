@@ -40,6 +40,11 @@ function print_body($link)
       {
          print_team_results($link);
       }
+      else if ($_SESSION['subpage']== "leader")
+      {
+         print_leader_board($link);
+         echo '<br>';
+      }
       else
       {
          print_bracket($link);

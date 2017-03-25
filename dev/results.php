@@ -124,4 +124,67 @@ function get_team_win($round,$team_id,$link)
    list($pts)=mysqli_fetch_row($data);
    return $pts;
 }
+function get_max_pts($link)
+{
+   $sql = 'select sum(maxpts) as teammax,team_name from (select maxpts,team_name,u.user_id from userplayer up join (select max(points) as maxpts,player_id from playergame group by player_id) as m on up.player_id=m.player_id join user u on up.user_id=u.user_id join player p on p.player_id=up.player_id order by u.user_id) as g group by g.user_id order by teammax desc';
+   $data = mysqli_query ( $link, $sql );
+   echo '<table width="75%" border="1">';
+   echo '<tr><td class="roster">Team High Game Points</td><td class="roster">Team</td><td class="roster">Score</td></tr>';
+   while (list($pts,$team_name)=mysqli_fetch_row($data))
+   {
+      echo '<tr><td>'.$pts.'</td><td>'.$team_name.'</td><td></td></tr>';
+   }
+   echo '</table>';   
+}
+function get_total_pts($link)
+{
+   $sql = 'select sum(points) as teampts,team_name from playergame pg join userplayer up on pg.player_id=up.player_id join user u on up.user_id=u.user_id group by u.user_id order by teampts desc';
+   $data = mysqli_query ( $link, $sql );
+   echo '<table width="90%" border="1">';
+   echo '<tr><td class="roster">Team Total Points</td><td class="roster">Team</td><td class="roster">Score</td></tr>';
+   while (list($pts,$team_name)=mysqli_fetch_row($data))
+   {
+      echo '<tr><td>'.$pts.'</td><td>'.$team_name.'</td><td></td></tr>';
+   }
+   echo '</table>';
+}
+function print_leader_board($link)
+{
+   echo '<table width="90%"><tr><td colspan=2 class="roster">Team Points</td></tr>';
+   echo '<tr><td align="center">';
+   get_max_pts($link);
+   echo '</td><td align="center">';
+   get_total_pts($link);
+   echo '</td></tr></table>';
+   echo '<table width="90%"><tr><td colspan=2 class="roster">Individual Points</td></tr>';
+   echo '<tr><td align="center">';
+   print_player_points($link);
+   echo '</td><td align="center">';
+   print_player_hi_points($link);
+   echo '</td></tr></table>';
+}
+function print_player_points($link)
+{
+   $sql = 'select sum(points) as playerpts,p.name,team_name from playergame pg join player p on pg.player_id=p.player_id join userplayer up on pg.player_id=up.player_id join user u on up.user_id=u.user_id group by up.player_id order by playerpts desc limit 20';
+   $data = mysqli_query ( $link, $sql );
+   echo '<table width="75%" border="1">';
+   echo '<tr><td class="roster">Individual Player Points</td><td class="roster">Team</td><td class="roster">Owner</td><td class="roster">Score</td></tr>';
+   while (list($pts,$player_name,$team_name)=mysqli_fetch_row($data))
+   {
+      echo '<tr><td>'.$pts.'</td><td>'.$player_name.'</td><td>'.$team_name.'</td><td></td></tr>';
+   }
+   echo '</table>';
+}
+function print_player_hi_points($link)
+{
+   $sql = 'select max(points) as playerpts,p.name,team_name from playergame pg join player p on pg.player_id=p.player_id join userplayer up on pg.player_id=up.player_id join user u on up.user_id=u.user_id group by up.player_id order by playerpts desc limit 20';
+   $data = mysqli_query ( $link, $sql );
+   echo '<table width="75%" border="1">';
+   echo '<tr><td class="roster">Individual Player High Game</td><td class="roster">Team</td><td class="roster">Owner</td><td class="roster">Score</td></tr>';
+   while (list($pts,$player_name,$team_name)=mysqli_fetch_row($data))
+   {
+      echo '<tr><td>'.$pts.'</td><td>'.$player_name.'</td><td>'.$team_name.'</td><td></td></tr>';
+   }
+   echo '</table>';
+}
 ?>
