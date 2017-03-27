@@ -19,6 +19,8 @@ td.pastround{text-decoration:line-through}
 td.currentround{font-weight:bold}
 td.roster{font-weight:bold;background-color:#F6B332;text-align:center}
 td.rosterhd{font-weight:bold;background-color:#F36C3E;text-align:left}
+td.results{font-weight:bold;background-color:#F36C3E;text-align:center}
+td.out{font-style:italic;text-decoration:line-through;color:#ff0808}
 
 /* html,body{margin:0;padding:0;height:100%;border:none;} */
 .input{color:#5f91c4;height:12px;width:80px;font-size:11px;}
