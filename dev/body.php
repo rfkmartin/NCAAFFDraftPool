@@ -40,9 +40,14 @@ function print_body($link)
       {
          print_team_results($link);
       }
-      else if ($_SESSION['subpage']== "leader")
+      else if ($_SESSION['subpage']== "stats")
       {
-         print_leader_board($link);
+         print_other_stats($link);
+         echo '<br>';
+      }
+         else if ($_SESSION['subpage']== "leader")
+      {
+         print_pool_results($link);
          echo '<br>';
       }
       else

@@ -54,6 +54,7 @@ function print_sub_menu()
          echo '<button ' . isBtnSelected ( 'leader' ) . 'name="leader">Leaderboard</button>';
          echo ' | <button ' . isBtnSelected ( 'playerresults' ) . 'name="playerresults">Player Results</button>';
          echo ' | <button ' . isBtnSelected ( 'teamresults' ) . 'name="teamresults">Team Results</button>';
+         echo ' | <button ' . isBtnSelected ( 'stats' ) . 'name="stats">Other Results</button>';
       }
       else
       {
@@ -428,8 +429,6 @@ function process_forms($link)
          $player_id=$_POST['player_id'];
          $ppts=$_POST['ppts'];
       }
-      //$_SESSION['error'] = print_r($bpos).' xx '.print_r($npos);
-      //print_blank();
       $team1=$team_id[0];
       $team1b=$bpos[0];
       $team1pts=$tpts[0];
@@ -463,7 +462,8 @@ function process_forms($link)
          $sql = 'insert into playergame (player_id,bracket_pos,points) values ('.$player_id[$i].','.$bppos[$i].','.$ppts[$i].')';
          //echo $sql;
          $data = mysqli_query ( $link, $sql );
-      }      
+      }
+      update_user_points($link);
       $_SESSION['page'] = 'bracket';
    }
    if (isset ( $_POST ['set_team_round'] ))
@@ -504,6 +504,12 @@ function set_page()
    if (isset ( $_POST ['rules'] ))
    {
       $_SESSION ['page'] = 'rules';
+      //header("Location: /NCAAFFDraftPool/dev");
+   }
+   if (isset ( $_POST ['stats'] ))
+   {
+      $_SESSION ['page'] = 'results';
+      $_SESSION ['subpage'] = 'stats';
       //header("Location: /NCAAFFDraftPool/dev");
    }
    if (isset ( $_POST ['leader'] ))
