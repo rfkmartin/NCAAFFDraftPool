@@ -297,21 +297,40 @@ function update_user_points($link)
    // clear previous results
    $sql = 'udate results set points=0';
    $data = mysqli_query ( $link, $sql );
-   $sql = 'select place,points from place p join category c on c.category_id=p.category_id join points pt on pt.points_id=p.points_id where p.category_id=4 order by place;';
+   $sql = 'select place,points from place p join category c on c.category_id=p.category_id join points pt on pt.points_id=p.points_id where p.category_id=4 order by place';
    $data = mysqli_query ( $link, $sql );
    while (list($place,$points)=mysqli_fetch_row($data))
    {
       $pts1[$place]=$points;
    }
+   // Team Total Individual Game Highs
    $sql = 'select g.user_id,sum(maxpts) as teammax from (select maxpts,team_name,u.user_id from userplayer up join (select max(points) as maxpts,player_id from playergame group by player_id) as m on up.player_id=m.player_id join user u on up.user_id=u.user_id join player p on p.player_id=up.player_id order by u.user_id) as g group by g.user_id order by teammax desc limit 4';
    $data = mysqli_query ( $link, $sql );
-   $i=0;
+   $i=1;
    while(list($user_id,$foo)=mysqli_fetch_row($data))
    {
-      $sql1 = 'update results set points='.$pts1[$i-1].' where user_id='.$user_id.' and category_id=4';
-      $data = mysqli_query ( $link, $sql );
+      $sql1 = 'update results set points=points+'.$pts1[$i++].' where user_id='.$user_id.' and category_id=4';
+      $data1 = mysqli_query ( $link, $sql1 );
    }
-    
+   // Team Total Points
+   $sql = 'select up.user_id,sum(points) as teampts from playergame pg join userplayer up on pg.player_id=up.player_id join user u on up.user_id=u.user_id group by u.user_id order by teampts desc limit 4';
+   $data = mysqli_query ( $link, $sql );
+   $i=1;
+   while(list($user_id,$foo)=mysqli_fetch_row($data))
+   {
+      $sql1 = 'update results set points=points+'.$pts1[$i++].' where user_id='.$user_id.' and category_id=3';
+      $data1 = mysqli_query ( $link, $sql1 );
+   }
+   // Individual Tournament Points
+   $sql = 'select up.user_id,sum(points) as playerpts from playergame pg join player p on pg.player_id=p.player_id join userplayer up on pg.player_id=up.player_id join user u on up.user_id=u.user_id join (select min(winner) as active,team_id from teamgame tg group by team_id) w on w.team_id=p.team_id group by up.player_id order by playerpts desc limit 4';
+   $data = mysqli_query ( $link, $sql );
+   $i=1;
+   while(list($user_id,$foo)=mysqli_fetch_row($data))
+   {
+      $sql1 = 'update results set points=points+'.$pts1[$i++].' where user_id='.$user_id.' and category_id=5';
+      echo ' xxx '.$sql1.' yyy ';
+      $data1 = mysqli_query ( $link, $sql1 );
+   }
 }
 function print_pool_results($link)
 {
@@ -349,8 +368,9 @@ function print_pool_results($link)
       echo '<td align="center">'.$net1[$i].'</td><tr>';
    }
    echo '</table><br>';
-   echo '<table width="67%"><tr><td colspan="8"</td></tr>';
-   echo '<tr><td class="results">Team</td><td class="results">Most Teams Advancing Round 2</td><td class="results">Most Teams Advancing Round 3</td><td class="results">Most Teams Advancing Round 4</td><td class="results">Most Teams Advancing Round 5</td><td class="results">Most Teams Advancing Round 6</td><td class="results">Net</td></tr>';
+   echo '<table width="67%">';
+   echo '<tr><td rowspan="2" class="results">Team</td><td colspan="7" class="results">Most Teams Advancing</td></tr>';
+   echo '<tr><td class="results">Round of 64</td><td class="results">Round of 32</td><td class="results">Sweet Sixteen</td><td class="results">Elite Eight</td><td class="results">Final Four</td><td class="results">Championship</td><td class="results">Net</td></tr>';
    $sql = 'select user_id from (select round,user_id,sum(winner) as sum from teamgame tg join bracket b on tg.bracket_pos=b.bracket_pos join userteam ut on ut.team_id=tg.team_id where round > 1 group by round,user_id order by round asc,sum desc) a group by round';
    $data = mysqli_query ( $link, $sql );
    $i=0;
@@ -366,7 +386,7 @@ function print_pool_results($link)
       list($team)=mysqli_fetch_row($data);
       echo '<tr><td align="center">'.$team.'</td>';
       $net2[$i]=0;
-      for ($j=0;$j<5;$j++)
+      for ($j=0;$j<6;$j++)
       {
          if ($j<$rnds)
          {
@@ -388,7 +408,8 @@ function print_pool_results($link)
       echo '<td>'.$net2[$i].'</td></tr>';
    }
    echo '</table><br>';
-   echo '<table width="67%"><tr><td class="results">Team</td><td class="results">Lowest Advancing Seed - Round 2</td><td class="results">Lowest Advancing Seed - Round 3</td><td class="results">MVP</td><td class="results">Net</td></tr>';
+   echo '<table width="67%"><tr><td rowspan="2" class="results">Team</td><td colspan="2" class="results">Lowest Advancing Seed</td><td class="results"></td><td class="results"></td></tr>';
+   echo '<tr><td class="results">Round of 64</td><td class="results">Round of 32</td><td class="results">MVP</td><td class="results">Net</td></tr>';
    for ($i=0;$i<8;$i++)
    {
       $sql = 'select team_name from user where user_id='.$i;
