@@ -103,14 +103,18 @@ create table userTeam (
    user_id int not null,
    team_id int not null,
    draft int,
-   primary key (user_id,team_id)
+   primary key (user_id,team_id),
+   foreign key (user_id) references user(user_id),
+   foreign key (team_id) references team(team_id)
 );
 
 create table userPlayer (
    user_id int not null,
    player_id int not null,
    draft int,
-   primary key (user_id,player_id)
+   primary key (user_id,player_id),
+   foreign key (user_id) references user(user_id),
+   foreign key (player_id) references player(player_id)
 );
 
 INSERT INTO keyValue(k,v) VALUES ("playerUpdateDTM",CURTIME());

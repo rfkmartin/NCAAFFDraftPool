@@ -41,25 +41,28 @@ while (@result = $query->fetchrow_array())
          $wins=$1; $losses=$2; $conference=$3;
       }
       #visitor=
-      if ($record&&/tr class=\"evenrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z ]*)<\/a>/)
+      if ($record&&/tr class=\"evenrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z \-]*)<\/a>/)
       {
          #tr class="oddrow player-41-3132483"><td><a href="http://www.espn.com/mens-colleg</a></td><td align="right">16</td><td align="right">20.7</td><td align="right"class="sortcell">12.1</td>
-         @data = $_ =~ /tr class=\"evenrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z ]*)<\/a><\/td><td align=\"right\">([0-9]*)<\/td><td align=\"right\">([0-9]*\.[0-9]*)<\/td><td align=\"right\"class=\"sortcell\">([0-9]*\.[0-9]*)<\/td>/g;
+         @data = $_ =~ /tr class=\"evenrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z \-]*)<\/a><\/td><td align=\"right\">([0-9]*)<\/td><td align=\"right\">([0-9]*\.[0-9]*)<\/td><td align=\"right\"class=\"sortcell\">([0-9]*\.[0-9]*)<\/td>/g;
          for ($i = 0; $i < scalar( @data ); $i+=4 )
          {
             $sql = "insert into player(name,team_id,gp,mpg,ppg) values (?,?,?,?,?)";
-            
+            @$sql = "insert into player(name,team_id,gp,mpg,ppg) values (\"$data[$i]\",$teamid,$data[$i+1],$data[$i+2],$data[$i+3])";
+            #print $sql."\n";
             $insert=$dbh->prepare($sql);
             $rv=$insert->execute($data[$i],$teamid,$data[$i+1],$data[$i+2],$data[$i+3]);
          }
       }
       #<tr class="oddrow player-41-4066250"><td><a href="http://www.espn.com/mens-college-basketball/player/_/id/4066250/mustapha-heron">Mustapha Heron</a></td><td align="right">15</td><td align="right">27.5</td><td align="right"class="sortcell">16.2</td><td align="right">6.3</td><td align="right">1.2</td><td align="right">0.9</td><td align="right">0.3</td><td align="right">2.9</td><td align="right">.442</td><td align="right">.786</td><td align="right">.407</td></tr>
-      if ($record&&/tr class=\"oddrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z ]*)<\/a/)
+      if ($record&&/tr class=\"oddrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z \-]*)<\/a/)
       {
-         @data = $_ =~ /tr class=\"oddrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z ]*)<\/a><\/td><td align=\"right\">([0-9]*)<\/td><td align=\"right\">([0-9]*\.[0-9]*)<\/td><td align=\"right\"class=\"sortcell\">([0-9]*\.[0-9]*)<\/td>/g;
+         @data = $_ =~ /tr class=\"oddrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z \-]*)<\/a><\/td><td align=\"right\">([0-9]*)<\/td><td align=\"right\">([0-9]*\.[0-9]*)<\/td><td align=\"right\"class=\"sortcell\">([0-9]*\.[0-9]*)<\/td>/g;
          for ($i = 0; $i < scalar( @data ); $i+=4 )
          {
             $sql = "insert into player(name,team_id,gp,mpg,ppg) values (?,?,?,?,?)";
+            @$sql = "insert into player(name,team_id,gp,mpg,ppg) values (\"$data[$i]\",$teamid,$data[$i+1],$data[$i+2],$data[$i+3])";
+            #print $sql."\n";
 
             $insert=$dbh->prepare($sql);
             $rv=$insert->execute($data[$i],$teamid,$data[$i+1],$data[$i+2],$data[$i+3]);
