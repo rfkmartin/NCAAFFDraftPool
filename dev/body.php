@@ -8,7 +8,7 @@ function print_body($link)
    echo '<td align="left" valign="top">';
    print_banner ();
    print print_sub_menu ();
-   echo '<tr><td align="center" bgcolor="#B4A87E">';
+   echo '<tr><td align="center">';
    if (empty ( $_SESSION ['page'] ) || $_SESSION ['page'] == "")
    {
       print_bracket($link);
