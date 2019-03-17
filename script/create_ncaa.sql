@@ -78,6 +78,7 @@ create table teamGame (
    team_id int not null,
    bracket_pos int not null,
    points int not null default 0,
+   winner int default 0,
    primary key (team_id,bracket_pos),
    foreign key (team_id) references team(team_id),
    foreign key (bracket_pos) references bracket(bracket_pos)

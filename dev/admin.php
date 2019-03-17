@@ -30,4 +30,18 @@ function enter_game($game_id,$link)
    }
    echo '</tr><tr><td colspan="2"><input type="submit" name="submit_game" value="Submit"></table>';
 }
+function change_pass($link)
+{
+   echo '<form action = "" method = "post">';
+   $sql = 'select user_id,name from user';
+   $data = mysqli_query ( $link, $sql );
+   echo '<table border="1"><tr><td valign="top">';
+   $i=0;
+   echo '<select name="user_id">';
+   while (list($uid,$name)=mysqli_fetch_row($data))
+   {
+      echo '<option value='.$uid.'>'.$name.'</option>';
+   }
+   echo '<td><input type="text" name="newpass"</td></tr><tr><td colspan="2"><input type="submit" name="change_pass" value="Change Password"></table>';
+}
 ?>

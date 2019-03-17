@@ -166,6 +166,10 @@ function print_body($link)
       {
          enter_game($_POST['game_id'], $link);
       }
+      elseif ($_SESSION['subpage']=='adminchangepass')
+      {
+         change_pass($link);
+      }
       else
       {
          print_blank();

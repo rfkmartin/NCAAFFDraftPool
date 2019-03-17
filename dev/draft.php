@@ -5,7 +5,7 @@ function generate_draft($link)
    // initialize
    for ($i=0;$i<8;$i++)
    {
-      $draft[$i]=$i;
+      $draft[$i]=$i+1;
    }
    //shuffle
    for ($i=1;$i<7;$i++)
@@ -90,7 +90,7 @@ function print_draft_order($link)
 }
 function print_team_draft_form($link)
 {
-   $sql = "select school,seed,t.team_id from bracket b join team t on b.team_id=t.team_id where round<=2 and t.team_id not in (select team_id from userTeam) order by seed,t.region desc";
+   $sql = "select school,seed,t.team_id from bracket b join team t on b.team_id=t.team_id where round<=2 and b.bracket_pos<132 and t.team_id not in (select team_id from userTeam) order by seed,t.region desc";
    $data = mysqli_query ( $link, $sql );
    echo '<form action = "" method = "post">';
    echo '<table border="1"><tr><td>Select</td><td>School</td><td>Seed</td></tr>';
@@ -99,13 +99,13 @@ function print_team_draft_form($link)
    {
       echo '<tr><td><input type="radio" name="team_id" value='.$team_id.'></td><td>' . $school . '</td><td>' . $seed . '</td></tr>';
    }
-   echo '<td align="center" colspan=3><input type="submit" name="draft_team" value="Select"></td></tr>';
+   echo '<td align="center" colspan=3><input type="hidden" name="hash" id="hash" value="'.microtime().'" /><input type="submit" name="draft_team" value="Select"></td></tr>';
    echo '</table>';
     
 }
 function print_player_draft_form($link)
 {
-   $sql = "select p.player_id,school,seed,p.name,ppg from bracket b join team t on b.team_id=t.team_id join player p on p.team_id=b.team_id where round<=2 and p.player_id not in (select player_id from userPlayer) order by ppg desc limit 45";
+   $sql = "select p.player_id,school,seed,p.name,ppg from bracket b join team t on b.team_id=t.team_id join player p on p.team_id=b.team_id where p.player_id not in (select player_id from userPlayer) order by ppg desc limit 45";
    $data = mysqli_query ( $link, $sql );
    echo '<form action = "" method = "post">';
    echo '<table border="1"><tr><td>Select</td><td>Player</td><td>Pts/Gm</td><td>School</td></tr>';
@@ -113,7 +113,7 @@ function print_player_draft_form($link)
    {
       echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td></tr>';
    }
-   echo '<td align="center" colspan=4><input type="submit" name="draft_player" value="Select"></td></tr>';
+   echo '<td align="center" colspan=4><input type="hidden" name="hash" id="hash" value="<?php echo microtime(); ?>" /><input type="submit" name="draft_player" value="Select"></td></tr>';
    echo '</table>';
 }
 function print_player_draftseed_form($sub,$link)
@@ -127,7 +127,7 @@ function print_player_draftseed_form($sub,$link)
    {
       echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td><td>' . $seed . '</td></tr>';
    }
-   echo '<td align="center" colspan=5><input type="submit" name="draft_player" value="Select"></td></tr>';
+   echo '<td align="center" colspan=5><input type="hidden" name="hash" id="hash" value="<?php echo microtime(); ?>" /><input type="submit" name="draft_player" value="Select"></td></tr>';
    echo '</table>';
 }
 function print_player_draftname_form($string,$link)
@@ -140,7 +140,7 @@ function print_player_draftname_form($string,$link)
    {
       echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td><td>' . $seed . '</td></tr>';
    }
-   echo '<td align="center" colspan=5><input type="submit" name="draft_player" value="Select"></td></tr>';
+   echo '<td align="center" colspan=5><input type="hidden" name="hash" id="hash" value="<?php echo microtime(); ?>" /><input type="submit" name="draft_player" value="Select"></td></tr>';
    echo '</table>';
 }
 function get_next_player_draft($round,$link)

@@ -437,7 +437,7 @@ function print_bracket($link)
     
    echo '<tr><td colspan=22></td></tr>
 
-<tr><td class="region" colspan="8">Midwest</td><td colspan=6></td><td class="region"colspan="8">West</td></tr>
+<tr><td class="region" colspan="8">West</td><td colspan=6></td><td class="region"colspan="8">Midwest</td></tr>
 <tr><td colspan=22></td></tr>
 <tr><td colspan=22 class="bracket_head">First Four</td></tr>
 <tr><td colspan=22></td></tr>

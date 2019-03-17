@@ -47,6 +47,7 @@ function print_sub_menu()
          echo ' | <button ' . isBtnSelected ( 'adminsetdraft' ) . 'name="adminsetdraft">Set DRAFT</button>';
          echo ' | <button ' . isBtnSelected ( 'adminsetpre' ) . 'name="adminsetpre">Set PREDRAFT</button>';
          echo ' | <button ' . isBtnSelected ( 'adminentergame' ) . 'name="adminentergame">Enter Game</button>';
+         echo ' | <button ' . isBtnSelected ( 'adminchangepass' ) . 'name="adminchangepass">Change Password</button>';
       }
       else if ($_SESSION['page'] == 'results')
       {
@@ -235,7 +236,7 @@ function process_forms($link)
    {
       $_SESSION['admin']='';
    }
-   
+
    //get key-value pairs
 	$sql = "select v from keyValue where k='status'";
 	$result = mysqli_query($link,$sql);
@@ -279,7 +280,7 @@ function process_forms($link)
 		}
 		else
 		{
-			$_SESSION['error'] = "Your Login Name or Password is invalid";
+			$_SESSION['error'] = "Your Login Name or Password is invalid ".$sql;
 			$_SESSION['page'] = 'login';
 		}
 	}
@@ -310,16 +311,42 @@ function process_forms($link)
       {
          $_SESSION ['error'] = 'something happened';
       }
-      $_SESSION ['message'] = 'User '.$_POST['username'].' successfully created';      
+      $_SESSION ['message'] = 'User '.$_POST['username'].' successfully created';
    }
    if (isset ( $_POST ['draft_team'] ))
    {
+      $dupe = 0;
+      // $h is the cleaned value of $_POST["hash"]
+      $h = $_POST['hash'];
+
+      if(isset($_SESSION["hash"]) && is_array($_SESSION["hash"]))
+      {
+         if( in_array($h,$_SESSION["hash"]) )
+         {
+            // duplicate form submission
+            /* REDIRECT SOMEWHERE HERE, PREFERABLY WITH SOME SORT OF MESSAGE! */
+            $dupe = 1;
+            $_SESSION['page'] = 'rosters';
+            $_SESSION['error'] = 'duplicate caught';
+         }
+         else
+         {
+            // add this hash to the array
+            if(sizeof($_SESSION["hash"]) > 32){ array_shift($_SESSION["hash"]); }
+            array_push($_SESSION["hash"],$h);
+         }
+      }
+      else
+      {
+         // create a hash array and add this hash
+         $_SESSION["hash"] = array($h);
+      }
       $sql = "select v from keyValue where k='currentTeamRound'";
       $result = mysqli_query($link,$sql);
       list($status) = mysqli_fetch_row($result);
-      if ($_SESSION['currentTeamRound'] == $status)
+      if ($dupe==0&&$_SESSION['currentTeamRound'] == $status)
       {
-         $_SESSION ['error'] = '';
+         $_SESSION ['error'] = $_POST['hash'];
          $_SESSION ['message'] = 'You selected ' . $_POST['team_id'];
          $_SESSION['page'] = 'rosters';
          // insert into userTeam
@@ -342,17 +369,46 @@ function process_forms($link)
       }
       else
       {
-         $_SESSION ['error'] = 'Wait.';
-         $_SESSION ['message'] = '';
-         $_SESSION['page'] = 'rosters';
+         if ($dupe==0)
+         {
+            $_SESSION ['error'] = 'Wait.';
+            $_SESSION ['message'] = '';
+            $_SESSION['page'] = 'rosters';
+         }
       }
    }
    if (isset ( $_POST ['draft_player'] ))
    {
+         $dupe = 0;
+      // $h is the cleaned value of $_POST["hash"]
+      $h = $_POST['hash'];
+
+      if(isset($_SESSION["hash"]) && is_array($_SESSION["hash"]))
+      {
+         if( in_array($h,$_SESSION["hash"]) )
+         {
+            // duplicate form submission
+            /* REDIRECT SOMEWHERE HERE, PREFERABLY WITH SOME SORT OF MESSAGE! */
+            $dupe = 1;
+            $_SESSION['page'] = 'rosters';
+            $_SESSION['error'] = 'duplicate caught';
+         }
+         else
+         {
+            // add this hash to the array
+            if(sizeof($_SESSION["hash"]) > 32){ array_shift($_SESSION["hash"]); }
+            array_push($_SESSION["hash"],$h);
+         }
+      }
+      else
+      {
+         // create a hash array and add this hash
+         $_SESSION["hash"] = array($h);
+      }
       $sql = "select v from keyValue where k='currentPlayerRound'";
       $result = mysqli_query($link,$sql);
       list($status) = mysqli_fetch_row($result);
-      if ($_SESSION['currentPlayerRound'] == $status)
+      if ($dupe==0 && $_SESSION['currentPlayerRound'] == $status)
       {
          $_SESSION['page'] = 'rosters';
          // insert into userTeam
@@ -375,9 +431,12 @@ function process_forms($link)
       }
       else
       {
-         $_SESSION ['error'] = 'Wait.';
-         $_SESSION ['message'] = '';
-         $_SESSION['page'] = 'rosters';
+         if ($dupe==0)
+         {
+            $_SESSION ['error'] = 'Wait.';
+            $_SESSION ['message'] = '';
+            $_SESSION['page'] = 'rosters';
+         }
       }
    }
    if (isset ( $_POST ['updatepassword'] ))
@@ -389,7 +448,7 @@ function process_forms($link)
       logger ( $link, $sql );
       $result = mysqli_query ( $link, $sql );
       list ( $hashed ) = mysqli_fetch_row ( $result );
-      
+
       if (! password_verify ( mysqli_real_escape_string ( $link, $_POST ['orig_pwd'] ), $hashed ))
       {
          $_SESSION ['error'] = 'Old password does not match';
@@ -471,7 +530,7 @@ function process_forms($link)
       $sql = 'update keyValue set v="' . $_POST ['tround']. '" where k="currentTeamRound"';
       $data = mysqli_query ( $link, $sql );
       $_SESSION['page'] = 'draft';
-      $_SESSION['currentTeamRound'] = $_POST ['tround'];      
+      $_SESSION['currentTeamRound'] = $_POST ['tround'];
    }
    if (isset ( $_POST ['set_player_round'] ))
    {
@@ -485,6 +544,17 @@ function process_forms($link)
       $_SESSION['page'] = 'admin';
       $_SESSION['subsubpage'] = 'enter_game';
    }
+   if (isset ( $_POST ['change_pass'] ))
+   {
+      $_SESSION['page'] = 'admin';
+      $_SESSION['subsubpage'] = 'change_pass';
+   }
+   if (isset ( $_POST ['change_pass'] ))
+   {
+      update_password($_POST['user_id'],$_POST['newpass'],$link);
+//      echo 'xxx '.$_POST['user_id'].' yyy '.$_POST['newpass'];
+      //$_SESSION ['page'] = 'rules';
+   }
 }
 function set_page()
 {
@@ -494,6 +564,9 @@ function set_page()
    }
    if (isset ( $_POST ['bracket'] ))
    {
+      echo "here";
+      update_user_points($link);
+
       $_SESSION ['page'] = 'bracket';
       //header("Location: /NCAAFFDraftPool/dev");
    }
@@ -648,6 +721,11 @@ function set_page()
       $_SESSION ['page'] = 'admin';
       $_SESSION['subpage'] = 'adminentergame';
    }
+   if (isset($_POST['adminchangepass']))
+   {
+      $_SESSION ['page'] = 'admin';
+      $_SESSION['subpage'] = 'adminchangepass';
+   }
    if (isset ( $_POST ['draft'] ))
    {
       $_SESSION ['page'] = 'draft';
@@ -671,8 +749,8 @@ function set_page()
 function print_blank()
 {
    echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
-   echo '<br><br><br><br><br><br><br><br><br><br><br><br><br>'; 
-   echo '<br><br><br><br><br><br><br><br><br><br><br><br><br>'; 
+   echo '<br><br><br><br><br><br><br><br><br><br><br><br><br>';
+   echo '<br><br><br><br><br><br><br><br><br><br><br><br><br>';
 }
 function get_player_name($id,$link)
 {
@@ -698,5 +776,14 @@ function get_school($id,$link)
    $data = mysqli_query ( $link, $sql );
    list ($school ) = mysqli_fetch_row ( $data );
    return $school;
+}
+function update_password($uid,$pass,$link)
+{
+   $sql = 'update user set password="'.password_hash($pass, PASSWORD_DEFAULT).'" where user_id='.$uid;
+   if (! mysqli_query ( $link, $sql ))
+   {
+      $_SESSION ['error'] = 'something happened '.$sql;
+   }
+   $_SESSION ['message'] = 'User '.$uid.' successfully updated';
 }
 ?>
