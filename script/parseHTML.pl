@@ -2,9 +2,9 @@
 
 #https://www.cyberciti.biz/faq/how-to-access-mysql-database-using-perl/
 use DBI;
-my $dsn = "DBI:mysql:ncaa:192.168.10.52";
+my $dsn = "DBI:mysql:ncaa:127.0.0.1";
 my $username = "root";
-my $password = '';
+my $password = 'Luv2Drnk';
 
 # connect to MySQL database
 my %attr = ( PrintError=>0,  # turn off error reporting via warn()
