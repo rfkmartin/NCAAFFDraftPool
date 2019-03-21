@@ -2,6 +2,9 @@
 
 #https://www.cyberciti.biz/faq/how-to-access-mysql-database-using-perl/
 use DBI;
+use JSON::Parse 'parse_json';
+#use JSON qw( decode_json );     # From CPAN
+use Data::Dumper; 
 my $dsn = "DBI:mysql:ncaa:127.0.0.1";
 my $username = "root";
 my $password = 'Luv2Drnk';
@@ -22,54 +25,39 @@ while (@result = $query->fetchrow_array())
    $record=0;
    while (<FILE>)
    {
-      # <title>Auburn Tigers 2016-17 Statistics - Team and Player Stats - Men's College Basketball - ESPN</title>
-      if (/<title>$school ([a-zA-Z ]*) 2016.*<\/title>/)
+	  #"standingSummary":"4th in SEC"
+	  if (/"standingSummary":".* in ([a-zA-Z ]*)"/)
       {
-         $mascot=$1;
+         $conference=$1;
       }
-      if (/Game Statistics/)
+	  if (/recordSummary":"([0-9]*)-([0-9]*)"/)
       {
-         $record=1;
+         $wins=$1; $losses=$2;
       }
-      if (/Season Statistics/)
+	  if (/"shortDisplayName":"([a-zA-Z ]*)"/)
       {
-         $record=0;
+		  $mascot = $1;
       }
-      # <div class="sub-title">10-5, 12th in Southeastern Conference
-      if (/<div class=\"sub-title\">([0-9]*)-([0-9]*), [0-9]*[a-z]* in (.*)<\/div></)
-      {
-         $wins=$1; $losses=$2; $conference=$3;
-      }
-      #visitor=
-      if ($record&&/tr class=\"evenrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z \-']*)<\/a>/)
-      {
-         #tr class="oddrow player-41-3132483"><td><a href="http://www.espn.com/mens-colleg</a></td><td align="right">16</td><td align="right">20.7</td><td align="right"class="sortcell">12.1</td>
-         @data = $_ =~ /tr class=\"evenrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z \-'\.\.]*)<\/a><\/td><td align=\"right\">([0-9]*)<\/td><td align=\"right\">([0-9]*\.[0-9]*)<\/td><td align=\"right\"class=\"sortcell\">([0-9]*\.[0-9]*)<\/td>/g;
-         for ($i = 0; $i < scalar( @data ); $i+=4 )
-         {
+	  if (/.*espnfitt__'\]=({.*});<\/script/)
+	  {
+		  $stats_json=parse_json($1);
+		  foreach my $player (@{$stats_json->{page}->{content}->{stats}->{playerStats}[0]})
+		  {
+			  $name=$player->{athlete}->{name};
+			  $gp=$player->{statGroups}->{stats}->[0]->{displayValue};
+			  $mpg=$player->{statGroups}->{stats}->[1]->{displayValue};
+			  $ppg=$player->{statGroups}->{stats}->[2]->{displayValue};
             $sql = "insert into player(name,team_id,gp,mpg,ppg) values (?,?,?,?,?)";
-            #$sql = "insert into player(name,team_id,gp,mpg,ppg) values (\"$data[$i]\",$teamid,$data[$i+1],$data[$i+2],$data[$i+3]);";
-            #print $sql."\n";
-            $insert=$dbh->prepare($sql);
-            $rv=$insert->execute($data[$i],$teamid,$data[$i+1],$data[$i+2],$data[$i+3]);
-         }
-      }
-      #<tr class="oddrow player-41-4066250"><td><a href="http://www.espn.com/mens-college-basketball/player/_/id/4066250/mustapha-heron">Mustapha Heron</a></td><td align="right">15</td><td align="right">27.5</td><td align="right"class="sortcell">16.2</td><td align="right">6.3</td><td align="right">1.2</td><td align="right">0.9</td><td align="right">0.3</td><td align="right">2.9</td><td align="right">.442</td><td align="right">.786</td><td align="right">.407</td></tr>
-      if ($record&&/tr class=\"oddrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z \-'\.]*)<\/a/)
-      {
-         @data = $_ =~ /tr class=\"oddrow player-[0-9]*-[0-9]*\"><td><a href=\"http[\S]*\">([a-zA-Z \-'\.]*)<\/a><\/td><td align=\"right\">([0-9]*)<\/td><td align=\"right\">([0-9]*\.[0-9]*)<\/td><td align=\"right\"class=\"sortcell\">([0-9]*\.[0-9]*)<\/td>/g;
-         for ($i = 0; $i < scalar( @data ); $i+=4 )
-         {
-            $sql = "insert into player(name,team_id,gp,mpg,ppg) values (?,?,?,?,?)";
-            #$sql = "insert into player(name,team_id,gp,mpg,ppg) values (\"$data[$i]\",$teamid,$data[$i+1],$data[$i+2],$data[$i+3]);";
-            #print $sql."\n";
+            $sql1 = "insert into player(name,team_id,gp,mpg,ppg) values ($name,$teamid,$gp,$mpg,$ppg);";
+            #print $sql1."\n";
 
             $insert=$dbh->prepare($sql);
-            $rv=$insert->execute($data[$i],$teamid,$data[$i+1],$data[$i+2],$data[$i+3]);
-         }
-      }
+            $rv=$insert->execute($name,$teamid,$gp,$mpg,$ppg);
+		  }
+	  }
    }
    $sql = "update team set wins=?,losses=?,mascot=?,conference=? where team_id=?";
+   #print $sql."\n";
    $insert=$dbh->prepare($sql);
    $rv=$insert->execute($wins,$losses,$mascot,$conference,$teamid);
 }
