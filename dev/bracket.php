@@ -23,7 +23,7 @@ function print_bracket($link)
    $i=0;
    echo '<table class="bracket">';
    echo '<tr><td class="bracket_head" colspan="2">Round of 64</td><td class="bracket_head" colspan=2>Round of 32</td><td class="bracket_head"colspan="2">Sweet Sixteen</td><td class="bracket_head"colspan="2">Elite Eight</td><td class="bracket_head"colspan="2">Final Four</td><td class="bracket_head"colspan="2">Championship</td><td class="bracket_head"colspan="2">Final Four</td><td class="bracket_head"colspan="2">Elite Eight</td><td class="bracket_head"colspan="2">Sweet Sixteen</td><td class="bracket_head"colspan="2">Round of 32</td><td class="bracket_head"colspan="2">Round of 64</td></tr>';
-   echo '<tr><td class="region" colspan="8">South</td><td colspan=6></td><td class="region"colspan="8">East</td></tr>';
+   echo '<tr><td class="region" colspan="8">East</td><td colspan=6></td><td class="region"colspan="8">South</td></tr>';
 
    echo '<tr><td colspan=22></td></tr>';
 

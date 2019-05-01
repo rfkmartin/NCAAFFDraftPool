@@ -27,7 +27,8 @@ function print_body($link)
    }
    elseif ($_SESSION ['page'] == "bracket")
    {
-      print_bracket($link);
+    update_user_points($link);
+   	print_bracket($link);
       echo '<br>';
    }
    elseif ($_SESSION ['page'] == "results")
@@ -188,7 +189,7 @@ function print_body($link)
 function print_banner()
 {
    echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
-   echo '<tr><td width="25%" align="center"><img src="images/Logo2018.png" alt="2017 NCAA Final Four Draft Pool"></td>';
+   echo '<tr><td width="25%" align="center"><img src="images/Logo2019.png" alt="2017 NCAA Final Four Draft Pool"></td>';
    echo '</table>';
 }
 function print_rules()

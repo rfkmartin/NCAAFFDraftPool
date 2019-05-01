@@ -277,6 +277,7 @@ function process_forms($link)
 			$_SESSION['teamname']=$team_name;
 			$_SESSION['admin']=$is_admin;
 			$_SESSION['page'] = 'rules';
+			logit("logging in");
 		}
 		else
 		{
@@ -564,9 +565,6 @@ function set_page()
    }
    if (isset ( $_POST ['bracket'] ))
    {
-      echo "here";
-      update_user_points($link);
-
       $_SESSION ['page'] = 'bracket';
       //header("Location: /NCAAFFDraftPool/dev");
    }
@@ -581,24 +579,28 @@ function set_page()
    }
    if (isset ( $_POST ['stats'] ))
    {
+      logit("heading to stats");
       $_SESSION ['page'] = 'results';
       $_SESSION ['subpage'] = 'stats';
       //header("Location: /NCAAFFDraftPool/dev");
    }
    if (isset ( $_POST ['leader'] ))
    {
-      $_SESSION ['page'] = 'results';
+      logit("heading to leader");
+   	  $_SESSION ['page'] = 'results';
       $_SESSION ['subpage'] = 'leader';
       //header("Location: /NCAAFFDraftPool/dev");
    }
    if (isset ( $_POST ['results'] ))
    {
-      $_SESSION ['page'] = 'results';
+      logit("heading to results");
+   	  $_SESSION ['page'] = 'results';
       //header("Location: /NCAAFFDraftPool/dev");
    }
    if (isset ( $_POST ['playerresults'] ))
    {
-      $_SESSION ['page'] = 'results';
+      logit("heading to playerresults");
+   	  $_SESSION ['page'] = 'results';
       $_SESSION ['subpage'] = 'playerresults';
       //header("Location: /NCAAFFDraftPool/dev");
    }
@@ -785,5 +787,17 @@ function update_password($uid,$pass,$link)
       $_SESSION ['error'] = 'something happened '.$sql;
    }
    $_SESSION ['message'] = 'User '.$uid.' successfully updated';
+}
+function logit($string)
+{
+	if (empty ( $_SESSION ['user'] ))
+	{
+		$message=$_SESSION['SID'].' - '.$_SESSION['status'].' - anon(-99) - '.$string;
+	}
+	else
+	{
+		$message=$_SESSION["hash"].' - '.$_SESSION['SID'].' - '.$_SESSION['status'].' - '.$_SESSION['username'].'('.$_SESSION['user'].')- '.$string;
+	}
+	error_log($message);
 }
 ?>

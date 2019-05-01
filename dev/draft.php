@@ -113,7 +113,7 @@ function print_player_draft_form($link)
    {
       echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td></tr>';
    }
-   echo '<td align="center" colspan=4><input type="hidden" name="hash" id="hash" value="<?php echo microtime(); ?>" /><input type="submit" name="draft_player" value="Select"></td></tr>';
+   echo '<td align="center" colspan=4><input type="hidden" name="hash" id="hash" value="'.microtime().'" /><input type="submit" name="draft_player" value="Select"></td></tr>';
    echo '</table>';
 }
 function print_player_draftseed_form($sub,$link)
@@ -127,7 +127,7 @@ function print_player_draftseed_form($sub,$link)
    {
       echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td><td>' . $seed . '</td></tr>';
    }
-   echo '<td align="center" colspan=5><input type="hidden" name="hash" id="hash" value="<?php echo microtime(); ?>" /><input type="submit" name="draft_player" value="Select"></td></tr>';
+   echo '<td align="center" colspan=5><input type="hidden" name="hash" id="hash" value="'.microtime().'" /><input type="submit" name="draft_player" value="Select"></td></tr>';
    echo '</table>';
 }
 function print_player_draftname_form($string,$link)
@@ -140,7 +140,7 @@ function print_player_draftname_form($string,$link)
    {
       echo '<tr><td><input type="radio" name="player_id" value='.$player_id.'></td><td>' . $name . '</td><td>' . $ppg . '</td><td>' . $school . '</td><td>' . $seed . '</td></tr>';
    }
-   echo '<td align="center" colspan=5><input type="hidden" name="hash" id="hash" value="<?php echo microtime(); ?>" /><input type="submit" name="draft_player" value="Select"></td></tr>';
+   echo '<td align="center" colspan=5><input type="hidden" name="hash" id="hash" value="'.microtime().'" /><input type="submit" name="draft_player" value="Select"></td></tr>';
    echo '</table>';
 }
 function get_next_player_draft($round,$link)

@@ -1,7 +1,7 @@
 <?php
 function print_roster1($link)
 {
-   $sql = "select team_name,ceil((t.draft+1)/8) as round,school,seed from user u left join userTeam t on u.user_id=t.user_id left join team m on t.team_id=m.team_id where u.user_id<8 order by u.user_id,t.draft";
+   $sql = "select team_name,ceil((t.draft+1)/8) as round,school,seed from user u left join userTeam t on u.user_id=t.user_id left join team m on t.team_id=m.team_id where u.user_id<=8 order by u.user_id,t.draft";
    $data = mysqli_query ( $link, $sql );
    echo '<table border="1"><tr><td>Name</td><td>Round</td><td>School</td></tr>';
    while ( list ( $name,$round,$school,$seed) = mysqli_fetch_row ( $data ) )
@@ -25,7 +25,7 @@ function print_roster1($link)
 function print_roster($link)
 {
    echo '<table border="0"><tr><td></td><td></td></tr>';
-   $sql = "select user_id,team_name from user where user_id<8 order by team_name";
+   $sql = "select user_id,team_name from user where user_id<=8 order by team_name";
    $data = mysqli_query ( $link, $sql );
    $odd=0;
    while (list($user_id,$teamname)=mysqli_fetch_row ( $data ))
