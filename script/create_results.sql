@@ -48,6 +48,7 @@ insert into points (points_id,points) values (3,32);
 insert into points (points_id,points) values (4,16);
 insert into points (points_id,points) values (5,50);
 insert into points (points_id,points) values (6,100);
+insert into points (points_id,points) values (7,25);
 
 insert into place(place,points_id,category_id) values (1,5,1);
 insert into place(place,points_id,category_id) values (1,5,2);
@@ -68,7 +69,11 @@ insert into place(place,points_id,category_id) values (2,2,6);
 insert into place(place,points_id,category_id) values (3,3,6);
 insert into place(place,points_id,category_id) values (4,4,6);
 insert into place(place,points_id,category_id) values (1,5,7);
-insert into place(place,points_id,category_id) values (1,6,8);
+insert into place(place,points_id,category_id) values (1,5,8);
+insert into place(place,points_id,category_id) values (2,7,8);
+insert into place(place,points_id,category_id) values (3,7,8);
+insert into place(place,points_id,category_id) values (4,7,8);
+insert into place(place,points_id,category_id) values (5,7,8);
 
 insert into results (user_id,category_id) values (0,1);
 insert into results (user_id,category_id) values (0,2);

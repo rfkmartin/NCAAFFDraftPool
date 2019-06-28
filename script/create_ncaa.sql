@@ -1,20 +1,9 @@
-drop database if exists ncaa;
-create database ncaa;
-use ncaa;
+drop database if exists ncaa1;
+create database ncaa1;
+use ncaa1;
 
 -- date;python ESPNScrape.py;cat create_ncaa.sql > temp.sql ;cat create_bracket.sql >> temp.sql ;mysql -u root -pLuv2Drnk < temp.sql;./parseHTML.pl ;date
 -- select school,seed,p.name,ppg from bracket b join team t on b.team_id=t.team_id join player p on p.team_id=b.team_id where round<=2 order by seed,b.team_id,ppg desc;
-create table user (
-   user_id int not null auto_increment,
-   name varchar(64) not null,
-   email varchar(64) not null,
-   team_name varchar(64),
-   password varchar(64) not null,
-   draft int,
-   is_admin int default 0,
-   primary key (user_id)
-);
-
 create table logger (
    logger_id int not null auto_increment,
    msg_dt datetime not null,
@@ -23,6 +12,60 @@ create table logger (
    user_id int not null,
    message varchar(512) not null,
    primary key (logger_id)
+);
+
+CREATE TABLE tourney_year (
+   year_id int not null,
+   image_filename VARCHAR(64) NOT NULL,
+   main_color VARCHAR(16) NOT NULL,
+   secondary_color VARCHAR(16) NOT NULL,
+   tertiary_color VARCHAR(16) NOT NULL,
+  PRIMARY KEY (year_id)
+);
+
+create table tourney (
+   tourney_id int not null auto_increment,
+   name varchar(64),
+   year_id int,
+   draft int,
+   primary key(tourney_id),
+   foreign key(year_id) references tourney_year(year_id)
+);
+
+create table owner (
+   owner_id int not null auto_increment,
+   name varchar(64) not null,
+   email varchar(64) not null,
+   team_name varchar(64),
+   password varchar(64) not null,
+   tourney_id int,
+   is_admin int default 0,
+   primary key (owner_id),
+   foreign key (tourney_id) references tourney(tourney_id)
+);
+
+CREATE TABLE login (
+   login_id INT(11) NOT NULL AUTO_INCREMENT,
+   name VARCHAR(64) NOT NULL,
+   password VARCHAR(64) NOT NULL,
+   email VARCHAR(64) NOT NULL,
+   user_id1 INT(11) NULL DEFAULT NULL,
+   user_id2 INT(11) NULL DEFAULT NULL,
+   user_id3 INT(11) NULL DEFAULT NULL,
+   user_id4 INT(11) NULL DEFAULT NULL,
+   tourney_id1 INT(11) NULL DEFAULT NULL,
+   tourney_id2 INT(11) NULL DEFAULT NULL,
+   tourney_id3 INT(11) NULL DEFAULT NULL,
+   tourney_id4 INT(11) NULL DEFAULT NULL,
+   PRIMARY KEY (login_id),
+   FOREIGN KEY (user_id1) REFERENCES owner(owner_id),
+   FOREIGN KEY (user_id2) REFERENCES owner(owner_id),
+   FOREIGN KEY (user_id3)  REFERENCES owner(owner_id),
+   FOREIGN KEY (user_id4) REFERENCES owner(owner_id),
+   FOREIGN KEY (tourney_id1) REFERENCES tourney(tourney_id),
+   FOREIGN KEY (tourney_id2) REFERENCES tourney(tourney_id),
+   FOREIGN KEY (tourney_id3)  REFERENCES tourney(tourney_id),
+   FOREIGN KEY (tourney_id4) REFERENCES tourney(tourney_id)
 );
 
 create table team (
@@ -48,7 +91,9 @@ create table bracket (
    region varchar(32),
    round varchar(32),
    team_id int,
-   primary key (bracket_pos)
+   year_id int,
+   primary key (bracket_pos),
+   foreign key(year_id) references tourney_year(year_id)
 );
 
 create table round (
@@ -61,10 +106,14 @@ create table player (
    player_id int not null auto_increment,
    name varchar(64) not null,
    team_id int not null,
+   year_id int not null,
    gp float,
    mpg float,
    ppg float,
+   mvpFF int,
+   mvpReg int,
    primary key (player_id),
+   foreign key (year_id) references tourney_year(year_id),
    foreign key (team_id) references team(team_id)
 );
 
@@ -100,21 +149,21 @@ create table draft (
    primary key (draft_pos)
 );
 
-create table userTeam (
-   user_id int not null,
+create table ownerTeam (
+   owner_id int not null,
    team_id int not null,
    draft int,
-   primary key (user_id,team_id),
-   foreign key (user_id) references user(user_id),
+   primary key (owner_id,team_id),
+   foreign key (owner_id) references owner(owner_id),
    foreign key (team_id) references team(team_id)
 );
 
 create table userPlayer (
-   user_id int not null,
+   owner_id int not null,
    player_id int not null,
    draft int,
-   primary key (user_id,player_id),
-   foreign key (user_id) references user(user_id),
+   primary key (owner_id,player_id),
+   foreign key (owner_id) references owner(owner_id),
    foreign key (player_id) references player(player_id)
 );
 
@@ -123,6 +172,10 @@ INSERT INTO keyValue(k,v) VALUES ("status",'PREDRAFT');
 INSERT INTO keyValue(k,v) VALUES ("currentPlayerRound",'0');
 INSERT INTO keyValue(k,v) VALUES ("currentTeamRound",'0');
 
+INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2017,'Logo2017.png','0xffffff','0xffffff','0xffffff');
+INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2018,'Logo2018.png','0xffffff','0xffffff','0xffffff');
+INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2019,'Logo2019.png','0xffffff','0xffffff','0xffffff');
+INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2020,'Logo2020.png','0xffffff','0xffffff','0xffffff');
 
 INSERT INTO round (round_id,round) VALUES (1,'First Four');
 INSERT INTO round (round_id,round) VALUES (2,'Round of 64');

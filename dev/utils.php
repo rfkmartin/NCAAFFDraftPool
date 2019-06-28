@@ -4,7 +4,7 @@ function print_header()
    echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
    echo '<html><head>';
    echo '<title>NCAA Final Four Draft Pool</title>';
-   echo '<link href="/NCAAFFDraftPool/dev/style.css" rel="stylesheet" type="text/css">';
+   echo '<link href="./style.css" rel="stylesheet" type="text/css">';
    echo '<script src="js/jquery.js" type="text/javascript"></script>';
    echo '<script src="js/moment.min.js" type="text/javascript"></script>';
    echo '<script src="js/combodate.js" type="text/javascript"></script>';
