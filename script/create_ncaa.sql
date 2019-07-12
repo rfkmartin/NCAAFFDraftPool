@@ -38,10 +38,18 @@ create table owner (
    email varchar(64) not null,
    team_name varchar(64),
    password varchar(64) not null,
-   tourney_id int,
    is_admin int default 0,
-   primary key (owner_id),
-   foreign key (tourney_id) references tourney(tourney_id)
+   primary key (owner_id)
+);
+
+create table tourneyOwnerYear (
+   tourney_id int not null,
+   owner_id int not null,
+   year_id int not null,
+   primary key (tourney_id,owner_id,year_id),
+   foreign key (tourney_id) references tourney(tourney_id),
+   foreign key (year_id) references tourney_year(year_id),
+   foreign key (owner_id) references owner(owner_id)
 );
 
 CREATE TABLE login (
@@ -49,19 +57,19 @@ CREATE TABLE login (
    name VARCHAR(64) NOT NULL,
    password VARCHAR(64) NOT NULL,
    email VARCHAR(64) NOT NULL,
-   user_id1 INT(11) NULL DEFAULT NULL,
-   user_id2 INT(11) NULL DEFAULT NULL,
-   user_id3 INT(11) NULL DEFAULT NULL,
-   user_id4 INT(11) NULL DEFAULT NULL,
+   owner_id1 INT(11) NULL DEFAULT NULL,
+   owner_id2 INT(11) NULL DEFAULT NULL,
+   owner_id3 INT(11) NULL DEFAULT NULL,
+   owner_id4 INT(11) NULL DEFAULT NULL,
    tourney_id1 INT(11) NULL DEFAULT NULL,
    tourney_id2 INT(11) NULL DEFAULT NULL,
    tourney_id3 INT(11) NULL DEFAULT NULL,
    tourney_id4 INT(11) NULL DEFAULT NULL,
    PRIMARY KEY (login_id),
-   FOREIGN KEY (user_id1) REFERENCES owner(owner_id),
-   FOREIGN KEY (user_id2) REFERENCES owner(owner_id),
-   FOREIGN KEY (user_id3)  REFERENCES owner(owner_id),
-   FOREIGN KEY (user_id4) REFERENCES owner(owner_id),
+   FOREIGN KEY (owner_id1) REFERENCES owner(owner_id),
+   FOREIGN KEY (owner_id2) REFERENCES owner(owner_id),
+   FOREIGN KEY (owner_id3)  REFERENCES owner(owner_id),
+   FOREIGN KEY (owner_id4) REFERENCES owner(owner_id),
    FOREIGN KEY (tourney_id1) REFERENCES tourney(tourney_id),
    FOREIGN KEY (tourney_id2) REFERENCES tourney(tourney_id),
    FOREIGN KEY (tourney_id3)  REFERENCES tourney(tourney_id),
@@ -158,7 +166,7 @@ create table ownerTeam (
    foreign key (team_id) references team(team_id)
 );
 
-create table userPlayer (
+create table ownerPlayer (
    owner_id int not null,
    player_id int not null,
    draft int,
