@@ -1,7 +1,7 @@
 <?php
 function print_bracket($link)
 {
-   $sql = "select shortname,seed,points from bracket b left join teamgame tg on b.bracket_pos=tg.bracket_pos left join team t on t.team_id=b.team_id order by b.bracket_pos";
+    $sql = "select shortname,tY.seed,points from bracket b join team t on b.team_id=t.team_id left join (select tG.bracket_pos,points,tG.year_id from teamGame tG) as a on a.year_id=b.year_id and a.bracket_pos=b.bracket_pos left join teamstatsYear tY on tY.year_id=b.year_id and tY.team_id=b.team_id where b.year_id=2017 order by b.bracket_pos";
    //logger($link,$sql);
    $result = mysqli_query($link,$sql);
    $i=0;
@@ -10,8 +10,9 @@ function print_bracket($link)
       $school[$i]=$name;
       if ($s=="")
       {
-         $score[$i]="&nbsp;";
-         $seed[$i++] = "";
+          $score[$i]=$p;
+          $score[$i]="&nbsp;";
+          $seed[$i++] = "";
       }
       else
       {

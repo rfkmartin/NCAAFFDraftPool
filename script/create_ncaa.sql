@@ -26,7 +26,7 @@ CREATE TABLE tourney_year (
 create table tourney (
    tourney_id int not null auto_increment,
    name varchar(64),
-   year_id int,
+   year_id int NOT NULL,
    draft int,
    primary key(tourney_id),
    foreign key(year_id) references tourney_year(year_id)
@@ -35,10 +35,7 @@ create table tourney (
 create table owner (
    owner_id int not null auto_increment,
    name varchar(64) not null,
-   email varchar(64) not null,
    team_name varchar(64),
-   password varchar(64) not null,
-   is_admin int default 0,
    primary key (owner_id)
 );
 
@@ -57,23 +54,16 @@ CREATE TABLE login (
    name VARCHAR(64) NOT NULL,
    password VARCHAR(64) NOT NULL,
    email VARCHAR(64) NOT NULL,
+   is_admin int default 0,
    owner_id1 INT(11) NULL DEFAULT NULL,
    owner_id2 INT(11) NULL DEFAULT NULL,
    owner_id3 INT(11) NULL DEFAULT NULL,
    owner_id4 INT(11) NULL DEFAULT NULL,
-   tourney_id1 INT(11) NULL DEFAULT NULL,
-   tourney_id2 INT(11) NULL DEFAULT NULL,
-   tourney_id3 INT(11) NULL DEFAULT NULL,
-   tourney_id4 INT(11) NULL DEFAULT NULL,
    PRIMARY KEY (login_id),
    FOREIGN KEY (owner_id1) REFERENCES owner(owner_id),
    FOREIGN KEY (owner_id2) REFERENCES owner(owner_id),
    FOREIGN KEY (owner_id3)  REFERENCES owner(owner_id),
-   FOREIGN KEY (owner_id4) REFERENCES owner(owner_id),
-   FOREIGN KEY (tourney_id1) REFERENCES tourney(tourney_id),
-   FOREIGN KEY (tourney_id2) REFERENCES tourney(tourney_id),
-   FOREIGN KEY (tourney_id3)  REFERENCES tourney(tourney_id),
-   FOREIGN KEY (tourney_id4) REFERENCES tourney(tourney_id)
+   FOREIGN KEY (owner_id4) REFERENCES owner(owner_id)
 );
 
 create table team (
@@ -100,7 +90,7 @@ create table bracket (
    round varchar(32),
    team_id int,
    year_id int,
-   primary key (bracket_pos),
+   primary key (bracket_pos,year_id),
    foreign key(year_id) references tourney_year(year_id)
 );
 
@@ -134,10 +124,12 @@ create table keyValue (
 create table teamGame (
    team_id int not null,
    bracket_pos int not null,
+   year_id int not null,
    points int not null default 0,
    winner int default 0,
-   primary key (team_id,bracket_pos),
+   primary key (team_id,bracket_pos,year_id),
    foreign key (team_id) references team(team_id),
+   foreign key (year_id) references tourney_year(year_id),
    foreign key (bracket_pos) references bracket(bracket_pos)
 );
 
@@ -160,9 +152,11 @@ create table draft (
 create table ownerTeam (
    owner_id int not null,
    team_id int not null,
+   year_id int not null,
    draft int,
-   primary key (owner_id,team_id),
+   primary key (owner_id,team_id,year_id),
    foreign key (owner_id) references owner(owner_id),
+   foreign key (year_id) references tourney_year(year_id),
    foreign key (team_id) references team(team_id)
 );
 
@@ -175,6 +169,18 @@ create table ownerPlayer (
    foreign key (player_id) references player(player_id)
 );
 
+create table teamstatsYear (
+   team_id int not null,
+   year_id int not null,
+   wins int,
+   losses int,
+   rank int,
+   seed int,
+   primary key(team_id,year_id),
+   foreign key(team_id) references team(team_id),
+   foreign key(year_id) references tourney_year(year_id)
+);
+
 INSERT INTO keyValue(k,v) VALUES ("playerUpdateDTM",CURTIME());
 INSERT INTO keyValue(k,v) VALUES ("status",'PREDRAFT');
 INSERT INTO keyValue(k,v) VALUES ("currentPlayerRound",'0');
@@ -184,6 +190,11 @@ INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,terti
 INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2018,'Logo2018.png','0xffffff','0xffffff','0xffffff');
 INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2019,'Logo2019.png','0xffffff','0xffffff','0xffffff');
 INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2020,'Logo2020.png','0xffffff','0xffffff','0xffffff');
+
+INSERT into tourney(name,year_id) values ("2017 NCAA Beta Test",2017);
+INSERT into tourney(name,year_id) values ("2018 NCAA Beta Test",2018);
+INSERT into tourney(name,year_id) values ("2019 NCAA Beta Test",2019);
+
 
 INSERT INTO round (round_id,round) VALUES (1,'First Four');
 INSERT INTO round (round_id,round) VALUES (2,'Round of 64');
