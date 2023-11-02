@@ -11,17 +11,19 @@ import re
 import sys
 import urllib
 import mechanize
-import MySQLdb
+import ssl
+import mysql.connector
 
 ## Given a url, try to retrieve it. If it's text/html,
 ## print its base url and its text.
 def wget(url):
+  ssl._create_default_https_context=ssl._create_unverified_context
   br = mechanize.Browser()
   br.set_handle_robots(False)
-  db = MySQLdb.connect(host="192.168.10.52",    # your host, usually localhost
+  db = mysql.connector.connect(host="127.0.0.1",    # your host, usually localhost
                      user="root",         # your username
-                     passwd="ub6ib9",  # your password
-                     db="ncaa")        # name of the data base
+                     password="",  # your password
+                     database="")        # name of the data base
 
   # you must create a Cursor object. It will let
   #  you execute all the queries you need
@@ -34,8 +36,8 @@ def wget(url):
   for row in cur.fetchall():
     file="../data/team" + str(row[0]) + ".html"
     url="http://www.espn.com/mens-college-basketball/team/stats/_/id/" + str(row[0]) + "/"
-    #print(url)
-    #print(file)
+    print(url)
+    print(file)
     br.retrieve(url,file)
 
 def main():

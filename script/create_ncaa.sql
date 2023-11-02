@@ -70,14 +70,16 @@ create table team (
    team_id int not null,
    school varchar(64) not null,
    shortname varchar(64) not null,
-   location varchar(32),
+   location_ varchar(32),
+   team_color varchar(16),
+   alt_color varchar(16),
    mascot varchar(32),
    conference varchar(64),
    region varchar(32),
    wins int,
    losses int,
    rpi int,
-   rank int,
+   rank_ int,
    seed int,
    primary key (team_id)
 );
@@ -174,7 +176,7 @@ create table teamstatsYear (
    year_id int not null,
    wins int,
    losses int,
-   rank int,
+   rank_ int,
    seed int,
    primary key(team_id,year_id),
    foreign key(team_id) references team(team_id),
@@ -190,10 +192,13 @@ INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,terti
 INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2018,'Logo2018.png','0xffffff','0xffffff','0xffffff');
 INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2019,'Logo2019.png','0xffffff','0xffffff','0xffffff');
 INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2020,'Logo2020.png','0xffffff','0xffffff','0xffffff');
+INSERT INTO tourney_year(year_id,image_filename,main_color,secondary_color,tertiary_color) VALUES (2024,'Logo2024.png','0xffffff','0xffffff','0xffffff');
 
 INSERT into tourney(name,year_id) values ("2017 NCAA Beta Test",2017);
 INSERT into tourney(name,year_id) values ("2018 NCAA Beta Test",2018);
 INSERT into tourney(name,year_id) values ("2019 NCAA Beta Test",2019);
+INSERT into tourney(name,year_id) values ("2019 NCAA Beta Test",2020);
+INSERT into tourney(name,year_id) values ("2024 NCAA Beta Test",2024);
 
 
 INSERT INTO round (round_id,round) VALUES (1,'First Four');
@@ -555,3 +560,18 @@ INSERT INTO team (team_id,school,shortname) VALUES (30,"USC","USC");
 INSERT INTO team (team_id,school,shortname) VALUES (2670,"VCU","VCU");
 INSERT INTO team (team_id,school,shortname) VALUES (2678,"VMI","VMI");
 INSERT INTO team (team_id,school,shortname) VALUES (120,"Maryland","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (88,"Southern Indiana","S. IN");
+INSERT INTO team (team_id,school,shortname) VALUES (91,"Bellarmine","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (284,"Stonehill","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2330,"LeMoyne","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2453,"North Alabama","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2627,"Tarleton","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2771,"Merrimack","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2815,"Lindenwood","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2856,"Cal Baptist","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2900,"St. Thomas","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (28,"UCSD","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2511,"Queens","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (112358,"LIU","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (3101,"Utah Tech","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2387,"TAMU-Commerce","MD");
