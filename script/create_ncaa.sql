@@ -73,9 +73,11 @@ create table team (
    location_ varchar(32),
    team_color varchar(16),
    alt_color varchar(16),
+   logo varchar(64),
    mascot varchar(32),
    conference varchar(64),
    region varchar(32),
+   link varchar(128),
    wins int,
    losses int,
    rpi int,
@@ -574,4 +576,4 @@ INSERT INTO team (team_id,school,shortname) VALUES (28,"UCSD","MD");
 INSERT INTO team (team_id,school,shortname) VALUES (2511,"Queens","MD");
 INSERT INTO team (team_id,school,shortname) VALUES (112358,"LIU","MD");
 INSERT INTO team (team_id,school,shortname) VALUES (3101,"Utah Tech","MD");
-INSERT INTO team (team_id,school,shortname) VALUES (2387,"TAMU-Commerce","MD");
+INSERT INTO team (team_id,school,shortname) VALUES (2837,"TAMU-Commerce","MD");
