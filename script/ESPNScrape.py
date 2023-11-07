@@ -24,7 +24,7 @@ def wget(url):
   br.set_handle_robots(False)
   db = mysql.connector.connect(host="127.0.0.1",    # your host, usually localhost
                      user="root",         # your username
-                     password="Luv2Drnk",  # your password
+                     password="",  # your password
                      auth_plugin="mysql_native_password",
                      database="ncaa1")        # name of the data base
 
@@ -50,13 +50,14 @@ def wget(url):
         if len(team) != 0:
           wins=0
           losses=0
+          rank=team.get('rank',100)
           displayNm=team.get('displayName','')
           abbrev=team.get('abbrev','')
           logo=team.get('logo','')
           mascot=team['shortDisplayName']
           record=team.get('recordSummary',{})
           if len(record) != 0:
-             winslosses=record.search("([0-9]*)-([0-9]*)",record)
+             winslosses=re.search("([0-9]*)-([0-9]*)",record)
              if (winslosses):
                 wins=winslosses.group(1)
                 losses=winslosses.group(2)
@@ -78,8 +79,8 @@ def wget(url):
               sql="insert into player(year_id,name,team_id,gp,mpg,ppg) values (2024,%s,%s,%s,%s,%s)"
               val=(name,teamid,gp,mpg,ppg)
               cur.execute(sql,val)
-          sql="update team set school=%s,shortname=%s,location_=%s,team_color=%s,alt_color=%s,logo=%s,wins=%s,losses=%s,mascot=%s,conference=%s,link=%s where team_id=%s"
-          val=(displayNm,abbrev,location,teamColor,altColor,logo,wins,losses,mascot,conf,links,teamid)
+          sql="update team set school=%s,shortname=%s,location_=%s,team_color=%s,alt_color=%s,logo=%s,wins=%s,losses=%s,rank_=%s,mascot=%s,conference=%s,link=%s where team_id=%s"
+          val=(displayNm,abbrev,location,teamColor,altColor,logo,wins,losses,rank,mascot,conf,links,teamid)
           cur.execute(sql,val)
           db.commit()
     else:
