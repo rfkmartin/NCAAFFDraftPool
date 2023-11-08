@@ -64,7 +64,7 @@ function print_body($link)
    }
    elseif ($_SESSION ['page'] == "teams")
    {
-      print_top_n_teams ( 64, $link );
+      print_top_n_ranked_teams ( 25, $link );
       echo '<br>';
    }
    elseif ($_SESSION ['page'] == "players")
@@ -74,7 +74,7 @@ function print_body($link)
    }
    elseif ($_SESSION ['page'] == "teamplayers")
    {
-      print_top_m_players_n_teams ( 64, 64, $link );
+      print_top_m_players_n_teams ( 64, 25, $link );
       echo '<br>';
    }
    elseif ($_SESSION ['page'] == "res2000")
@@ -189,7 +189,7 @@ function print_body($link)
 function print_banner()
 {
    echo '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
-   echo '<tr><td width="25%" align="center"><img src="images/Logo2019.png" alt="2017 NCAA Final Four Draft Pool"></td>';
+   echo '<tr><td width="25%" align="center"><img src="images/Logo2024.png" alt="2017 NCAA Final Four Draft Pool"></td>';
    echo '</table>';
 }
 function print_rules()
@@ -252,6 +252,23 @@ function print_top_n_teams($n, $link)
    }
    echo '</table>';
 }
+function print_top_n_ranked_teams($n, $link)
+{
+   $sql = "select v from keyValue where k='playerUpdateDTM'";
+   $data = mysqli_query ( $link, $sql );
+   while ( list ( $updated ) = mysqli_fetch_row ( $data ) )
+   {
+      echo '<b>Top ' . $n . ' Teams</b><small>(last updated: ' . $updated . ')</small><br>';
+   }
+   $sql = "select school,wins,losses,conference,rank_,team_color,alt_color,logo from team where rank_ is not null order by rank_ asc limit " . $n;
+   $data = mysqli_query ( $link, $sql );
+   echo '<table border="1"><tr><td></td><td>Team</td><td>Record</td><td>Conference</td></tr>';
+   while ( list ( $team, $wins, $losses, $conference, $rank, $team_color,$alt_color,$logo ) = mysqli_fetch_row ( $data ) )
+   {
+      echo '<tr><td>' . $rank . '</td><td bgcolor="#'.$alt_color.'"><span style="color:#'.$team_color.'">' . $team . '</span><img src="'.$logo.'" alt="image" height="100" /></td><td>' . $wins . '-' . $losses . '</td><td>' . $conference . '</td></tr>';
+   }
+   echo '</table>';
+}
 function print_top_n_players($n, $link)
 {
    $sql = "select v from keyValue where k='playerUpdateDTM'";
@@ -260,13 +277,13 @@ function print_top_n_players($n, $link)
    {
       echo '<b>Top ' . $n . ' Scorers</b><small>(last updated: ' . $updated . ')</small><br>';
    }
-   $sql = "select name,ppg,school,conference from player p join team t on p.team_id=t.team_id order by ppg desc limit " . $n;
+   $sql = "select name,ppg,school,conference,team_color,alt_color,logo from player p join team t on p.team_id=t.team_id order by ppg desc limit " . $n;
    $data = mysqli_query ( $link, $sql );
    echo '<table border="1"><tr><td></td><td>Name</td><td>Team</td><td>Pts/Gm</td><td>Conference</td></tr>';
    $i = 1;
-   while ( list ( $name, $ppg, $team, $conference ) = mysqli_fetch_row ( $data ) )
+   while ( list ( $name, $ppg, $team, $conference, $team_color, $alt_color,$logo ) = mysqli_fetch_row ( $data ) )
    {
-      echo '<tr><td>' . $i ++ . '</td><td>' . $name . '</td><td>' . $team . '</td><td>' . $ppg . '</td><td>' . $conference . '</td></tr>';
+      echo '<tr><td>' . $i ++ . '</td><td>' . $name . '</td><td bgcolor="#'.$alt_color.'"><span style="color:#'.$team_color.'">' . $team . '</span><img src="'.$logo.'" alt="image" height="100" /></td><td>' . $ppg . '</td><td>' . $conference . '</td></tr>';
    }
    echo '</table>';
 }
@@ -278,13 +295,13 @@ function print_top_m_players_n_teams($m, $n, $link)
    {
       echo '<b>Top ' . $m . ' Scorers from Top ' . $n . ' Teams</b><small>(last updated: ' . $updated . ')</small><br>';
    }
-   $sql = "select name,ppg,school,conference from player p join team t on p.team_id=t.team_id inner join (select team_id from team order by wins/(wins+losses) desc limit " . $n . ") a on a.team_id=p.team_id order by ppg desc limit " . $m;
+   $sql = "select name,ppg,school,conference,rank_,team_color,alt_color,logo from player p join team t on p.team_id=t.team_id inner join (select team_id from team where rank_ is not null order by rank_ asc limit " . $n . ") a on a.team_id=p.team_id order by ppg desc limit " . $m;
    $data = mysqli_query ( $link, $sql );
    echo '<table border="1"><tr><td></td><td>Name</td><td>Team</td><td>Pts/Gm</td><td>Conference</td></tr>';
    $i = 1;
-   while ( list ( $name, $ppg, $team, $conference ) = mysqli_fetch_row ( $data ) )
+   while ( list ( $name, $ppg, $team, $conference,$rank,$team_color,$alt_color,$logo ) = mysqli_fetch_row ( $data ) )
    {
-      echo '<tr><td>' . $i ++ . '</td><td>' . $name . '</td><td>' . $team . '</td><td>' . $ppg . '</td><td>' . $conference . '</td></tr>';
+      echo '<tr><td>' . $i ++ . '</td><td>' . $name . '</td><td bgcolor="#'.$alt_color.'"><span style="color:#'.$team_color.'">' . $team .'('.$rank.')</span><img src="'.$logo.'" alt="image" height="100" /></td><td>' . $ppg . '</td><td>' . $conference . '</td></tr>';
    }
    echo '</table>';
 }
