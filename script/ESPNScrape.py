@@ -6,22 +6,17 @@
 # Google's Python Class
 # http://code.google.com/edu/languages/google-python-class/
 
-#import os
 import re
 import json
-#import sys
-#import urllib
-import mechanize
 import requests
 import ssl
 import mysql.connector
+import datetime
 
 ## Given a url, try to retrieve it. If it's text/html,
 ## print its base url and its text.
 def wget(url):
   ssl._create_default_https_context=ssl._create_unverified_context
-  br = mechanize.Browser()
-  br.set_handle_robots(False)
   db = mysql.connector.connect(host="127.0.0.1",    # your host, usually localhost
                      user="root",         # your username
                      password="",  # your password
@@ -31,6 +26,9 @@ def wget(url):
   # you must create a Cursor object. It will let
   #  you execute all the queries you need
   cur = db.cursor()
+  sql='delete from player where year_id=2024'
+  cur.execute(sql)
+  db.commit()
 
   # Use all the SQL you like
   cur.execute("SELECT team_id FROM team")
@@ -85,6 +83,11 @@ def wget(url):
           db.commit()
     else:
         print("nothing")
+  sql="update keyValue set v=%s where k='playerUpdateDTM'"
+  val=(datetime.datetime.now(),)
+  cur.execute(sql,val)
+  db.commit()
+
 
 def main():
    wget('foo')

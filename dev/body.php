@@ -283,7 +283,7 @@ function print_top_n_players($n, $link)
    $i = 1;
    while ( list ( $name, $ppg, $team, $conference, $team_color, $alt_color,$logo ) = mysqli_fetch_row ( $data ) )
    {
-      echo '<tr><td>' . $i ++ . '</td><td>' . $name . '</td><td bgcolor="#'.$alt_color.'"><span style="color:#'.$team_color.'">' . $team . '</span><img src="'.$logo.'" alt="image" height="100" /></td><td>' . $ppg . '</td><td>' . $conference . '</td></tr>';
+      echo '<tr><td>' . $i ++ . '</td><td>' . $name . '</td><td bgcolor="#'.$alt_color.'"><span style="color:#'.$team_color.'">' . $team . '</span><img src="'.$logo.'" alt="image" height="100" /></td><td>' . number_format($ppg,1,'.',''). '</td><td>' . $conference . '</td></tr>';
    }
    echo '</table>';
 }
@@ -301,7 +301,7 @@ function print_top_m_players_n_teams($m, $n, $link)
    $i = 1;
    while ( list ( $name, $ppg, $team, $conference,$rank,$team_color,$alt_color,$logo ) = mysqli_fetch_row ( $data ) )
    {
-      echo '<tr><td>' . $i ++ . '</td><td>' . $name . '</td><td bgcolor="#'.$alt_color.'"><span style="color:#'.$team_color.'">' . $team .'('.$rank.')</span><img src="'.$logo.'" alt="image" height="100" /></td><td>' . $ppg . '</td><td>' . $conference . '</td></tr>';
+      echo '<tr><td>' . $i ++ . '</td><td>' . $name . '</td><td bgcolor="#'.$alt_color.'"><span style="color:#'.$team_color.'">' . $team .'('.$rank.')</span><img src="'.$logo.'" alt="image" height="100" /></td><td>' . number_format($ppg,1,'.','')  . '</td><td>' . $conference . '</td></tr>';
    }
    echo '</table>';
 }
