@@ -12,6 +12,7 @@ import requests
 import ssl
 import mysql.connector
 import datetime
+from time import strftime,gmtime
 
 ## Given a url, try to retrieve it. If it's text/html,
 ## print its base url and its text.
@@ -19,7 +20,7 @@ def wget(url):
   ssl._create_default_https_context=ssl._create_unverified_context
   db = mysql.connector.connect(host="127.0.0.1",    # your host, usually localhost
                      user="root",         # your username
-                     password="",  # your password
+                     password="abc123",  # your password
                      auth_plugin="mysql_native_password",
                      database="ncaa1")        # name of the data base
 
@@ -30,9 +31,12 @@ def wget(url):
   cur.execute(sql)
   db.commit()
 
+  print("started at "+strftime("%Y-%m-%d %H:%M:%S", gmtime()))
   # Use all the SQL you like
   cur.execute("SELECT team_id FROM team")
 
+  plyrs=0
+  tms=0
   # print all the first cell of all the rows
   for row in cur.fetchall():
     teamid=str(row[0])
@@ -70,6 +74,7 @@ def wget(url):
           links=team['links']
           playerStats=json_load['page']['content']['stats']['playerStats']
           for playerStat in playerStats[0]:
+              plyrs+=1
               name=playerStat['athlete']['name']
               gp=playerStat['statGroups']['stats'][0]['displayValue']
               mpg=playerStat['statGroups']['stats'][1]['displayValue']
@@ -77,16 +82,19 @@ def wget(url):
               sql="insert into player(year_id,name,team_id,gp,mpg,ppg) values (2024,%s,%s,%s,%s,%s)"
               val=(name,teamid,gp,mpg,ppg)
               cur.execute(sql,val)
+          tms+=1
           sql="update team set school=%s,shortname=%s,location_=%s,team_color=%s,alt_color=%s,logo=%s,wins=%s,losses=%s,rank_=%s,mascot=%s,conference=%s,link=%s where team_id=%s"
           val=(displayNm,abbrev,location,teamColor,altColor,logo,wins,losses,rank,mascot,conf,links,teamid)
           cur.execute(sql,val)
           db.commit()
     else:
         print("nothing")
+  print("updated "+str(plyrs)+" players and "+str(tms))
   sql="update keyValue set v=%s where k='playerUpdateDTM'"
   val=(datetime.datetime.now(),)
   cur.execute(sql,val)
   db.commit()
+  print("finished at "+strftime("%Y-%m-%d %H:%M:%S", gmtime()))
 
 
 def main():
