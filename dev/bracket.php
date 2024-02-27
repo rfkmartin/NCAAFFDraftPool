@@ -1,7 +1,8 @@
 <?php
 function print_bracket($link)
 {
-    $sql = "select shortname,tY.seed,points from bracket b join team t on b.team_id=t.team_id left join (select tG.bracket_pos,points,tG.year_id from teamGame tG) as a on a.year_id=b.year_id and a.bracket_pos=b.bracket_pos left join teamstatsYear tY on tY.year_id=b.year_id and tY.team_id=b.team_id where b.year_id=2017 order by b.bracket_pos";
+    $sql = "select shortname,a.seed,points from bracket b left join (select tG.bracket_pos,t.team_id,points,shortname,tY.seed from team t join teamstatsYear tY on t.team_id=tY.team_id join teamGame tG on tG.team_id=t.team_id where tG.year_id=2024) as a on a.bracket_pos=b.bracket_pos order by b.bracket_pos";
+    #    select shortname,tY.seed,points from bracket b join team t on b.team_id=t.team_id left join (select tG.bracket_pos,points,tG.year_id from teamGame tG) as a on a.year_id=b.year_id and a.bracket_pos=b.bracket_pos left join teamstatsYear tY on tY.year_id=b.year_id and tY.team_id=b.team_id where b.year_id=2017 order by b.bracket_pos";
    //logger($link,$sql);
    $result = mysqli_query($link,$sql);
    $i=0;
@@ -22,9 +23,21 @@ function print_bracket($link)
       }
    }
    $i=0;
+   $sql="select directional from region where year_id=2024 and position=0";
+   $result=mysqli_query($link,$sql);
+   list($topleft)=mysqli_fetch_row($result);
+   $sql="select directional from region where year_id=2024 and position=1";
+   $result=mysqli_query($link,$sql);
+   list($topright)=mysqli_fetch_row($result);
+   $sql="select directional from region where year_id=2024 and position=2";
+   $result=mysqli_query($link,$sql);
+   list($bottomleft)=mysqli_fetch_row($result);
+   $sql="select directional from region where year_id=2024 and position=3";
+   $result=mysqli_query($link,$sql);
+   list($bottomright)=mysqli_fetch_row($result);
    echo '<table class="bracket">';
    echo '<tr><td class="bracket_head" colspan="2">Round of 64</td><td class="bracket_head" colspan=2>Round of 32</td><td class="bracket_head"colspan="2">Sweet Sixteen</td><td class="bracket_head"colspan="2">Elite Eight</td><td class="bracket_head"colspan="2">Final Four</td><td class="bracket_head"colspan="2">Championship</td><td class="bracket_head"colspan="2">Final Four</td><td class="bracket_head"colspan="2">Elite Eight</td><td class="bracket_head"colspan="2">Sweet Sixteen</td><td class="bracket_head"colspan="2">Round of 32</td><td class="bracket_head"colspan="2">Round of 64</td></tr>';
-   echo '<tr><td class="region" colspan="8">East</td><td colspan=6></td><td class="region"colspan="8">South</td></tr>';
+   echo '<tr><td class="region" colspan="8">'.$topleft.'</td><td colspan=6></td><td class="region"colspan="8">'.$topright.'</td></tr>';
 
    echo '<tr><td colspan=22></td></tr>';
 
@@ -438,7 +451,7 @@ function print_bracket($link)
     
    echo '<tr><td colspan=22></td></tr>
 
-<tr><td class="region" colspan="8">West</td><td colspan=6></td><td class="region"colspan="8">Midwest</td></tr>
+<tr><td class="region" colspan="8">'.$bottomleft.'</td><td colspan=6></td><td class="region"colspan="8">'.$bottomright.'</td></tr>
 <tr><td colspan=22></td></tr>
 <tr><td colspan=22 class="bracket_head">First Four</td></tr>
 <tr><td colspan=22></td></tr>

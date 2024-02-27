@@ -90,12 +90,8 @@ create table bracket (
    bracket_pos int not null,
    next_pos int not null,
    game_id int,
-   region varchar(32),
    round varchar(32),
-   team_id int,
-   year_id int,
-   primary key (bracket_pos,year_id),
-   foreign key(year_id) references tourney_year(year_id)
+   primary key (bracket_pos)
 );
 
 create table round (
@@ -140,9 +136,11 @@ create table teamGame (
 create table playerGame (
    player_id int not null,
    bracket_pos int not null,
+   year_id int not null,
    points int not null default 0,
-   primary key (player_id,bracket_pos),
+   primary key (player_id,bracket_pos,year_id),
    foreign key (player_id) references player(player_id),
+   foreign key (year_id) references tourney_year(year_id),
    foreign key (bracket_pos) references bracket(bracket_pos)
 );
 
@@ -185,6 +183,15 @@ create table teamstatsYear (
    foreign key(year_id) references tourney_year(year_id)
 );
 
+create table region (
+    year_id int not null,
+    position int not null,
+    directional varchar(10) default '',
+    primary key(year_id,position),
+    foreign key(year_id) references tourney_year(year_id)
+);
+
+
 INSERT INTO keyValue(k,v) VALUES ("playerUpdateDTM",CURTIME());
 INSERT INTO keyValue(k,v) VALUES ("status",'PREDRAFT');
 INSERT INTO keyValue(k,v) VALUES ("currentPlayerRound",'0');
@@ -202,6 +209,10 @@ INSERT into tourney(name,year_id) values ("2019 NCAA Beta Test",2019);
 INSERT into tourney(name,year_id) values ("2019 NCAA Beta Test",2020);
 INSERT into tourney(name,year_id) values ("2024 NCAA Beta Test",2024);
 
+INSERT INTO region(year_id,position) values (2024,0);
+INSERT INTO region(year_id,position) values (2024,1);
+INSERT INTO region(year_id,position) values (2024,2);
+INSERT INTO region(year_id,position) values (2024,3);
 
 INSERT INTO round (round_id,round) VALUES (1,'First Four');
 INSERT INTO round (round_id,round) VALUES (2,'Round of 64');
