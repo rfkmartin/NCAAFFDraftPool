@@ -24,6 +24,14 @@ function print_body($link)
    {
     print_bracket_form($link);
    }
+   elseif ($_SESSION ['page'] == "setfirstfour")
+   {
+    print_firstfour_form($link);
+   }
+   elseif ($_SESSION ['page'] == "scoregame")
+   {
+    choosegame($link);
+   }
    elseif ($_SESSION ['page'] == "register")
    {
       register_account ( $link );

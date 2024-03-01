@@ -175,6 +175,8 @@ function print_sub_menu_nitrambo()
    print('<tr><td class="submenu">');
    print('<button name="setregion">Set Regions</button>');
    print(' | <button name="setbracket">Set Bracket</button>');
+   print(' | <button name="setfirstfour">Set First Four</button>');
+   print(' | <button name="scoregame">Score Game</button>');
    print('</td></tr>');
    print('</form>');
 }
@@ -227,9 +229,6 @@ function print_region_form()
 }
 function print_bracket_form($link)
 {
-   print("<br>drop down of brackt_pos");
-   print("<br>drop down of 1-16 for seed");
-   print("<br>alpha dropdown of teams");
    echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
    if ($_SESSION['subpage']!='enter_teams')
    {
@@ -242,7 +241,7 @@ function print_bracket_form($link)
     }
     echo '<option value=65>65</option>';
     echo '<option value=66>66</option>';
-    echo '<option value=66>67</option>';
+    echo '<option value=67>67</option>';
     echo '<option value=68>68</option>';
     print("</select></td></tr></table>");
     print('<input type="submit" name="bracketform" value="Enter Teams"><form>');
@@ -261,6 +260,7 @@ function print_bracket_form($link)
         {
             $s=$s.'<option value='.$team_id.'>'.$school.'</option>';
         }
+        $s=$s.'<option value=-999>First Four winner</option>';
         echo '<form action = "" method = "post">';
         echo '<table border="1"><tr><td valign="top">';
         print("Bracket Position ".$bracket[0].": ");
@@ -286,6 +286,26 @@ function print_bracket_form($link)
         print("<input type='hidden' name='bracket_pos1'  value='".$bracket[1]."'/>");
         print("<input type='hidden' name='bracket_pos0'  value='".$bracket[0]."'/>");
         print('<input type="submit" name="bracketcommit" value="Commit to Bracket"></td></td><form>');
+    }
+}
+function print_firstfour_form()
+{
+   print('<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>');
+   print('<form action = "" method = "post">');
+   print('<table><tr><td align="left">Winner of Game 65: </td><td><input type = "text" name = "game65"></td></tr>');
+   print('<table><tr><td align="left">Winner of Game 66: </td><td><input type = "text" name = "game66"></td></tr>');
+   print('<table><tr><td align="left">Winner of Game 67: </td><td><input type = "text" name = "game67"></td></tr>');
+   print('<table><tr><td align="left">Winner of Game 68: </td><td><input type = "text" name = "game68"></td></tr>');
+   print('<input type="submit" name="firstfourform" value="Set First Four"><form>');
+}
+function choosegame($link)
+{
+    if ($_SESSION['subpage']!="enterscores")
+    {
+        print('<form action = "" method = "post">');
+        print('<input type="text" name="game_id"><input type="submit" name="enter_game_nitrambo" value="Submit"></form>');
+    } else {
+        enter_game($_POST['game_id'],$link);
     }
 }
 function register_account($link)
@@ -375,30 +395,67 @@ function process_forms($link)
     {
         print_r($_SESSION);
         print_r($_POST);
-        $sql="insert into teamstatsYear (team_id,year_id,seed) values(".$_POST['team0'].",2024,".$_POST['seed0'].")";
+        if ($_POST['team0']!=-999)
+        {
+            $sql="insert into teamstatsYear (team_id,year_id,seed) values(".$_POST['team0'].",2024,".$_POST['seed0'].")";
+            print($sql);
+            if (! mysqli_query ( $link, $sql ))
+            {
+               $_SESSION ['error'] = 'something happened';
+            }
+            $sql="insert into teamGame (year_id,team_id,bracket_pos) values(2024,".$_POST['team0'].",".$_POST['bracket_pos0'].")";
+            print($sql);
+            if (! mysqli_query ( $link, $sql ))
+            {
+               $_SESSION ['error'] = 'something happened';
+            }
+        }
+        if ($_POST['team1']!=-999)
+        {
+            $sql="insert into teamstatsYear (team_id,year_id,seed) values(".$_POST['team1'].",2024,".$_POST['seed1'].")";
+            print($sql);
+            if (! mysqli_query ( $link, $sql ))
+            {
+               $_SESSION ['error'] = 'something happened';
+            }
+            $sql="insert into teamGame (year_id,team_id,bracket_pos) values(2024,".$_POST['team1'].",".$_POST['bracket_pos1'].")";
+            print($sql);
+            if (! mysqli_query ( $link, $sql ))
+            {
+               $_SESSION ['error'] = 'something happened';
+            }
+        }
+    }
+	if (isset($_POST['firstfourform']))
+	{
+        $sql="update bracket set next_pos=".$_POST['game65']." where game_id=65";
         print($sql);
         if (! mysqli_query ( $link, $sql ))
         {
            $_SESSION ['error'] = 'something happened';
         }
-        $sql="insert into teamstatsYear (team_id,year_id,seed) values(".$_POST['team1'].",2024,".$_POST['seed1'].")";
+        $sql="update bracket set next_pos=".$_POST['game66']." where game_id=66";
         print($sql);
         if (! mysqli_query ( $link, $sql ))
         {
            $_SESSION ['error'] = 'something happened';
         }
-        $sql="insert into teamGame (year_id,team_id,bracket_pos) values(2024,".$_POST['team0'].",".$_POST['bracket_pos0'].")";
+        $sql="update bracket set next_pos=".$_POST['game67']." where game_id=67";
         print($sql);
         if (! mysqli_query ( $link, $sql ))
         {
            $_SESSION ['error'] = 'something happened';
         }
-        $sql="insert into teamGame (year_id,team_id,bracket_pos) values(2024,".$_POST['team1'].",".$_POST['bracket_pos1'].")";
+        $sql="update bracket set next_pos=".$_POST['game68']." where game_id=68";
         print($sql);
         if (! mysqli_query ( $link, $sql ))
         {
            $_SESSION ['error'] = 'something happened';
         }
+    }
+    if (isset($_POST['enter_game_nitrambo']))
+    {
+        $_SESSION['subpage']="enterscores";
     }
 	if (isset($_POST['loginform']))
 	{
@@ -617,6 +674,8 @@ function process_forms($link)
    }
    if (isset($_POST['submit_game']))
    {
+    print_r($_POST);
+    print_r($_SESSION);
       $team_id=$_POST['team_id'];
       $tpts=$_POST['tpts'];
       $bpos=$_POST['b_pos'];
@@ -635,31 +694,32 @@ function process_forms($link)
       $team2b=$bpos[1];
       $team2pts=$tpts[1];
       $next=$npos[0];
-      $tmw1=',0';$tmw2=',0';
       if ($team1pts>$team2pts)
       {
-         $sql = 'update bracket set team_id='.$team1.' where bracket_pos='.$next;
-         //echo $sql;
+        $sql="insert into teamGame (year_id,team_id,bracket_pos) values(2024,".$team1.",".$next.")";
          $data = mysqli_query ( $link, $sql );
-         $tmw1=',1';
-      }
+         $sql="update teamGame set points=".$team1pts.",winner=1 where year_id=2024 and bracket_pos=".$team1b." and team_id=".$team1;
+         $data = mysqli_query ( $link, $sql );
+         $sql="update teamGame set points=".$team2pts.",winner=0 where year_id=2024 and bracket_pos=".$team2b." and team_id=".$team2;
+         $data = mysqli_query ( $link, $sql );
+        }
       else
       {
-         $sql = 'update bracket set team_id='.$team2.' where bracket_pos='.$next;
-         //echo $sql;
-         $data = mysqli_query ( $link, $sql );
-         $tmw2=',1';
-      }
-      $sql = 'insert into teamgame (team_id,bracket_pos,points,winner) values ('.$team1.','.$team1b.','.$team1pts.$tmw1.')';
-      //echo $sql;
-      $data = mysqli_query ( $link, $sql );
-      $sql = 'insert into teamgame (team_id,bracket_pos,points,winner) values ('.$team2.','.$team2b.','.$team2pts.$tmw2.')';
-      //echo $sql;
+        $sql="insert into teamGame (year_id,team_id,bracket_pos) values(2024,".$team2.",".$next.")";
+        print($sql);
+        $data = mysqli_query ( $link, $sql );
+        $sql="update teamGame set points=".$team1pts.",winner=0 where year_id=2024 and bracket_pos=".$team1b." and team_id=".$team1;
+        print($sql);
+        $data = mysqli_query ( $link, $sql );
+        $sql="update teamGame set points=".$team2pts.",winner=1 where year_id=2024 and bracket_pos=".$team2b." and team_id=".$team2;
+        print($sql);
+        $data = mysqli_query ( $link, $sql );
+     }
       $data = mysqli_query ( $link, $sql );
       for ($i=0; $i<count($player_id); $i++)
       {
-         $sql = 'insert into playergame (player_id,bracket_pos,points) values ('.$player_id[$i].','.$bppos[$i].','.$ppts[$i].')';
-         //echo $sql;
+         $sql = 'insert into playerGame (year_id,player_id,bracket_pos,points) values (2024,'.$player_id[$i].','.$bppos[$i].','.$ppts[$i].')';
+         print($sql);
          $data = mysqli_query ( $link, $sql );
       }
       update_user_points($link);
@@ -710,6 +770,20 @@ function set_page()
    if (isset($_POST['setbracket']))
    {
       $_SESSION['page']='setbracket';
+   }
+   if (isset($_POST['setfirstfour']))
+   {
+      $_SESSION['page']='setfirstfour';
+   }
+   if (isset($_POST['scoregame']))
+   {
+      $_SESSION['page']='scoregame';
+   }
+   if (isset($_POST['enter_game_nitrambo']))
+   {
+    print_r($_POST);
+    $_SESSION['page']='scoregame';
+    $_SESSION['subpage']='enterscores';
    }
    if (isset ( $_POST ['admin'] ))
    {
