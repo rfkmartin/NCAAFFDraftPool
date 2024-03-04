@@ -32,38 +32,35 @@ create table tourney (
    foreign key(year_id) references tourney_year(year_id)
 );
 
-create table owner (
-   owner_id int not null auto_increment,
-   name varchar(64) not null,
-   team_name varchar(64),
-   primary key (owner_id)
+CREATE TABLE _login (
+   login_id INT(11) NOT NULL AUTO_INCREMENT,
+   name VARCHAR(64) NOT NULL,
+   username varchar(16) NOT NULL,
+   password VARCHAR(64) NOT NULL,
+   email VARCHAR(64) NOT NULL,
+   is_admin int default 0,
+   PRIMARY KEY (login_id)
 );
 
 create table tourneyOwnerYear (
    tourney_id int not null,
-   owner_id int not null,
+   login_id int not null,
    year_id int not null,
-   primary key (tourney_id,owner_id,year_id),
+   name varchar(64),
+   primary key (tourney_id,login_id,year_id),
    foreign key (tourney_id) references tourney(tourney_id),
    foreign key (year_id) references tourney_year(year_id),
-   foreign key (owner_id) references owner(owner_id)
+   foreign key (login_id) references _login(login_id)
 );
 
-CREATE TABLE login (
-   login_id INT(11) NOT NULL AUTO_INCREMENT,
-   name VARCHAR(64) NOT NULL,
-   password VARCHAR(64) NOT NULL,
-   email VARCHAR(64) NOT NULL,
-   is_admin int default 0,
-   owner_id1 INT(11) NULL DEFAULT NULL,
-   owner_id2 INT(11) NULL DEFAULT NULL,
-   owner_id3 INT(11) NULL DEFAULT NULL,
-   owner_id4 INT(11) NULL DEFAULT NULL,
-   PRIMARY KEY (login_id),
-   FOREIGN KEY (owner_id1) REFERENCES owner(owner_id),
-   FOREIGN KEY (owner_id2) REFERENCES owner(owner_id),
-   FOREIGN KEY (owner_id3)  REFERENCES owner(owner_id),
-   FOREIGN KEY (owner_id4) REFERENCES owner(owner_id)
+create table entry (
+   entry_id int not null auto_increment,
+   login_id int not null,
+   tourney_id int not null,
+   name varchar(64) not null,
+   primary key (entry_id),
+   foreign key (login_id) references _login(login_id),
+   foreign key (tourney_id) references tourneyOwnerYear(tourney_id)
 );
 
 create table team (
@@ -154,11 +151,9 @@ create table draft (
 create table ownerTeam (
    owner_id int not null,
    team_id int not null,
-   year_id int not null,
    draft int,
-   primary key (owner_id,team_id,year_id),
-   foreign key (owner_id) references owner(owner_id),
-   foreign key (year_id) references tourney_year(year_id),
+   primary key (owner_id,team_id),
+   foreign key (owner_id) references entry(entry_id),
    foreign key (team_id) references team(team_id)
 );
 
@@ -167,7 +162,7 @@ create table ownerPlayer (
    player_id int not null,
    draft int,
    primary key (owner_id,player_id),
-   foreign key (owner_id) references owner(owner_id),
+   foreign key (owner_id) references entry(entry_id),
    foreign key (player_id) references player(player_id)
 );
 

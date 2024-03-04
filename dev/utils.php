@@ -491,6 +491,8 @@ function process_forms($link)
       $_SESSION ['error'] = '';
       $_SESSION ['message'] = '';
       $_SESSION ['page'] = 'register';
+      print_r($_POST);
+      print_r($_SESSION);
       if ($_POST ['passwd1'] == "" || $_POST ['passwd2'] == "")
       {
          $_SESSION ['error'] = 'Password cannot be blank';
@@ -503,10 +505,12 @@ function process_forms($link)
          return;
       }
       // change password
-      $sql = 'insert into user (name,team_name,email,password) value ("'.$_POST ['username'].'","'.$_POST ['teamname'].'","'.$_POST ['email'].'","'.password_hash ( $_POST ['passwd1'], PASSWORD_DEFAULT ).'")';
+      $sql = 'insert into _login (username,name,email,password) value ("'.$_POST ['username'].'","'.$_POST ['teamname'].'","'.$_POST ['email'].'","'.password_hash ( $_POST ['passwd1'], PASSWORD_DEFAULT ).'")';
+      print($sql);
       if (! mysqli_query ( $link, $sql ))
       {
          $_SESSION ['error'] = 'something happened';
+         print_r($_SESSION);
       }
       $_SESSION ['message'] = 'User '.$_POST['username'].' successfully created';
    }
