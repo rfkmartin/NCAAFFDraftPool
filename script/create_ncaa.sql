@@ -43,12 +43,12 @@ CREATE TABLE _login (
 );
 
 create table tourneyOwnerYear (
-   tourney_id int not null,
+   tourney_id int not null AUTO_INCREMENT,
    login_id int not null,
    year_id int not null,
    name varchar(64),
+   password VARCHAR(64) NOT NULL,
    primary key (tourney_id,login_id,year_id),
-   foreign key (tourney_id) references tourney(tourney_id),
    foreign key (year_id) references tourney_year(year_id),
    foreign key (login_id) references _login(login_id)
 );

@@ -74,7 +74,12 @@ function print_sub_menu()
    }
    elseif ($_SESSION['status']=='PREDRAFT')
    {
-      echo '<button ' . isBtnSelected ( 'register' ) . 'name="register">Register</button>';
+    if (!isset($_SESSION['user'])){
+        echo '<button ' . isBtnSelected ( 'register' ) . 'name="register">Register/Log In</button>';
+    } else {
+        print("<button " . isBtnSelected ( "pools" ) . "name=\"pools\">Pools</button>");
+        print(" | <button " . isBtnSelected ( "logout" ) . "name=\"logout\">Logout</button>");
+    }
       echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
       echo ' | <button ' . isBtnSelected ( 'teams' ) . 'name="teams">Top Teams</button>';
       echo ' | <button ' . isBtnSelected ( 'players' ) . 'name="players">Top Players</button>';
@@ -311,6 +316,7 @@ function choosegame($link)
 function register_account($link)
 {
    echo '<h3><font color="red">'.$_SESSION['error'].'</font>'.$_SESSION['message'].'</h3>';
+   print("<table><tr><td>");
    echo '<h2>Register</h2>';
    echo '<form action = "" method = "post">';
    echo '<table border="0"><tr>';
@@ -325,7 +331,10 @@ function register_account($link)
    echo '<tr><td width="175px"><b>Email</b></td>';
    echo '<td width="175px"><input type="text" name="email" size="45"></td>';
    echo '</tr></table>';
-   echo '<input type="submit" name="registernewuser" value="Register">';
+   echo '<input type="submit" name="registernewuser" value="Register"></form>';
+   print("</td><td valign=\"top\"><h2>Log In</h2>");
+   print_logon_form();
+   print("</td></tr></table>");
 }
 function process_forms($link)
 {
@@ -338,7 +347,6 @@ function process_forms($link)
    {
       $_SESSION['admin']='';
    }
-   #print_r($_POST);
 
    //get key-value pairs
 	$sql = "select v from keyValue where k='status'";
@@ -366,8 +374,8 @@ function process_forms($link)
 
     if (isset($_POST['regionform']))
     {
-        print_r($_POST);
-        print_r($_SESSION);
+        //print_r($_POST);
+        //print_r($_SESSION);
         $sql = "update region set directional='".$_POST['topleft']."' where year_id=2024 and position=0";
         print($sql);
         if (! mysqli_query ( $link, $sql ))
@@ -393,8 +401,8 @@ function process_forms($link)
     }
 	if (isset($_POST['bracketcommit']))
     {
-        print_r($_SESSION);
-        print_r($_POST);
+        //print_r($_SESSION);
+        //print_r($_POST);
         if ($_POST['team0']!=-999)
         {
             $sql="insert into teamstatsYear (team_id,year_id,seed) values(".$_POST['team0'].",2024,".$_POST['seed0'].")";
@@ -459,22 +467,34 @@ function process_forms($link)
     }
 	if (isset($_POST['loginform']))
 	{
+        //print_r($_POST);
 		$myusername = mysqli_real_escape_string($link,$_POST['username']);
 		$mypassword = mysqli_real_escape_string($link,$_POST['password']);
-		$sql = "select user_id,name,team_name,is_admin,password from user where name='".$myusername."'";
+		$sql = "select login_id,name,username,is_admin,password from _login where username='".$myusername."'";
+        print($sql);
 		//logger($link,$sql);
 		$result = mysqli_query($link,$sql);
-		list($user,$name,$team_name,$is_admin,$hashed) = mysqli_fetch_row($result);
+		list($user,$name,$username,$is_admin,$hashed) = mysqli_fetch_row($result);
 
 		if(password_verify($mypassword,$hashed))
 		{
 			$_SESSION['user']=$user;
-			$_SESSION['username']=$name;
-			$_SESSION['teamname']=$team_name;
+			$_SESSION['username']=$username;
+			$_SESSION['name']=$name;
 			$_SESSION['admin']=$is_admin;
 			$_SESSION['page'] = 'rules';
 			logit("logging in");
-		}
+            // look for tournaments
+            $sql = "select tourney_id from tourneyOwnerYear where login_id=".$_SESSION['user'];
+            $result = mysqli_query($link,$sql);
+            list($tourney) = mysqli_fetch_row($result);
+            $_SESSION['poolowner']=$tourney;
+            // will look for tournaments that we don't own
+            $sql = "select e.entry_id from entry e join tourneyOwnerYear t on e.tourney_id=t.tourney_id and t.login_id!=".$_SESSION['user']." and e.login_id=".$_SESSION['user'];
+            $result = mysqli_query($link,$sql);
+            list($entry) = mysqli_fetch_row($result);
+            $_SESSION['poolentry']=$entry;
+        }
 		else
 		{
 			$_SESSION['error'] = "Your Login Name or Password is invalid ".$sql;
@@ -483,16 +503,22 @@ function process_forms($link)
 	}
    if (isset ( $_POST ['logout'] ))
    {
-      $_SESSION ['admin'] = 0;
-      unset ( $_SESSION ['user'] );
+        foreach ($_SESSION as $x=>$y)
+        {
+            unset($_SESSION[$x]);
+        }
+        $sql = "select v from keyValue where k='status'";
+        $result = mysqli_query($link,$sql);
+        list($status) = mysqli_fetch_row($result);
+        $_SESSION['status'] = $status;
    }
    if (isset ( $_POST ['registernewuser'] ))
    {
       $_SESSION ['error'] = '';
       $_SESSION ['message'] = '';
       $_SESSION ['page'] = 'register';
-      print_r($_POST);
-      print_r($_SESSION);
+      //print_r($_POST);
+      //print_r($_SESSION);
       if ($_POST ['passwd1'] == "" || $_POST ['passwd2'] == "")
       {
          $_SESSION ['error'] = 'Password cannot be blank';
@@ -510,7 +536,7 @@ function process_forms($link)
       if (! mysqli_query ( $link, $sql ))
       {
          $_SESSION ['error'] = 'something happened';
-         print_r($_SESSION);
+         //print_r($_SESSION);
       }
       $_SESSION ['message'] = 'User '.$_POST['username'].' successfully created';
    }
@@ -678,8 +704,8 @@ function process_forms($link)
    }
    if (isset($_POST['submit_game']))
    {
-    print_r($_POST);
-    print_r($_SESSION);
+    //print_r($_POST);
+    //print_r($_SESSION);
       $team_id=$_POST['team_id'];
       $tpts=$_POST['tpts'];
       $bpos=$_POST['b_pos'];
@@ -759,6 +785,63 @@ function process_forms($link)
 //      echo 'xxx '.$_POST['user_id'].' yyy '.$_POST['newpass'];
       //$_SESSION ['page'] = 'rules';
    }
+   if (isset($_POST['createpool']))
+   {
+    if ($_POST ['passwd1'] == "" || $_POST ['passwd2'] == "")
+    {
+       $_SESSION ['error'] = 'Password cannot be blank';
+       return;
+    }
+    // check for matching new passwords
+    if (mysqli_real_escape_string ( $link, $_POST ['passwd1'] ) != mysqli_real_escape_string ( $link, $_POST ['passwd2'] ))
+    {
+       $_SESSION ['error'] = 'Passwords do not match';
+       return;
+    }
+    // create new tournament
+    $sql = 'insert into tourneyOwnerYear (login_id,name,year_id,password) value ('.$_SESSION ['user'].',"'.$_POST ['poolname'].'",2024,"'.password_hash ( $_POST ['passwd1'], PASSWORD_DEFAULT ).'")';
+    print($sql);
+    if (! mysqli_query ( $link, $sql ))
+    {
+       $_SESSION ['error'] = 'something happened';
+       //print_r($_SESSION);
+    }
+    $_SESSION['poolowner'] = mysqli_insert_id($link);
+    $sql = "insert into entry (login_id,tourney_id,name) values (".$_SESSION ['user'].",".$_SESSION['poolowner'].",\"".$_POST['poolname']." Entry\")";
+    print($sql);
+    if (! mysqli_query ( $link, $sql ))
+    {
+       $_SESSION ['error'] = 'something happened';
+       //print_r($_SESSION);
+    }
+   }
+   if (isset($_POST['joinpool']))
+   {
+    //print_r($_POST);
+    $mypassword = mysqli_real_escape_string($link,$_POST['passwd1']);
+    print($mypassword);
+    $sql = "select tourney_id,name,password from tourneyOwnerYear where name=\"".$_POST['poolname']."\"";
+    print($sql);
+    // //logger($link,$sql);
+    $result = mysqli_query($link,$sql);
+    list($tourney,$name,$hashed) = mysqli_fetch_row($result);
+    print($hashed);
+
+    if(password_verify($mypassword,$hashed))
+    {
+        $sql = "insert into entry (login_id,tourney_id,name) values (".$_SESSION ['user'].",".$tourney.",\"".$_SESSION['username']." Entry\")";
+        print($sql);
+        if (! mysqli_query ( $link, $sql ))
+        {
+            $_SESSION ['error'] = 'something happened';
+            //print_r($_SESSION);
+        }
+        $_SESSION['poolentry'] = mysqli_insert_id($link);
+    } else {
+        $_SESSION ['error'] = 'Passwords do not match';
+        return;
+    }
+   }
 }
 function set_page()
 {
@@ -785,9 +868,15 @@ function set_page()
    }
    if (isset($_POST['enter_game_nitrambo']))
    {
-    print_r($_POST);
+    //print_r($_POST);
     $_SESSION['page']='scoregame';
     $_SESSION['subpage']='enterscores';
+   }
+   if (isset($_POST['pools']))
+   {
+    $_SESSION['page']='pools';
+    //print_r($_POST);
+    //print_r($_SESSION);
    }
    if (isset ( $_POST ['admin'] ))
    {
