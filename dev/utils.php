@@ -110,8 +110,9 @@ function print_sub_menu()
       }
       else
       {
-         echo '<button ' . isBtnSelected ( 'logout' ) . 'name="logout">Logout</button>';
+         echo '<button ' . isBtnSelected ( 'logout' ) . 'name="logout">Logout</button>('.$_SESSION['username'].')';
       }
+      print(" | <button " . isBtnSelected ( "pools" ) . "name=\"pools\">Pools</button>");
       echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
       echo ' | <button ' . isBtnSelected ( 'teamdraft' ) . 'name="teamdraft">Team Draft</button>';
       echo ' | <button ' . isBtnSelected ( 'playerdraft' ) . 'name="playerdraft">Player Draft</button>';
@@ -353,23 +354,40 @@ function process_forms($link)
 	$result = mysqli_query($link,$sql);
 	list($status) = mysqli_fetch_row($result);
 	$_SESSION['status'] = $status;
-	$sql = "select v from keyValue where k='currentPlayerRound'";
-	$result = mysqli_query($link,$sql);
-	list($status) = mysqli_fetch_row($result);
-	$_SESSION['currentPlayerRound'] = $status;
-	$sql = "select v from keyValue where k='currentTeamRound'";
-	$result = mysqli_query($link,$sql);
-	list($status) = mysqli_fetch_row($result);
-	$_SESSION['currentTeamRound'] = $status;
-	$sql = "select team_order from draft where draft_pos=".$_SESSION['currentTeamRound'];
-	$result = mysqli_query($link,$sql);
-	list($status) = mysqli_fetch_row($result);
-	$_SESSION['currentroundteam'] = $status;
-	$sql = "select player_order from draft where draft_pos=".$_SESSION['currentPlayerRound'];
-	$result = mysqli_query($link,$sql);
-	list($status) = mysqli_fetch_row($result);
-	$_SESSION['currentroundplayer'] = $status;
+    if (isset($_SESSION['user']))
+    {
+        $active_t_id = array_intersect_key($_POST, array_flip(preg_grep('/^t_id/', array_keys($_POST))));
+        if ($active_t_id) {
+         $_SESSION['activepool']=substr(key($active_t_id),4);
+        }
+        if (isset($_SESSION['activepool']))
+        {
+            $sql = "select playerRound from tourneyOwnerYear where year_id=2024 and tourney_id=".$_SESSION['activepool'];
+            $result = mysqli_query($link,$sql);
+            list($status) = mysqli_fetch_row($result);
+            $_SESSION['currentPlayerRound'] = $status;
+            $sql = "select teamRound from tourneyOwnerYear where year_id=2024 and tourney_id=".$_SESSION['activepool'];
+            $result = mysqli_query($link,$sql);
+            list($status) = mysqli_fetch_row($result);
+            $_SESSION['currentTeamRound'] = $status;
+            $sql = "select team_order from draft where draft_pos=".$_SESSION['currentTeamRound']." and tourney_id=".$_SESSION['activepool'];
+            print($sql);
+            $result = mysqli_query($link,$sql);
+            list($status) = mysqli_fetch_row($result);
+            $_SESSION['currentroundteam'] = $status;
+            $sql = "select player_order from draft where draft_pos=".$_SESSION['currentPlayerRound']." and tourney_id=".$_SESSION['activepool'];
+            $result = mysqli_query($link,$sql);
+            list($status) = mysqli_fetch_row($result);
+            $_SESSION['currentroundplayer'] = $status;
+            $sql = "select entry_id from entry where login_id=".$_SESSION['user']." and tourney_id=".$_SESSION['activepool'];
+            $result = mysqli_query($link,$sql);
+            list($status) = mysqli_fetch_row($result);
+            $_SESSION['entry'] = $status;
+        }
+    }
 
+    print_r($_SESSION);
+    print_r($_POST);
 	set_page();
 
     if (isset($_POST['regionform']))
@@ -568,7 +586,7 @@ function process_forms($link)
          // create a hash array and add this hash
          $_SESSION["hash"] = array($h);
       }
-      $sql = "select v from keyValue where k='currentTeamRound'";
+      $sql = "select teamRound from tourneyOwnerYear where year_id=2024 and tourney_id=".$_SESSION['activepool'];
       $result = mysqli_query($link,$sql);
       list($status) = mysqli_fetch_row($result);
       if ($dupe==0&&$_SESSION['currentTeamRound'] == $status)
@@ -576,22 +594,28 @@ function process_forms($link)
          $_SESSION ['error'] = $_POST['hash'];
          $_SESSION ['message'] = 'You selected ' . $_POST['team_id'];
          $_SESSION['page'] = 'rosters';
+         print_r($_SESSION);
          // insert into userTeam
-         $sql = "insert into userTeam (user_id,team_id,draft) value (".$_SESSION ['user'].",".$_POST ['team_id'].",".$_SESSION ['currentTeamRound'].")";
+         $sql = "insert into ownerTeam (owner_id,team_id,draft) value (".$_SESSION ['entry'].",".$_POST ['team_id'].",".$_SESSION ['currentTeamRound'].")";
+         print($sql);
          if (! mysqli_query ( $link, $sql ))
          {
             $_SESSION ['error'] = 'something happened';
          }
          // increment draft counter
-         $newround=$_SESSION['currentTeamRound']+1;
-         $sql = "update keyValue set v='".$newround."' where k='currentTeamRound'";
+         $newround=$status+1;
+         $sql = "update tourneyOwnerYear set teamRound='".$newround."' where tourney_id=".$_SESSION['activepool'];
+         print($sql);
          if (! mysqli_query ( $link, $sql ))
          {
             $_SESSION ['error'] = 'something happened';
          }
          // email pool
          $subj = 'Draft Pool - Team Update';
-         $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_school($_POST ['team_id'], $link).'. '.get_next_team_draft($newround,$link).' is on the clock.';
+         print($subj);
+         $msg = 'In round '.ceil($newround/8).', '.$_SESSION['username'].' selected '.get_school($_POST ['team_id'], $link).'. '.get_next_team_draft($newround,$link).' is on the clock.';
+         print($subj);
+         print($msg);
          send_group_mail($subj, $msg, $link);
       }
       else
@@ -632,28 +656,31 @@ function process_forms($link)
          // create a hash array and add this hash
          $_SESSION["hash"] = array($h);
       }
-      $sql = "select v from keyValue where k='currentPlayerRound'";
+      $sql = "select playerRound from tourneyOwnerYear where year_id=2024 and tourney_id=".$_SESSION['activepool'];
+      print($sql);
       $result = mysqli_query($link,$sql);
       list($status) = mysqli_fetch_row($result);
       if ($dupe==0 && $_SESSION['currentPlayerRound'] == $status)
       {
          $_SESSION['page'] = 'rosters';
          // insert into userTeam
-         $sql = "insert into userPlayer (user_id,player_id,draft) value (".$_SESSION ['user'].",".$_POST ['player_id'].",".$_SESSION ['currentPlayerRound'].")";
+         $sql = "insert into ownerPlayer (owner_id,player_id,draft) value (".$_SESSION ['entry'].",".$_POST ['player_id'].",".$_SESSION ['currentPlayerRound'].")";
+         print($sql);
          if (! mysqli_query ( $link, $sql ))
          {
             $_SESSION ['error'] = 'something happened';
          }
          // increment draft counter
-         $newround=$_SESSION['currentPlayerRound']+1;
-         $sql = "update keyValue set v='".$newround."' where k='currentPlayerRound'";
+         $newround=$status+1;
+         $sql = "update tourneyOwnerYear set playerRound='".$newround."' where tourney_id=".$_SESSION['activepool'];
+         print($sql);
          if (! mysqli_query ( $link, $sql ))
          {
             $_SESSION ['error'] = 'something happened';
          }
          // email pool
          $subj = 'Draft Pool - Player Update';
-         $msg = 'In round '.ceil($newround/8).', '.$_SESSION['teamname'].' selected '.get_player_name($_POST ['player_id'], $link).' of '.get_player_school($_POST ['player_id'], $link).'. '.get_next_player_draft($newround,$link).' is on the clock.';
+         $msg = 'In round '.ceil($newround/8).', '.$_SESSION['username'].' selected '.get_player_name($_POST ['player_id'], $link).' of '.get_player_school($_POST ['player_id'], $link).'. '.get_next_player_draft($newround,$link).' is on the clock.';
          send_group_mail($subj, $msg, $link);
       }
       else

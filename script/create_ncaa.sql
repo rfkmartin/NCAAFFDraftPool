@@ -145,7 +145,9 @@ create table draft (
    draft_pos int not null,
    player_order int not null,
    team_order int not null,
-   primary key (draft_pos)
+   tourney_id int not null,
+   primary key (draft_pos,tourney_id),
+   foreign key (tourney_id) references tourneyOwnerYear(tourney_id)
 );
 
 create table ownerTeam (

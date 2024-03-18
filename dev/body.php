@@ -114,11 +114,13 @@ function print_body($link)
             $_SESSION['message'] = 'Wait.';
          }
          print_blank();
+         print_r($_SESSION);
       }
       echo '<br>';
    }
    elseif ($_SESSION ['page'] == "playerdraft")
    {
+    print_r($_SESSION);
       if ($_SESSION['currentroundplayer']==$_SESSION['user'])
       {
          if ($_SESSION['subpage']=='playertopscore_sub')
@@ -136,7 +138,7 @@ function print_body($link)
          else
          {
             print_blank();
-         }
+        }
       }
       else
       {
@@ -148,6 +150,7 @@ function print_body($link)
          {
             $_SESSION['message'] = 'Wait.';
          }
+         print_r($_SESSION);
          print_blank();
       }
       echo '<br>';
@@ -315,44 +318,76 @@ function print_pool_page($link)
 {
     print("<h3><font color=\"red\">".$_SESSION["error"]."</font>".$_SESSION["message"]."</h3>");
     print("<table border=\"1\"><tr><td valign=\"top\">");
-    if (isset($_SESSION['poolowner']))
+    print("Your Entries");
+    // list entries
+    $sql = "select t.tourney_id,t.name from tourneyOwnerYear t join entry e on t.tourney_id=e.tourney_id where e.login_id=".$_SESSION['user'];
+    $result = mysqli_query($link,$sql);
+    print("<table>");
+    while (list($id,$name) = mysqli_fetch_row($result))
     {
-        // owns a pool so list pool name, current members, and invite boxes.
-        // hypertext names of pools to activate and view results
-        // look for tournaments
-        $sql = "select name from tourneyOwnerYear where tourney_id=".$_SESSION['poolowner'];
-        $result = mysqli_query($link,$sql);
-        list($name) = mysqli_fetch_row($result);
-        print("<h2>".$name."</h2>");
-        // list entries
-        $sql = "select entry.name,username from entry join _login where _login.login_id=entry.login_id and  tourney_id=".$_SESSION['poolowner'];
+        if ($_SESSION['status']=="DRAFT")
+        {
+//            print("select pool");
+            print("<form action = \"\" method = \"post\"><tr><td class=\"submenu\"><button " . isBtnSelected ( "t_id".$id ) . "name=\"t_id".$id."\">".$name."</button></form>");
+        } else{
+            print("<tr><td>".$name."</td></tr>");
+        }
+    }
+    print("</table></td>");
+    if ($_SESSION['status']!="DRAFT")
+    {
+        if (isset($_SESSION['poolowner']))
+        {
+            print("<td valign=\"top\">");
+            // owns a pool so list pool name, current members, and invite boxes.
+            // hypertext names of pools to activate and view results
+            // look for tournaments
+            $sql = "select name from tourneyOwnerYear where tourney_id=".$_SESSION['poolowner'];
+            $result = mysqli_query($link,$sql);
+            list($name) = mysqli_fetch_row($result);
+            print("Your Pool<br>");
+            print("<table>");
+            print("<tr><th align=\"left\">".$name."</th></tr>");
+            // list entries
+            $sql = "select entry.name,username from entry join _login where _login.login_id=entry.login_id and  tourney_id=".$_SESSION['poolowner'];
+            $result = mysqli_query($link,$sql);
+            while (list($name,$user) = mysqli_fetch_row($result))
+            {
+                print("<tr><td>".$name."(".$user.")</td></tr>");
+            }
+            print("</table>");
+        } else {
+            print("Create Pool");
+            print_createpool_page();
+            print("</td>");
+        }
+        print("<td valign=\"top\">Available pools");
+        // list pools
+        $sql = "select t.tourney_id,t.name,count(*) from tourneyOwnerYear t join entry e on t.tourney_id=e.tourney_id group by t.name,t.tourney_id order by t.name desc";
         $result = mysqli_query($link,$sql);
         print("<table>");
-        while (list($name,$user) = mysqli_fetch_row($result))
+        while (list($id,$name,$entries) = mysqli_fetch_row($result))
         {
-            print("<tr><td>".$name."(".$user.")</td></tr>");
+            print("<tr><td>".$name."(".$entries.")</td></tr>");
         }
-        print("</table>");
-    } else {
-        print("<h2>Create Pool</h2>");
-        print_createpool_page();
-        print("</td>");
+        print("</table></td>");
+        if (false&&isset($_SESSION['poolentry']))
+        {
+            // owns a pool so list pool name, current members, and invite boxes.
+            // hypertext names of pools to activate and view results
+            // look for tournaments
+            $sql = "select e.name,t.name from entry e join tourneyOwnerYear t on e.tourney_id=t.tourney_id and e.entry_id=".$_SESSION['poolentry'];
+            $result = mysqli_query($link,$sql);
+            list($entryname,$tourneyname) = mysqli_fetch_row($result);
+            // list entries
+            print("<td valign=\"top\">".$entryname."(".$tourneyname.")");
+        } else {
+            print("<td valign=\"top\"><h2>Join Pool</h2>");
+            print_joinpool_page();
+        }
+        print("</td");
     }
-    if (isset($_SESSION['poolentry']))
-    {
-        // owns a pool so list pool name, current members, and invite boxes.
-        // hypertext names of pools to activate and view results
-        // look for tournaments
-        $sql = "select e.name,t.name from entry e join tourneyOwnerYear t on e.tourney_id=t.tourney_id and e.entry_id=".$_SESSION['poolentry'];
-        $result = mysqli_query($link,$sql);
-        list($entryname,$tourneyname) = mysqli_fetch_row($result);
-        // list entries
-        print("<td>".$entryname."(".$tourneyname.")");
-    } else {
-        print("<td valign=\"top\"><h2>Join Pool</h2>");
-        print_joinpool_page();
-    }
-    print("</td></tr></table>");
+    print("</tr></table>");
 }
 function print_createpool_page()
 {
@@ -360,14 +395,27 @@ function print_createpool_page()
     print("<table border=\"0\"><tr>");
     print("<td ><b>Pool Name</b></td>");
     print("<td ><input type=\"text\" name=\"poolname\" size=\"45\"></td></tr>");
-    print("<tr><td ><b>Password</b></td>");
+    print("<tr><td ><b>Pool Password</b></td>");
     print("<td ><input type=\"password\" name=\"passwd1\" size=\"45\"></td></tr>");
-    print("<tr><td ><b>Retype Password</b></td>");
+    print("<tr><td ><b>Retype Pool Password</b></td>");
     print("<td ><input type=\"password\" name=\"passwd2\" size=\"45\"></td></tr>");
+    print("<tr><td ><b>Creation Key</b></td>");
+    print("<td ><input type=\"key\" name=\"key\" size=\"45\"></td></tr>");
     print("</tr></table>");
     print("<input type=\"submit\" name=\"createpool\" value=\"Create\"></form>");
 }
 function print_joinpool_page()
+{
+    print("<form action = \"\" method = \"post\">");
+    print("<table border=\"0\"><tr>");
+    print("<td w><b>Pool Name</b></td>");
+    print("<td ><input type=\"text\" name=\"poolname\" size=\"45\"></td></tr>");
+    print("<tr><td ><b>Password</b></td>");
+    print("<td ><input type=\"password\" name=\"passwd1\" size=\"45\"></td></tr>");
+    print("</tr></table>");
+    print("<input type=\"submit\" name=\"joinpool\" value=\"Join\"></form>");    
+}
+function print_listpool_page()
 {
     print("<form action = \"\" method = \"post\">");
     print("<table border=\"0\"><tr>");

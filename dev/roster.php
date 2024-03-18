@@ -25,7 +25,7 @@ function print_roster1($link)
 function print_roster($link)
 {
    echo '<table border="0"><tr><td></td><td></td></tr>';
-   $sql = "select user_id,team_name from user where user_id<=8 order by team_name";
+   $sql = "select login_id,name from entry where tourney_id=".$_SESSION['activepool']." order by name";
    $data = mysqli_query ( $link, $sql );
    $odd=0;
    while (list($user_id,$teamname)=mysqli_fetch_row ( $data ))
@@ -44,11 +44,12 @@ function print_roster($link)
       {
          $i=8*$a;
          $j=$a*8+7;
-         $sql1 = 'select team_name,school,seed from user u join userTeam t on u.user_id=t.user_id join team m on t.team_id=m.team_id where u.user_id='.$user_id.' and t.draft between '.$i.' and '.$j;
+         $sql1 = "select a.round,b.school,b.seed from (select player_id as round from player where player_id<9) as a left join (select school,tY.seed,o.draft from entry e join ownerTeam o on e.entry_id=o.owner_id join team m on o.team_id=m.team_id join teamstatsYear tY on m.team_id=tY.team_id where e.login_id=".$_SESSION['user'].") as b on a.round=b.draft+1";
+         print($sql1);
          $data1 = mysqli_query ( $link, $sql1 );
-         if (!(list($team_name,$school,$seed)=mysqli_fetch_row($data1)))
+         if (!(list($rnd,$school,$seed)=mysqli_fetch_row($data1)))
          {
-            $team_name='';
+            $rnd='';
             $school='';
             $seed='';
          }
@@ -56,7 +57,9 @@ function print_roster($link)
          {
             $seed='('.$seed.')';
          }
-         $sql2 = 'select p.name,p.player_id from user u join userPlayer t on u.user_id=t.user_id join player p on p.player_id=t.player_id  where u.user_id='.$user_id.' and t.draft between '.$i.' and '.$j;
+         $sql2 = "select a.round,b.name,b.player_id from (select player_id as round from player where player_id<9) as a left join (select p.name,p.player_id,o.draft from entry e join ownerPlayer o on e.entry_id=o.owner_id join player p on p.player_id=o.player_id where e.login_id=".$_SESSION['user'].") as b on a.round=b.draft+1";
+         //         'select p.name,p.player_id from user u join userPlayer t on u.user_id=t.user_id join player p on p.player_id=t.player_id  where u.user_id='.$user_ and t.draft between '.$i.' and '.$j;
+         print($sql2);
          $data2 = mysqli_query ( $link, $sql2 );
          if (!(list($player_name,$player_id)=mysqli_fetch_row($data2)))
          {
