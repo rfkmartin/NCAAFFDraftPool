@@ -114,7 +114,6 @@ function print_body($link)
             $_SESSION['message'] = 'Wait.';
          }
          print_blank();
-         print_r($_SESSION);
       }
       echo '<br>';
    }

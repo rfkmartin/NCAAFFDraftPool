@@ -21,7 +21,7 @@ function send_group_mail($subject,$msg,$link)
    
    $mail->MsgHTML($msg);
    
-   $sql = 'select email,name from user';
+   $sql = 'select email,name from _login';
    $data = mysqli_query ( $link, $sql );
    while ( list ( $email,$name) = mysqli_fetch_row ( $data ) )
    {

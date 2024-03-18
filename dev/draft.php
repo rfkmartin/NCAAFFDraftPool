@@ -115,7 +115,8 @@ function print_draft_order($link)
 }
 function print_team_draft_form($link)
 {
-   $sql = "select school,tY.seed,t.team_id from bracket b join teamGame tG on b.bracket_pos=tG.bracket_pos join team t on tG.team_id=t.team_id join teamstatsYear tY on tY.team_id=t.team_id where tY.year_id=2024 and round<=2 and b.bracket_pos<132 and t.team_id not in (select team_id from ownerTeam) order by seed,t.region desc";
+   $sql = "select school,tY.seed,t.team_id from bracket b join teamGame tG on b.bracket_pos=tG.bracket_pos join team t on tG.team_id=t.team_id join teamstatsYear tY on tY.team_id=t.team_id where tY.year_id=2024 and round<=2 and b.bracket_pos<132 and t.team_id not in (select ot.team_id from ownerTeam ot join entry e on e.entry_id=ot.owner_id where tourney_id=".$_SESSION['activepool'].") order by seed,t.region desc";
+   print($sql);
    $data = mysqli_query ( $link, $sql );
    echo '<form action = "" method = "post">';
    echo '<table border="1"><tr><td>Select</td><td>School</td><td>Seed</td></tr>';
@@ -173,7 +174,7 @@ function print_player_draftname_form($string,$link)
 }
 function get_next_player_draft($round,$link)
 {
-   $sql = "select team_name from draft d join user u on d.player_order=u.user_id where d.draft_pos=".$round;
+   $sql = "select username from draft d join _login l on d.player_order=l.login_id where d.draft_pos=".$round." and tourney_id=".$_SESSION['activepool'];
    $data = mysqli_query ( $link, $sql );
    list ($team) = mysqli_fetch_row ( $data ) ;
    return $team;
