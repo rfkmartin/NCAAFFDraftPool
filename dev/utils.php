@@ -112,12 +112,20 @@ function print_sub_menu()
       {
          echo '<button ' . isBtnSelected ( 'logout' ) . 'name="logout">Logout</button>('.$_SESSION['username'].')';
       }
-      print(" | <button " . isBtnSelected ( "pools" ) . "name=\"pools\">Pools</button>");
-      echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
-      echo ' | <button ' . isBtnSelected ( 'teamdraft' ) . 'name="teamdraft">Team Draft</button>';
-      echo ' | <button ' . isBtnSelected ( 'playerdraft' ) . 'name="playerdraft">Player Draft</button>';
-      echo ' | <button ' . isBtnSelected ( 'draft' ) . 'name="draft">Draft Order</button>';
-      echo ' | <button ' . isBtnSelected ( 'rosters' ) . 'name="rosters">Rosters</button>';
+      if (isset($_SESSION['activepool']))
+      {
+        print(" | <button " . isBtnSelected ( "pools" ) . "name=\"pools\">Pools</button>(".$_SESSION['activepoolname'].")");
+        echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
+        echo ' | <button ' . isBtnSelected ( 'teamdraft' ) . 'name="teamdraft">Team Draft</button>';
+        echo ' | <button ' . isBtnSelected ( 'playerdraft' ) . 'name="playerdraft">Player Draft</button>';
+        echo ' | <button ' . isBtnSelected ( 'draft' ) . 'name="draft">Draft Order</button>';
+        echo ' | <button ' . isBtnSelected ( 'rosters' ) . 'name="rosters">Rosters</button>';
+      } else {
+        if (isset($_SESSION['user']))
+        {
+            print(" | <button " . isBtnSelected ( "pools" ) . "name=\"pools\">Select a Pool</button>");
+        }
+      }
       if ($_SESSION['admin'])
       {
          echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
@@ -362,6 +370,10 @@ function process_forms($link)
         }
         if (isset($_SESSION['activepool']))
         {
+            $sql = "select name from tourneyOwnerYear where year_id=2024 and tourney_id=".$_SESSION['activepool'];
+            $result = mysqli_query($link,$sql);
+            list($status) = mysqli_fetch_row($result);
+            $_SESSION['activepoolname'] = $status;
             $sql = "select playerRound from tourneyOwnerYear where year_id=2024 and tourney_id=".$_SESSION['activepool'];
             $result = mysqli_query($link,$sql);
             list($status) = mysqli_fetch_row($result);
@@ -604,7 +616,7 @@ function process_forms($link)
          }
          // increment draft counter
          $newround=$status+1;
-         $sql = "update tourneyOwnerYear set teamRound='".$newround."' where tourney_id=".$_SESSION['activepool'];
+         $sql = "update tourneyOwnerYear set teamRound=".$newround." where tourney_id=".$_SESSION['activepool'];
          print($sql);
          if (! mysqli_query ( $link, $sql ))
          {
@@ -672,7 +684,7 @@ function process_forms($link)
          }
          // increment draft counter
          $newround=$status+1;
-         $sql = "update tourneyOwnerYear set playerRound='".$newround."' where tourney_id=".$_SESSION['activepool'];
+         $sql = "update tourneyOwnerYear set playerRound=".$newround." where tourney_id=".$_SESSION['activepool'];
          print($sql);
          if (! mysqli_query ( $link, $sql ))
          {
@@ -680,8 +692,14 @@ function process_forms($link)
          }
          // email pool
          $subj = 'Draft Pool - Player Update';
+         //print($subj);
+         //print(get_player_name($_POST ['player_id'], $link));
+         //print(get_player_school($_POST ['player_id'], $link));
+         //print(get_next_player_draft($newround,$link));
          $msg = 'In round '.ceil($newround/8).', '.$_SESSION['username'].' selected '.get_player_name($_POST ['player_id'], $link).' of '.get_player_school($_POST ['player_id'], $link).'. '.get_next_player_draft($newround,$link).' is on the clock.';
+         //print($msg);
          send_group_mail($subj, $msg, $link);
+         //print("made it???");
       }
       else
       {
