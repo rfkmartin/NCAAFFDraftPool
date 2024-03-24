@@ -32,35 +32,44 @@ function print_sub_menu()
       {
          echo '<button ' . isBtnSelected ( 'logout' ) . 'name="logout">Logout</button>';
       }
-      echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
-      echo ' | <button ' . isBtnSelected ( 'bracket' ) . 'name="bracket">Bracket</button>';
-      echo ' | <button ' . isBtnSelected ( 'results' ) . 'name="results">Results</button>';
-      echo ' | <button ' . isBtnSelected ( 'rosters' ) . 'name="rosters">Rosters</button>';
-      if ($_SESSION['admin'])
+      if (isset($_SESSION['activepool']))
       {
-         echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
-      }
-      if ($_SESSION['page'] == 'admin')
-      {
-         echo '<tr><td class="submenu">';
-         echo '<button ' . isBtnSelected ( 'adminsetlive' ) . 'name="adminsetlive">Set LIVE</button>';
-         echo ' | <button ' . isBtnSelected ( 'adminsetdraft' ) . 'name="adminsetdraft">Set DRAFT</button>';
-         echo ' | <button ' . isBtnSelected ( 'adminsetpre' ) . 'name="adminsetpre">Set PREDRAFT</button>';
-         echo ' | <button ' . isBtnSelected ( 'adminentergame' ) . 'name="adminentergame">Enter Game</button>';
-         echo ' | <button ' . isBtnSelected ( 'adminchangepass' ) . 'name="adminchangepass">Change Password</button>';
-      }
-      else if ($_SESSION['page'] == 'results')
-      {
-         echo '<tr><td class="submenu">';
-         echo '<button ' . isBtnSelected ( 'leader' ) . 'name="leader">Leaderboard</button>';
-         echo ' | <button ' . isBtnSelected ( 'playerresults' ) . 'name="playerresults">Player Results</button>';
-         echo ' | <button ' . isBtnSelected ( 'teamresults' ) . 'name="teamresults">Team Results</button>';
-         echo ' | <button ' . isBtnSelected ( 'stats' ) . 'name="stats">Other Results</button>';
-      }
-      else
-      {
-         echo '<tr><td class="nonmenu">&nbsp;';
-      }
+        echo ' | <button ' . isBtnSelected ( 'rules' ) . 'name="rules">Rules</button>';
+        echo ' | <button ' . isBtnSelected ( 'bracket' ) . 'name="bracket">Bracket</button>';
+        echo ' | <button ' . isBtnSelected ( 'results' ) . 'name="results">Results</button>';
+        echo ' | <button ' . isBtnSelected ( 'rosters' ) . 'name="rosters">Rosters</button>';
+        if ($_SESSION['admin'])
+        {
+           echo ' | <button ' . isBtnSelected ( 'admin' ) . 'name="admin">Admin</button>';
+        }
+        if ($_SESSION['page'] == 'admin')
+        {
+           echo '<tr><td class="submenu">';
+           echo '<button ' . isBtnSelected ( 'adminsetlive' ) . 'name="adminsetlive">Set LIVE</button>';
+           echo ' | <button ' . isBtnSelected ( 'adminsetdraft' ) . 'name="adminsetdraft">Set DRAFT</button>';
+           echo ' | <button ' . isBtnSelected ( 'adminsetpre' ) . 'name="adminsetpre">Set PREDRAFT</button>';
+           echo ' | <button ' . isBtnSelected ( 'adminentergame' ) . 'name="adminentergame">Enter Game</button>';
+           echo ' | <button ' . isBtnSelected ( 'adminchangepass' ) . 'name="adminchangepass">Change Password</button>';
+        }
+        else if ($_SESSION['page'] == 'results')
+        {
+           echo '<tr><td class="submenu">';
+           echo '<button ' . isBtnSelected ( 'leader' ) . 'name="leader">Leaderboard</button>';
+           echo ' | <button ' . isBtnSelected ( 'playerresults' ) . 'name="playerresults">Player Results</button>';
+           echo ' | <button ' . isBtnSelected ( 'teamresults' ) . 'name="teamresults">Team Results</button>';
+           echo ' | <button ' . isBtnSelected ( 'stats' ) . 'name="stats">Other Results</button>';
+        }
+        else
+        {
+            print(" | <button " . isBtnSelected ( "pools" ) . "name=\"pools\">Select a Pool</button>");
+           echo '<tr><td class="nonmenu">&nbsp;';
+        }
+     } else {
+     if (isset($_SESSION['user']))
+     {
+         print(" | <button " . isBtnSelected ( "pools" ) . "name=\"pools\">Select a Pool</button>");
+     }
+    }
       echo '</td></tr>';
       if ($_SESSION['page'] == 'admin' && $_SESSION['subpage']=='adminentergame')
       {

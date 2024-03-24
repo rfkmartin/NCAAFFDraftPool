@@ -8,7 +8,7 @@ function print_player_results($link)
    {
       $i++;
    }
-   $sql = "select user_id,team_name from user where user_id<8 order by team_name";
+   $sql = "select login_id,name from entry where tourney_id=".$_SESSION['activepool']." order by name";
    $data = mysqli_query ( $link, $sql );
    while (list($user_id,$teamname)=mysqli_fetch_row ( $data ))
    {
@@ -21,7 +21,8 @@ function print_player_results($link)
       }
       echo '<td width="9%">Total</td></tr>';
       
-      $sql = 'select p.name,t.school,p.player_id,w.active from userplayer up join user u on u.user_id=up.user_id join player p on p.player_id=up.player_id join team t on p.team_id=t.team_id join (select min(winner) as active,team_id from teamgame tg group by team_id) w on w.team_id=t.team_id where u.user_id='.$user_id.' order by up.draft';
+      $sql = "select p.name,t.school,p.player_id,w.active from ownerPlayer op join entry e on op.owner_id=e.entry_id join _login l on l.login_id=e.login_id join player p on p.player_id=op.player_id join team t on p.team_id=t.team_id join (select min(winner) as active,team_id from teamGame tg group by team_id) w on w.team_id=t.team_id where l.login_id=".$user_id." order by op.draft";
+      //select p.name,t.school,p.player_id,w.active from userplayer up join user u on u.user_id=up.user_id join player p on p.player_id=up.player_id join team t on p.team_id=t.team_id join (select min(winner) as active,team_id from teamgame tg group by team_id) w on w.team_id=t.team_id where u.user_id='.$user_id.' order by up.draft';
       $data1 = mysqli_query ( $link, $sql );
       $tot=array_fill(0,8,0);
       while (list($pname,$school,$pid,$active)=mysqli_fetch_row ( $data1 ))
@@ -62,7 +63,7 @@ function print_team_results($link)
    {
       $i++;
    }
-   $sql = "select user_id,team_name from user where user_id<=8 order by team_name";
+   $sql = "select login_id,name from entry where tourney_id=".$_SESSION['activepool']." order by name";
    $data = mysqli_query ( $link, $sql );
    while (list($user_id,$teamname)=mysqli_fetch_row ( $data ))
    {
@@ -76,7 +77,8 @@ function print_team_results($link)
       }
       echo '<td width="9%">Total</td></tr>';
       
-      $sql = 'select t.school,seed,t.team_id,w.active as active from userteam ut join user u on u.user_id=ut.user_id join team t on ut.team_id=t.team_id join (select min(winner) as active,team_id from teamgame tg group by team_id) w on w.team_id=t.team_id where u.user_id='.$user_id.' order by ut.draft';
+      $sql = "select t.school,tY.seed,t.team_id,w.active as active from ownerTeam ot join teamstatsYear tY on tY.team_id=ot.team_id join entry e on ot.owner_id=e.entry_id join _login l on l.login_id=e.login_id join team t on ot.team_id=t.team_id join (select min(winner) as active,team_id from teamGame tg where points>0 group by team_id) w on w.team_id=t.team_id where l.login_id=".$user_id." order by ot.draft";
+      //select t.school,seed,t.team_id,w.active as active from userteam ut join user u on u.user_id=ut.user_id join team t on ut.team_id=t.team_id join (select min(winner) as active,team_id from teamgame tg group by team_id) w on w.team_id=t.team_id where u.user_id='.$user_id.' order by ut.draft';
       $data1 = mysqli_query ( $link, $sql );
       $tot=array_fill(0,8,0);
       while (list($school,$seed,$tid,$active)=mysqli_fetch_row ( $data1 ))
@@ -120,7 +122,7 @@ function print_team_results($link)
 }
 function get_player_pts($round,$player_id,$link)
 {
-   $sql = 'select points from playergame pg join bracket b on pg.bracket_pos=b.bracket_pos where player_id='.$player_id.' and round='.$round;
+   $sql = 'select points from playerGame pg join bracket b on pg.bracket_pos=b.bracket_pos where player_id='.$player_id.' and round='.$round;
    $data = mysqli_query ( $link, $sql );
    $pts=0;
    list($pts)=mysqli_fetch_row($data);
@@ -128,7 +130,7 @@ function get_player_pts($round,$player_id,$link)
 }
 function get_team_win($round,$team_id,$link)
 {
-   $sql = 'select winner from teamgame tg join bracket b on tg.bracket_pos=b.bracket_pos where tg.team_id='.$team_id.' and round='.$round;
+   $sql = 'select winner from teamGame tg join bracket b on tg.bracket_pos=b.bracket_pos where tg.team_id='.$team_id.' and round='.$round;
    $data = mysqli_query ( $link, $sql );
    $pts=0;
    list($pts)=mysqli_fetch_row($data);
@@ -372,7 +374,7 @@ function update_user_points($link)
       $pts1[$place-1]=$points;
    }
    // Team Total Points
-   $sql = 'select sum(points) as teampts,team_name,up.user_id from playergame pg join userplayer up on pg.player_id=up.player_id join user u on up.user_id=u.user_id group by u.user_id order by teampts desc';
+   $sql = 'select sum(points) as teampts,team_name,up.user_id from playerGame pg join userplayer up on pg.player_id=up.player_id join user u on up.user_id=u.user_id group by u.user_id order by teampts desc';
    $data = mysqli_query ( $link, $sql );
    $i=0;
    $max=999;

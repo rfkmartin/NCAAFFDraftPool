@@ -324,7 +324,7 @@ function print_pool_page($link)
     print("<table>");
     while (list($id,$name) = mysqli_fetch_row($result))
     {
-        if ($_SESSION['status']=="DRAFT")
+        if ($_SESSION['status']=="DRAFT" || $_SESSION['status']=="LIVE")
         {
 //            print("select pool");
             print("<form action = \"\" method = \"post\"><tr><td class=\"submenu\"><button " . isBtnSelected ( "t_id".$id ) . "name=\"t_id".$id."\">".$name."</button></form>");
